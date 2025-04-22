@@ -1,9 +1,37 @@
 ﻿@page "/"
+@inject IClient httpClient
 
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+@if (test != null)
+{
+    <MudCard Class="pa-4" Style="@($"color:{Theme.PaletteLight.SuccessLighten}; background:{Theme.PaletteLight.Dark};")">
+        <MudCardContent>
+            <MudText>@test.AgencyName</MudText>
+            <MudText Typo="Typo.body2">Du kan ringa mig när som helst: @test.PhoneNumber</MudText>
+        </MudCardContent>
+        <MudCardActions>
+            <MudButton Variant="Variant.Text" Color="Color.Primary">@test.Email</MudButton>
+        </MudCardActions>
+    </MudCard>
+    
+}
+else
+{
+    <p>Laddar profil...</p>
+}
 
-Welcome to your new app.
+@code{
+
+    private MudTheme Theme = new MudTheme();
+
+    RealtorProfileDto test;
+
+    protected override async Task OnInitializedAsync()
+    {
+        test = await httpClient.ProfileAsync(4);
+    }
+
+}
 
 
