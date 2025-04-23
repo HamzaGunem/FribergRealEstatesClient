@@ -14,7 +14,7 @@ namespace FribergRealEstatesClient.Services
 
         public async Task<RealtorProfileDto> GetRealtorProfile(int realtorId)
         {
-            var realtor = await _client.ProfileAsync(realtorId);
+            var realtor = await _client.ProfileGETAsync(realtorId);
 
             return realtor;
         }

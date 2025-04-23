@@ -28,7 +28,6 @@ else if(profileDto != null)
 				<MudText Typo="Typo.body2">@profileDto.PhoneNumber</MudText>
 			</MudCardContent>
 			<MudCardActions>
-				@*<MudButton Variant="Variant.Text" Color="Color.Primary">@profileDto.Email</MudButton>*@
 				<MudLink Href="mailto:profileDto.Email" Target="_blank">@profileDto.Email</MudLink>
 			</MudCardActions>
 		</div>
@@ -44,7 +43,7 @@ else
 	[Parameter]
 	public int Id { get; set; }
 
-	private RealtorProfileDto profileDto;
+	private RealtorProfileDto? profileDto;
 
 	private bool isError = false;
 
