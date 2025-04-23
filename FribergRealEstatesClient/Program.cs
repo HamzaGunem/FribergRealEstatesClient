@@ -1,3 +1,4 @@
+using FribergRealEstatesClient.Services;
 using FribergRealEstatesClient.Services.Base;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -31,6 +32,10 @@ namespace FribergRealEstatesClient
                 config.SnackbarConfiguration.ShowTransitionDuration = 500;
                 config.SnackbarConfiguration.SnackbarVariant = Variant.Filled;
             });
+
+            // Client Services
+            builder.Services.AddTransient<IRealtorService, RealtorService>(); // Samuel
+            builder.Services.AddTransient<IAgencyService, AgencyService>(); // Samuel
 
             await builder.Build().RunAsync();
         }
