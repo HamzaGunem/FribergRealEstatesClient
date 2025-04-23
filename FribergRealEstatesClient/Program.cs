@@ -14,9 +14,13 @@ namespace FribergRealEstatesClient
             builder.RootComponents.Add<App>("#app");
             builder.RootComponents.Add<HeadOutlet>("head::after");
 
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7053") });
+            /*builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7053") });
+            builder.Services.AddScoped<IClient, Client>();*/
 
-            builder.Services.AddScoped<IClient, Client>();
+            builder.Services.AddHttpClient<IClient, Client>(client =>
+            {
+                client.BaseAddress = new Uri("https://localhost:7053");
+            });
 
             // MudBlazor
             builder.Services.AddMudServices();
