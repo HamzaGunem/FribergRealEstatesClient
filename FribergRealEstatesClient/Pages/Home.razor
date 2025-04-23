@@ -14,7 +14,7 @@
             <MudButton Variant="Variant.Text" Color="Color.Primary">@test.Email</MudButton>
         </MudCardActions>
     </MudCard>
-    
+
 }
 else
 {
@@ -29,7 +29,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        test = await httpClient.ProfileAsync(4);
+        test = await httpClient.ProfileGETAsync(4);
     }
 
 }
