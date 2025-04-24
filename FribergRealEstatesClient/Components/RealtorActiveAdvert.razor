@@ -1,0 +1,83 @@
+﻿@* Created by Robert*@
+<h3>RealtorActiveAdvert</h3>
+
+<MudHidden Breakpoint="Breakpoint.SmAndDown">
+    <!-- Layout för större skärmar (bild vänster) -->
+    <MudCard Style="height: 200px; display: flex; flex-direction: row; overflow: hidden; border: 1px solid gray;">
+        <MudCardMedia Image="@ImageUrl" Style="width: 200px; height: 100%; object-fit: cover;" />
+
+        <div style="flex: 1; display: flex; flex-direction: column; padding: 16px; height: 100%;">
+            <div>
+                <MudText Typo="Typo.h6">@Title</MudText>
+            </div>
+            <div>
+                <MudText Typo="Typo.body1"><b>@CurrentPrice</b></MudText>
+                <MudText Typo="Typo.body1"><b>@Area @if(biarea > 0){ <span>+ @BiArea</span>}</b></MudText>
+                <MudText Typo="Typo.body1"><b>@Room</b></MudText>
+                <MudText Typo="Typo.body1"><b>@if(Floors > 1)</b></MudText>
+            </div>
+            <div style="flex: 1; display: flex; align-items: center;">
+                <MudText Typo="Typo.body2" Class="description-truncate">
+                    @Description
+                </MudText>
+            </div>
+            <div>
+                <MudCardActions>
+                    @ChildContent
+                </MudCardActions>
+            </div>
+        </div>
+    </MudCard>
+</MudHidden>
+
+<MudHidden Breakpoint="Breakpoint.MdAndUp">
+    <!-- Layout för små skärmar (bild ovanför) -->
+    <MudCard Style="overflow: hidden; border: 1px solid gray;">
+        <MudCardMedia Image="@ImageUrl"
+                      Style="object-fit: cover; Height:200px;" />
+
+        <MudCardContent>
+            <MudText Typo="Typo.h6">@Title</MudText>
+            <MudText Typo="Typo.body1"><b>@CurrentPrice</b></MudText>
+            <MudText Typo="Typo.body2" Class="description-truncate">
+                @Description
+            </MudText>
+        </MudCardContent>
+
+        <MudCardActions>
+            @ChildContent
+        </MudCardActions>
+    </MudCard>
+</MudHidden>
+
+<style>
+    .description-truncate {
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        text-overflow: ellipsis;
+    }
+</style>
+
+@code {
+    [Parameter] public string ImageUrl { get; set; }
+    [Parameter] public string Title { get; set; }
+    [Parameter] public string CurrentPrice { get; set; }
+    [Parameter] public string Area { get; set; }
+    [Parameter] public string BiArea { get; set; }
+    [Parameter] public string Room { get; set; }
+    [Parameter] public string Floor { get; set; }
+    [Parameter] public string FloorRow { get; set; }
+    [Parameter] public string MonthlyFee { get; set; }
+    [Parameter] public string OperatingCost { get; set; }
+
+    [Parameter] public string Description { get; set; }
+    @* need to add facilities *@
+
+
+    [Parameter] public string Agency { get; set; }
+
+    
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}
