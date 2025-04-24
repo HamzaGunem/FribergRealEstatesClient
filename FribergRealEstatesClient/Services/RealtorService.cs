@@ -18,5 +18,11 @@ namespace FribergRealEstatesClient.Services
 
             return realtor;
         }
+
+        public async Task<List<RealtorAdvertsDto>> GetSoldByRealtorAsync(int id)
+        {
+            var getSoldAdverts = await _client.SoldAsync(id);
+            return getSoldAdverts.ToList();
+        }
     }
 }
