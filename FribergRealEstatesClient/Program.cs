@@ -35,7 +35,7 @@ namespace FribergRealEstatesClient
 
             // Client Services
             builder.Services.AddTransient<IRealtorService, RealtorService>(); // Samuel
-            builder.Services.AddTransient<IAgencyService, AgencyService>(); // Samuel
+            builder.Services.AddTransient<IAgencyService, AgencyService>(); // Samuel upd
 
             await builder.Build().RunAsync();
         }

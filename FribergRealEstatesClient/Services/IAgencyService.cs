@@ -2,7 +2,7 @@
 
 namespace FribergRealEstatesClient.Services
 {
-    // created by Samuel
+    // created by Samuel upd
     public interface IAgencyService
     {
         Task<AgencyWithSimpleRealtorsDto> GetAgencyProfile(int id);
