@@ -9,30 +9,33 @@
 }
 else if(profileDto != null)
 {
-	<MudCard Style="display: flex; flex-direction: row; height: 200px; max-width: 600px">
-		<div style="flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
-			@if (!string.IsNullOrEmpty(profileDto.PictureUrl))
-			{
-				<MudCardMedia Image="@profileDto.PictureUrl" Style="object-fit: cover; width: 150px;" />
-			}
-			else
-			{
-				<MudCardMedia Src="https://www.ohio.edu/voinovich-school/sites/ohio.edu.voinovich-school/files/styles/max_650x650/public/default_images/portrait-missing.png?itok=ZIakRUEV" Style="object-fit: cover; width: 150px;" />
-			}
-		</div>
+	<div style="height: 200px;">
+		<MudCard Style="display: flex; flex-direction: row;">
+			<div>
+				@if (!string.IsNullOrEmpty(profileDto.PictureUrl))
+				{
+					<MudCardMedia Image="@profileDto.PictureUrl" Style="object-fit: cover; width: 150px;" />
+				}
+				else
+				{
+					<MudCardMedia Src="https://www.ohio.edu/voinovich-school/sites/ohio.edu.voinovich-school/files/styles/max_650x650/public/default_images/portrait-missing.png?itok=ZIakRUEV" Style="object-fit: cover; width: 150px;" />
+				}
+			</div>
 
 
-		<div style="flex: 2; display: flex; flex-direction: column; justify-content: space-between;">
-			<MudCardContent>
-				<MudText Typo="Typo.h5">@profileDto.FirstName @profileDto.LastName</MudText>
-				<MudText Typo="Typo.body2">@profileDto.PhoneNumber</MudText>
-			</MudCardContent>
-			<MudCardActions>
-				@*<MudButton Variant="Variant.Text" Color="Color.Primary">@profileDto.Email</MudButton>*@
-				<MudLink Href="mailto:profileDto.Email" Target="_blank">@profileDto.Email</MudLink>
-			</MudCardActions>
-		</div>
-	</MudCard>
+			<div>
+				<MudCardContent>
+					<MudText Typo="Typo.h5">@profileDto.FirstName @profileDto.LastName</MudText>
+					<MudText Typo="Typo.body2">@profileDto.PhoneNumber</MudText>
+				</MudCardContent>
+				<MudCardActions>
+					@*<MudButton Variant="Variant.Text" Color="Color.Primary">@profileDto.Email</MudButton>*@
+					<MudLink Href="mailto:profileDto.Email" Target="_blank">@profileDto.Email</MudLink>
+				</MudCardActions>
+			</div>
+		</MudCard>
+	
+	</div>
 }
 else
 {
