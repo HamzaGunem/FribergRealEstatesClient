@@ -14,21 +14,21 @@ else if(profileDto != null)
 		<div>
 			@if (!string.IsNullOrEmpty(profileDto.PictureUrl))
 			{
-				<MudCardMedia Image="@profileDto.PictureUrl" Style="object-fit: cover; width: 150px;" />
+					<MudCardMedia Image="@profileDto.PictureUrl" Style="object-fit: cover; width: 150px; max-height: 200px;" />
 			}
 			else
 			{
-				<MudCardMedia Src="https://www.ohio.edu/voinovich-school/sites/ohio.edu.voinovich-school/files/styles/max_650x650/public/default_images/portrait-missing.png?itok=ZIakRUEV" Style="object-fit: cover; width: 150px;" />
+					<MudCardMedia Src="https://www.ohio.edu/voinovich-school/sites/ohio.edu.voinovich-school/files/styles/max_650x650/public/default_images/portrait-missing.png?itok=ZIakRUEV" Style="object-fit: cover; width: 150px;  max-height: 200px;" />
 			}
 		</div>
 
 		<div>
 			<MudCardContent>
-				<MudText Typo="Typo.h5">@profileDto.FirstName @profileDto.LastName</MudText>
-				<MudText Typo="Typo.body2">@profileDto.PhoneNumber</MudText>
+					<MudText Typo="Typo.h5"><strong>@profileDto.FirstName @profileDto.LastName</strong></MudText>
+					<MudText Typo="Typo.body2"><strong>Telefon:</strong> @profileDto.PhoneNumber</MudText>
 			</MudCardContent>
 			<MudCardActions>
-				<MudLink Href="mailto:profileDto.Email" Target="_blank">@profileDto.Email</MudLink>
+					<MudLink Href="mailto:profileDto.Email" Target="_blank">@profileDto.Email</MudLink>
 			</MudCardActions>
 		</div>
 	</MudCard>

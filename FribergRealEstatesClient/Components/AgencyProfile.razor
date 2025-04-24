@@ -9,31 +9,35 @@
 }
 else if (profileDto != null)
 {
-	<MudCard Style="display: flex; flex-direction: row; height: 200px; max-width: 600px">
-		<div style="flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
-			@if (!string.IsNullOrEmpty(profileDto.PictureUrl))
-			{
-				<MudCardMedia Image="@profileDto.PictureUrl" Style="object-fit: cover; width: 250px;" />
-			}
-			else
-			{
-				<MudCardMedia Image="https://upload.wikimedia.org/wikipedia/commons/1/12/Property_Guardians_logo.png" Style="object-fit: cover; width: 150px;" />
-			}
-		</div>
+	<div style="height: 200px;">
+		<MudCard Style="display: flex; flex-direction: row; height: 100%;">
+			<div>
+				@if (!string.IsNullOrEmpty(profileDto.PictureUrl))
+				{
+					<MudCardMedia Image="@profileDto.PictureUrl" Style="object-fit: cover; width: 150px; height: 100%;" />
+				}
+				else
+				{
+					<MudCardMedia Image="https://upload.wikimedia.org/wikipedia/commons/1/12/Property_Guardians_logo.png" Style="object-fit: cover; width: 150px;  height: 100%;" />
+				}
+			</div>
 
-		<div style="flex: 2; display: flex; flex-direction: column; justify-content: space-between;">
-			<MudCardContent>
-				<MudText Typo="Typo.h5">@profileDto.Name</MudText>
-				<MudText Typo="Typo.body2"><strong>Address:</strong> 
-					@profileDto.Address.Street 
-					@profileDto.Address.PostalCode 
-					@profileDto.Address.City
-				</MudText>
-				<MudText Typo="Typo.body2"><strong>Om oss:</strong></MudText>
-				<MudText Typo="Typo.body2">@profileDto.Description</MudText>
-			</MudCardContent>
-		</div>
-	</MudCard>
+			<div>
+				<MudCardContent>
+					<MudText Typo="Typo.h5">@profileDto.Name</MudText>
+					<MudText Typo="Typo.body2">
+						<strong>Address:</strong>
+						@profileDto.Address.Street,
+						@profileDto.Address.PostalCode,
+						@profileDto.Address.City
+					</MudText>
+					<MudText Typo="Typo.body2"><strong>Om oss:</strong></MudText>
+					<MudText Typo="Typo.body2">@profileDto.Description</MudText>
+				</MudCardContent>
+			</div>
+		</MudCard>
+	</div>
+	
 }
 else
 {

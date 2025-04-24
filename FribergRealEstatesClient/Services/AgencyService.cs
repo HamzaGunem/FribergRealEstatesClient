@@ -2,7 +2,7 @@
 
 namespace FribergRealEstatesClient.Services
 {
-    // created by Samuel upd
+    // created by Samuel
     public class AgencyService : BaseHttpService, IAgencyService
     {
         private readonly IClient _client;
