@@ -2,7 +2,7 @@
 
 <!-- Layout för större skärmar -->
 <MudHidden Breakpoint="Breakpoint.SmAndDown">
-    
+
     <MudCard Style="height: 250px; display: flex; flex-direction: row; overflow: hidden; border: 1px solid gray;">
         <MudCardMedia Image="@ImageUrl.FirstOrDefault()" Style="width: 200px; height: 100%; object-fit: cover;" />
 
@@ -12,23 +12,23 @@
             </div>
             <div class="row">
                 <div style="display: flex; flex-direction: row; justify-content: space-between; height: 100%; width: 80%">
-                <MudText Typo="Typo.body1"><b>@CurrentPrice kr</b></MudText>
-                <MudText Typo="Typo.body1"><b>@Area m²@if (BiArea > 0){   <span>+ @BiArea m²</span>
-                        }
-                    </b>
-                </MudText>
-                <MudText Typo="Typo.body1"><b>@Room rum</b></MudText>
-                <MudText Typo="Typo.body1"><b>@if(Floor != null && Floor >= 1)
-                        {
-                            <span>vån @Floor/@FloorRow</span>
-                        }</b></MudText>
-                
+                    <MudText Typo="Typo.body1"><b>@CurrentPrice kr</b></MudText>
+                    <MudText Typo="Typo.body1"><b>@Area m²@if (BiArea > 0){   <span>+ @BiArea m²</span>
+                            }
+                        </b>
+                    </MudText>
+                    <MudText Typo="Typo.body1"><b>@Room rum</b></MudText>
+                    <MudText Typo="Typo.body1"><b>@if(Floor != null && Floor >= 1)
+                            {
+                                <span>vån @Floor/@FloorRow</span>
+                            }</b></MudText>
+
                 </div>
             </div>
             <div>
-                <div style="display: flex; flex-direction: row; justify-content: space-between; height: 100%; width: 50%">
-                <MudText Typo="Typo.body2">@MonthlyFee kr/mån</MudText>
-                <MudText Typo="Typo.body2">@OperatingCost kr/m²</MudText>
+                <div style="display: flex; flex-direction: row; justify-content: space-between; height: 100%; width: 40%">
+                    <MudText Typo="Typo.body2">@MonthlyFee kr/mån</MudText>
+                    <MudText Typo="Typo.body2">@OperatingCost kr/m²</MudText>
                 </div>
             </div>
 
@@ -38,6 +38,14 @@
                 </MudText>
             </div>
             <div>
+                @if(Facilities != null && Facilities.Length > 0)
+                {
+                    foreach (var item in Facilities)
+                    {
+                        <MudChip T="string" Variant="Variant.Outlined">@item</MudChip>
+                    }
+                }
+                
                 <MudCardActions>
                     @ChildContent
                 </MudCardActions>
@@ -88,7 +96,7 @@
     [Parameter] public int FloorRow { get; set; }
     [Parameter] public string MonthlyFee { get; set; }
     [Parameter] public string OperatingCost { get; set; }
-    [Parameter] public int[] Facilities { get; set; }
+    [Parameter] public string[] Facilities { get; set; }
 
     [Parameter] public string Description { get; set; }
 
