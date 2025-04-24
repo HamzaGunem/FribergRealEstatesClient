@@ -1,0 +1,66 @@
+﻿@inject IAgencyService agencyService
+
+@*made by Samuel upd*@
+@if (isError)
+{
+	<MudAlert Severity="Severity.Error">
+		Kunde inte ladda profilinformation. Vänligen försök igen.
+	</MudAlert>
+}
+else if (profileDto != null)
+{
+	<MudCard Style="display: flex; flex-direction: row; height: 200px; max-width: 600px">
+		<div style="flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
+			@if (!string.IsNullOrEmpty(profileDto.PictureUrl))
+			{
+				<MudCardMedia Image="@profileDto.PictureUrl" Style="object-fit: cover; width: 250px;" />
+			}
+			else
+			{
+				<MudCardMedia Image="https://upload.wikimedia.org/wikipedia/commons/1/12/Property_Guardians_logo.png" Style="object-fit: cover; width: 150px;" />
+			}
+		</div>
+
+		<div style="flex: 2; display: flex; flex-direction: column; justify-content: space-between;">
+			<MudCardContent>
+				<MudText Typo="Typo.h5">@profileDto.Name</MudText>
+				<MudText Typo="Typo.body2"><strong>Address:</strong> 
+					@profileDto.Address.Street 
+					@profileDto.Address.PostalCode 
+					@profileDto.Address.City
+				</MudText>
+				<MudText Typo="Typo.body2"><strong>Om oss:</strong></MudText>
+				<MudText Typo="Typo.body2">@profileDto.Description</MudText>
+			</MudCardContent>
+		</div>
+	</MudCard>
+}
+else
+{
+	<p>Loading...</p>
+}
+
+
+@code {
+	[Parameter]
+	public int Id { get; set; }
+
+	private AgencyWithSimpleRealtorsDto profileDto;
+
+	private bool isError = false;
+
+	protected override async Task OnParametersSetAsync()
+	{
+		isError = false;
+
+		try
+		{
+			profileDto = await agencyService.GetAgencyProfile(Id);
+		}
+		catch (Exception ex)
+		{
+			isError = true;
+			Console.Error.WriteLine($"Fel vid hämtning av byrå profil med Id: {Id}: {ex.Message}");
+		}
+	}
+}
