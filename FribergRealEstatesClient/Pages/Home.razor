@@ -37,21 +37,40 @@
     </FribergRealEstatesClient.Components.RealtorActiveAdvert>
 
 }
+@if (result != null)
+{
+    foreach (var advert in result)
+    {
+        <MudCard Class="pa-4" Style="@($"color:{Theme.PaletteLight.SuccessLighten}; background:{Theme.PaletteLight.Dark};")">
+            <MudCardContent>
+                <MudText>@advert.CurrentPrice</MudText>
+                <MudText Typo="Typo.body2">@advert.Residence.Area</MudText>
+                <MudText Typo="Typo.body2">@advert.Residence.OperatingCost</MudText>
+            </MudCardContent>
+        </MudCard>
+    }
+
+}
 else
 {
     <p>Laddar profil...</p>
 }
 
-@code{
+@code {
 
     private MudTheme Theme = new MudTheme();
-    AdvertDto advert;
 
     RealtorProfileDto test;
+    ICollection<AdvertDto> result;
+    AdvertFilterDto advertFilter = new AdvertFilterDto
+        {
+            ResidenceTypes = new List<ResidenceType> { ResidenceType.Apartment, ResidenceType.House }
+        };
 
     protected override async Task OnInitializedAsync()
     {
         test = await httpClient.ProfileGETAsync(4);
+        result = await httpClient.FilterAsync(advertFilter);
     }
 
 }
