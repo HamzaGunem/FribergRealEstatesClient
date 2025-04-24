@@ -65,12 +65,12 @@ namespace FribergRealEstatesClient.Services.Base
 
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<AdvertDto>> FilterAsync(System.Collections.Generic.IEnumerable<int> residenceTypes, int? minRooms, int? maxRooms, double? minPrice, double? maxPrice, double? minArea, double? maxArea, string address);
+        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<AdvertDto>> FilterAsync(AdvertFilterDto body);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<AdvertDto>> FilterAsync(System.Collections.Generic.IEnumerable<int> residenceTypes, int? minRooms, int? maxRooms, double? minPrice, double? maxPrice, double? minArea, double? maxArea, string address, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<AdvertDto>> FilterAsync(AdvertFilterDto body, System.Threading.CancellationToken cancellationToken);
 
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
@@ -110,12 +110,12 @@ namespace FribergRealEstatesClient.Services.Base
 
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<RealtorDto>> ByCommunAsync(string communName);
+        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<RealtorDto>> ByCommun2Async(string communName);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<RealtorDto>> ByCommunAsync(string communName, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<RealtorDto>> ByCommun2Async(string communName, System.Threading.CancellationToken cancellationToken);
 
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
@@ -564,63 +564,36 @@ namespace FribergRealEstatesClient.Services.Base
 
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<AdvertDto>> FilterAsync(System.Collections.Generic.IEnumerable<int> residenceTypes, int? minRooms, int? maxRooms, double? minPrice, double? maxPrice, double? minArea, double? maxArea, string address)
+        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<AdvertDto>> FilterAsync(AdvertFilterDto body)
         {
-            return FilterAsync(residenceTypes, minRooms, maxRooms, minPrice, maxPrice, minArea, maxArea, address, System.Threading.CancellationToken.None);
+            return FilterAsync(body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<AdvertDto>> FilterAsync(System.Collections.Generic.IEnumerable<int> residenceTypes, int? minRooms, int? maxRooms, double? minPrice, double? maxPrice, double? minArea, double? maxArea, string address, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<AdvertDto>> FilterAsync(AdvertFilterDto body, System.Threading.CancellationToken cancellationToken)
         {
+            if (body == null)
+                throw new System.ArgumentNullException("body");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(body, JsonSerializerSettings);
+                    var content_ = new System.Net.Http.StringContent(json_);
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("text/plain"));
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                 
                     // Operation Path: "api/Advert/filter"
                     urlBuilder_.Append("api/Advert/filter");
-                    urlBuilder_.Append('?');
-                    if (residenceTypes != null)
-                    {
-                        foreach (var item_ in residenceTypes) { urlBuilder_.Append(System.Uri.EscapeDataString("ResidenceTypes")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(item_, System.Globalization.CultureInfo.InvariantCulture))).Append('&'); }
-                    }
-                    if (minRooms != null)
-                    {
-                        urlBuilder_.Append(System.Uri.EscapeDataString("MinRooms")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(minRooms, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
-                    }
-                    if (maxRooms != null)
-                    {
-                        urlBuilder_.Append(System.Uri.EscapeDataString("MaxRooms")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(maxRooms, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
-                    }
-                    if (minPrice != null)
-                    {
-                        urlBuilder_.Append(System.Uri.EscapeDataString("MinPrice")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(minPrice, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
-                    }
-                    if (maxPrice != null)
-                    {
-                        urlBuilder_.Append(System.Uri.EscapeDataString("MaxPrice")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(maxPrice, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
-                    }
-                    if (minArea != null)
-                    {
-                        urlBuilder_.Append(System.Uri.EscapeDataString("MinArea")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(minArea, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
-                    }
-                    if (maxArea != null)
-                    {
-                        urlBuilder_.Append(System.Uri.EscapeDataString("MaxArea")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(maxArea, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
-                    }
-                    if (address != null)
-                    {
-                        urlBuilder_.Append(System.Uri.EscapeDataString("Address")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(address, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
-                    }
-                    urlBuilder_.Length--;
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -783,9 +756,10 @@ namespace FribergRealEstatesClient.Services.Base
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                 
-                    // Operation Path: "api/Agency/by-commun/{communName}"
-                    urlBuilder_.Append("api/Agency/by-commun/");
+                    // Operation Path: "api/Agency/{communName}/agencies/byCommun"
+                    urlBuilder_.Append("api/Agency/");
                     urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(communName, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/agencies/byCommun");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -1007,15 +981,15 @@ namespace FribergRealEstatesClient.Services.Base
 
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<RealtorDto>> ByCommunAsync(string communName)
+        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<RealtorDto>> ByCommun2Async(string communName)
         {
-            return ByCommunAsync(communName, System.Threading.CancellationToken.None);
+            return ByCommun2Async(communName, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<RealtorDto>> ByCommunAsync(string communName, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<RealtorDto>> ByCommun2Async(string communName, System.Threading.CancellationToken cancellationToken)
         {
             if (communName == null)
                 throw new System.ArgumentNullException("communName");
@@ -1031,10 +1005,10 @@ namespace FribergRealEstatesClient.Services.Base
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                 
-                    // Operation Path: "api/Realtor/{communName}/byCommun"
+                    // Operation Path: "api/Realtor/{communName}/realtors/byCommun"
                     urlBuilder_.Append("api/Realtor/");
                     urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(communName, System.Globalization.CultureInfo.InvariantCulture)));
-                    urlBuilder_.Append("/byCommun");
+                    urlBuilder_.Append("/realtors/byCommun");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -2052,6 +2026,44 @@ namespace FribergRealEstatesClient.Services.Base
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.3.0.0 (NJsonSchema v11.2.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class AdvertFilterDto
+    {
+        [Newtonsoft.Json.JsonProperty("residenceTypes", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<ResidenceType> ResidenceTypes { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("minRooms", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? MinRooms { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("maxRooms", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? MaxRooms { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("minPrice", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? MinPrice { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("maxPrice", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? MaxPrice { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("minArea", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? MinArea { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("maxArea", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? MaxArea { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("address", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Address { get; set; }
+
+        private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
+
+        [Newtonsoft.Json.JsonExtensionData]
+        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
+        {
+            get { return _additionalProperties ?? (_additionalProperties = new System.Collections.Generic.Dictionary<string, object>()); }
+            set { _additionalProperties = value; }
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.3.0.0 (NJsonSchema v11.2.0.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class AdvertSummaryDto
     {
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -2110,7 +2122,7 @@ namespace FribergRealEstatesClient.Services.Base
     public partial class CreateResidenceDto
     {
         [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int Type { get; set; }
+        public ResidenceType Type { get; set; }
 
         [Newtonsoft.Json.JsonProperty("street", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Street { get; set; }
@@ -2351,7 +2363,7 @@ namespace FribergRealEstatesClient.Services.Base
         public System.Collections.Generic.ICollection<int> Facilities { get; set; }
 
         [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int Type { get; set; }
+        public ResidenceType Type { get; set; }
 
         [Newtonsoft.Json.JsonProperty("parkingSlotNumber", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? ParkingSlotNumber { get; set; }
@@ -2398,7 +2410,7 @@ namespace FribergRealEstatesClient.Services.Base
         public System.Collections.Generic.ICollection<string> ImageUrls { get; set; }
 
         [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int Type { get; set; }
+        public ResidenceType Type { get; set; }
 
         [Newtonsoft.Json.JsonProperty("facilities", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<int> Facilities { get; set; }
@@ -2411,6 +2423,24 @@ namespace FribergRealEstatesClient.Services.Base
             get { return _additionalProperties ?? (_additionalProperties = new System.Collections.Generic.Dictionary<string, object>()); }
             set { _additionalProperties = value; }
         }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.3.0.0 (NJsonSchema v11.2.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public enum ResidenceType
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Apartment")]
+        Apartment = 0,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"House")]
+        House = 1,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"RowHouse")]
+        RowHouse = 2,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"VacationHouse")]
+        VacationHouse = 3,
 
     }
 
