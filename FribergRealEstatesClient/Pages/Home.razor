@@ -18,36 +18,30 @@
     <RealtorProfile Id="1"></RealtorProfile>
     <AgencyProfile Id="3"></AgencyProfile>
 
-    <RealtorActiveAdvert
-    Title="Fridensborsvägen 62"
-    ImageUrl="@(new string[] {"https://bilder.hemnet.se/images/itemgallery_cut/9d/ba/9dbaf746d1028e6b09d55eac9cd86801.jpg"})"
-    CurrentPrice="@test.FirstName"
-    Area="84"
-    BiArea="25"
-    Room="3"
-    Floor="1"
-    FloorRow="3"
-    MonthlyFee="4 126"
-    OperatingCost="43 017"
-    Description="Välkommen till denna fantastiskt välplanerade tvåa i populära Järvastaden! Här får du en ljus och rymlig lägenhet med genomtänkta detaljer och modern standard, perfekt för både singelhushåll eller paret. Bostaden bjuder på ett öppet kök med stilrena vitvaror, ett vardagsrum med generösa fönster som släpper in rikligt med dagsljus, och ett rofyllt sovrum med gott om förvaring. Den mysiga balkongen ger ett extra rum för avkoppling och härliga sommarkvällar."
-    Facilities="@(new string[] {"Balkong", "Parkering"})">
-        <MudButton Variant="Variant.Text" Color="Color.Primary">Share</MudButton>
-        <MudButton Variant="Variant.Text" Color="Color.Primary">Learn More</MudButton>
 
-    </RealtorActiveAdvert>
 
 }
 @if (result != null)
 {
+
     foreach (var advert in result)
     {
-        <MudCard Class="pa-4" Style="@($"color:{Theme.PaletteLight.SuccessLighten}; background:{Theme.PaletteLight.Dark};")">
-            <MudCardContent>
-                <MudText>@advert.CurrentPrice</MudText>
-                <MudText Typo="Typo.body2">@advert.Residence.Area</MudText>
-                <MudText Typo="Typo.body2">@advert.Residence.OperatingCost</MudText>
-            </MudCardContent>
-        </MudCard>
+        <RealtorActiveAdvert
+        Title="@advert.Residence.Address.Street"
+        ImageUrl="@advert.Residence.ImageUrls.FirstOrDefault()"
+        CurrentPrice="@advert.CurrentPrice.ToString()"
+        Area="@advert.Residence.Area"
+                             BiArea="@advert.Residence.BiArea"
+                             Room="@advert.Residence.Rooms"
+                             Floor="2"
+                             FloorRow="@advert.Residence.FloorRows"
+        MonthlyFee="@advert.Residence.MonthlyFee.ToString()"
+        OperatingCost="@advert.Residence.OperatingCost.ToString()"
+        Description="@advert.Residence."
+        Facilities="@(new string[] {"Balkong", "Parkering"})">
+            <MudButton Variant="Variant.Text" Color="Color.Primary">Share</MudButton>
+            <MudButton Variant="Variant.Text" Color="Color.Primary">Learn More</MudButton>
+        </RealtorActiveAdvert>
     }
 
 }
@@ -57,7 +51,7 @@ else
 }
 
 @code {
-
+    private string img = "";
     private MudTheme Theme = new MudTheme();
 
     RealtorProfileDto test;
