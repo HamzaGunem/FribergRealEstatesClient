@@ -20,21 +20,53 @@
     <br />
     <RealtorSoldAdverts Id="6"></RealtorSoldAdverts>
 
+
+
+}
+@if (result != null)
+{
+
+    foreach (var advert in result)
+    {
+        <RealtorActiveAdvert
+        Title="@advert.Residence.Address.Street"
+        ImageUrl="@advert.Residence.ImageUrls.FirstOrDefault()"
+        CurrentPrice="@advert.CurrentPrice.ToString()"
+        Area="@advert.Residence.Area"
+                             BiArea="@advert.Residence.BiArea"
+                             Room="@advert.Residence.Rooms"
+                             Floor="@advert.Residence.Floors"
+                             FloorRow="@advert.Residence.FloorRows"
+        MonthlyFee="@advert.Residence.MonthlyFee.ToString()"
+        OperatingCost="@advert.Residence.OperatingCost.ToString()"
+        Description="@advert.Residence.Description"
+        Facilities="@advert.Residence.Facilities.ToArray()">
+            <MudButton Variant="Variant.Text" Color="Color.Primary">Share</MudButton>
+            <MudButton Variant="Variant.Text" Color="Color.Primary">Learn More</MudButton>
+        </RealtorActiveAdvert>
+    }
+
 }
 else
 {
     <p>Laddar profil...</p>
 }
 
-@code{
-
+@code {
+    private string img = "";
     private MudTheme Theme = new MudTheme();
 
     RealtorProfileDto test;
+    ICollection<AdvertDto> result;
+    AdvertFilterDto advertFilter = new AdvertFilterDto
+        {
+            ResidenceTypes = new List<ResidenceType> { ResidenceType.House }
+        };
 
     protected override async Task OnInitializedAsync()
     {
         test = await httpClient.ProfileGETAsync(4);
+        result = await httpClient.FilterAsync(advertFilter);
     }
 
 }

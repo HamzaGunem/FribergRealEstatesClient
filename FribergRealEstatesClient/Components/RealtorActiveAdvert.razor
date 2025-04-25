@@ -1,0 +1,110 @@
+﻿@* Created by Robert*@
+
+<!-- Layout för större skärmar -->
+<MudHidden Breakpoint="Breakpoint.SmAndDown">
+
+    <MudCard Style="height: 250px; display: flex; flex-direction: row; overflow: hidden; border: 1px solid gray;">
+        <MudCardMedia Image="@ImageUrl" Style="width: 200px; height: 100%; object-fit: cover;" />
+
+        <div style="flex: 1; display: flex; flex-direction: column; padding: 16px; height: 100%;">
+            <div>
+                <MudText Typo="Typo.h6">@Title</MudText>
+            </div>
+            <div>
+
+            </div>
+            <div class="row">
+                <div style="display: flex; flex-direction: row; justify-content: space-between; height: 100%; width: 80%">
+                    <MudText Typo="Typo.body1"><b>@CurrentPrice kr</b></MudText>
+                    <MudText Typo="Typo.body1"><b>@Area m²@if (BiArea != null && BiArea > 0){   <span>+ @BiArea m²</span>
+                            }
+                        </b>
+                    </MudText>
+                    <MudText Typo="Typo.body1"><b>@Room rum</b></MudText>
+                    <MudText Typo="Typo.body1"><b>@if(Floor != null && Floor >= 1)
+                            {
+                                <span>vån @Floor/@FloorRow</span>
+                            }</b></MudText>
+
+                </div>
+            </div>
+            <div>
+                <div style="display: flex; flex-direction: row; justify-content: space-between; height: 100%; width: 40%">
+                    <MudText Typo="Typo.body2">@MonthlyFee kr/mån</MudText>
+                    <MudText Typo="Typo.body2">@OperatingCost kr/m²</MudText>
+                </div>
+            </div>
+
+            <div style="flex: 1; display: flex; align-items: center;">
+                <MudText Typo="Typo.body2" Class="description-truncate">
+                    @Description
+                </MudText>
+            </div>
+            <div>
+                @if(Facilities != null && Facilities.Length > 0)
+                {
+                    foreach (var item in Facilities)
+                    {
+                        <MudChip T="string" Variant="Variant.Outlined">@item</MudChip>
+                    }
+                }
+                
+                <MudCardActions>
+                    @ChildContent
+                </MudCardActions>
+            </div>
+        </div>
+    </MudCard>
+</MudHidden>
+
+<!-- Layout för små skärmar -->
+<MudHidden Breakpoint="Breakpoint.MdAndUp">
+    
+    <MudCard Style="overflow: hidden; border: 1px solid gray;">
+        <MudCardMedia Image="@ImageUrl"
+                      Style="object-fit: cover; Height:250px;" />
+
+        <MudCardContent>
+            <MudText Typo="Typo.h6">@Title</MudText>
+            <MudText Typo="Typo.body1"><b>@CurrentPrice</b></MudText>
+            <MudText Typo="Typo.body2" Class="description-truncate">
+                @Description
+            </MudText>
+        </MudCardContent>
+
+        <MudCardActions>
+            @ChildContent
+        </MudCardActions>
+    </MudCard>
+</MudHidden>
+
+<style>
+    .description-truncate {
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        text-overflow: ellipsis;
+    }
+</style>
+
+@code {
+    [Parameter] public string ImageUrl { get; set; }
+    [Parameter] public string Title { get; set; }
+    [Parameter] public string CurrentPrice { get; set; }
+    [Parameter] public int Area { get; set; }
+    [Parameter] public int? BiArea { get; set; }
+    [Parameter] public int Room { get; set; }
+    [Parameter] public int? Floor { get; set; }
+    [Parameter] public int FloorRow { get; set; }
+    [Parameter] public string MonthlyFee { get; set; }
+    [Parameter] public string OperatingCost { get; set; }
+    [Parameter] public string[] Facilities { get; set; }
+
+    [Parameter] public string Description { get; set; }
+
+    [Parameter] public string Agency { get; set; }
+
+
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}
