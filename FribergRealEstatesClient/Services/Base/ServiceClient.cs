@@ -2221,7 +2221,7 @@ namespace FribergRealEstatesClient.Services.Base
         [Newtonsoft.Json.JsonProperty("imageUrl", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string ImageUrl { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("agencyName", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("agencyName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string AgencyName { get; set; }
 
         private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
@@ -2331,7 +2331,7 @@ namespace FribergRealEstatesClient.Services.Base
         public ResidenceType Type { get; set; }
 
         [Newtonsoft.Json.JsonProperty("facilities", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.ICollection<int> Facilities { get; set; }
+        public System.Collections.Generic.ICollection<string> Facilities { get; set; }
 
         [Newtonsoft.Json.JsonProperty("address", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AddressSummaryDto Address { get; set; }
