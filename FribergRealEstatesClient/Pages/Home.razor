@@ -28,6 +28,8 @@
     {
         <RealtorActiveAdvert
         Title="@advert.Residence.Address.Street"
+        City="@advert.Residence.Address.City"
+        Commune="@advert.Residence.Address.CommunName"
         ImageUrl="@advert.Residence.ImageUrls.FirstOrDefault()"
         CurrentPrice="@advert.CurrentPrice.ToString()"
         Area="@advert.Residence.Area"
@@ -38,9 +40,10 @@
         MonthlyFee="@advert.Residence.MonthlyFee.ToString()"
         OperatingCost="@advert.Residence.OperatingCost.ToString()"
         Description="@advert.Residence.Description"
-        Facilities="@advert.Residence.Facilities.ToArray()">
-            <MudButton Variant="Variant.Text" Color="Color.Primary">Share</MudButton>
-            <MudButton Variant="Variant.Text" Color="Color.Primary">Learn More</MudButton>
+        Facilities="@advert.Residence.Facilities.ToArray()"
+        AgencyName="Svenska Märklarhuset Sollentuna">
+            @* <MudButton Variant="Variant.Text" Color="Color.Primary">Share</MudButton>
+            <MudButton Variant="Variant.Text" Color="Color.Primary">Learn More</MudButton> *@
         </RealtorActiveAdvert>
     }
 

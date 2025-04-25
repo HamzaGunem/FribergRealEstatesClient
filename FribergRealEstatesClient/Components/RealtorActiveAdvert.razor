@@ -3,7 +3,7 @@
 <!-- Layout för större skärmar -->
 <MudHidden Breakpoint="Breakpoint.SmAndDown">
 
-    <MudCard Style="height: 250px; display: flex; flex-direction: row; overflow: hidden; border: 1px solid gray;">
+    <MudCard Style="height: 300px; display: flex; flex-direction: row; overflow: hidden; border: 1px solid gray;">
         <MudCardMedia Image="@ImageUrl" Style="width: 200px; height: 100%; object-fit: cover;" />
 
         <div style="flex: 1; display: flex; flex-direction: column; padding: 16px; height: 100%;">
@@ -11,58 +11,72 @@
                 <MudText Typo="Typo.h6">@Title</MudText>
             </div>
             <div>
-
+                
+                <MudText Typo="Typo.body2" Style="color: gray"><MudIcon Icon="fas fa-home" Color="Color.Primary" />
+                    &nbsp @City, @Commune kommun
+                </MudText>
             </div>
             <div class="row">
                 <div style="display: flex; flex-direction: row; justify-content: space-between; height: 100%; width: 80%">
                     <MudText Typo="Typo.body1"><b>@CurrentPrice kr</b></MudText>
-                    <MudText Typo="Typo.body1"><b>@Area m²@if (BiArea != null && BiArea > 0){   <span>+ @BiArea m²</span>
+                    <MudText Typo="Typo.body1">
+                        <b>
+                            @Area m²@if (BiArea != null && BiArea > 0)
+                            {
+                                   <span>+ @BiArea m²</span>
                             }
                         </b>
                     </MudText>
                     <MudText Typo="Typo.body1"><b>@Room rum</b></MudText>
-                    <MudText Typo="Typo.body1"><b>@if(Floor != null && Floor >= 1)
+                    <MudText Typo="Typo.body1">
+                        <b>
+                            @if (Floor != null && Floor >= 1)
                             {
                                 <span>vån @Floor/@FloorRow</span>
-                            }</b></MudText>
+                            }
+                        </b>
+                    </MudText>
 
                 </div>
             </div>
             <div>
                 <div style="display: flex; flex-direction: row; justify-content: space-between; height: 100%; width: 40%">
-                    <MudText Typo="Typo.body2">@MonthlyFee kr/mån</MudText>
-                    <MudText Typo="Typo.body2">@OperatingCost kr/m²</MudText>
+                    <MudText Typo="Typo.body2" Style="color: gray">@MonthlyFee kr/mån</MudText>
+                    <MudText Typo="Typo.body2" Style="color: gray">@OperatingCost kr/m²</MudText>
                 </div>
             </div>
 
             <div style="flex: 1; display: flex; align-items: center;">
-                <MudText Typo="Typo.body2" Class="description-truncate">
+                <MudText Typo="Typo.subtitle2" Class="description-truncate">
                     @Description
                 </MudText>
             </div>
             <div>
-                @if(Facilities != null && Facilities.Length > 0)
+                @if (Facilities != null && Facilities.Length > 0)
                 {
                     foreach (var item in Facilities)
                     {
                         <MudChip T="string" Variant="Variant.Outlined">@item</MudChip>
                     }
-                }
-                
-                <MudCardActions>
-                    @ChildContent
-                </MudCardActions>
+                }                
+            </div>
+            <hr />
+            <div>
+                <MudText Typo="Typo.h6" Style="color: gray">@AgencyName</MudText>
             </div>
         </div>
     </MudCard>
 </MudHidden>
 
+@* <MudCardActions>
+    @ChildContent
+</MudCardActions> *@
 <!-- Layout för små skärmar -->
 <MudHidden Breakpoint="Breakpoint.MdAndUp">
-    
+
     <MudCard Style="overflow: hidden; border: 1px solid gray;">
         <MudCardMedia Image="@ImageUrl"
-                      Style="object-fit: cover; Height:250px;" />
+                      Style="object-fit: cover; Height:300px;" />
 
         <MudCardContent>
             <MudText Typo="Typo.h6">@Title</MudText>
@@ -100,10 +114,12 @@
     [Parameter] public string MonthlyFee { get; set; }
     [Parameter] public string OperatingCost { get; set; }
     [Parameter] public string[] Facilities { get; set; }
+    [Parameter] public string City { get; set; }
+    [Parameter] public string Commune { get; set; }
 
     [Parameter] public string Description { get; set; }
 
-    [Parameter] public string Agency { get; set; }
+    [Parameter] public string AgencyName { get; set; }
 
 
     [Parameter] public RenderFragment? ChildContent { get; set; }
