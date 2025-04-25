@@ -10,6 +10,9 @@
             <div>
                 <MudText Typo="Typo.h6">@Title</MudText>
             </div>
+            <div>
+
+            </div>
             <div class="row">
                 <div style="display: flex; flex-direction: row; justify-content: space-between; height: 100%; width: 80%">
                     <MudText Typo="Typo.body1"><b>@CurrentPrice kr</b></MudText>
@@ -92,7 +95,7 @@
     [Parameter] public int Area { get; set; }
     [Parameter] public int? BiArea { get; set; }
     [Parameter] public int Room { get; set; }
-    [Parameter] public int Floor { get; set; }
+    [Parameter] public int? Floor { get; set; }
     [Parameter] public int FloorRow { get; set; }
     [Parameter] public string MonthlyFee { get; set; }
     [Parameter] public string OperatingCost { get; set; }

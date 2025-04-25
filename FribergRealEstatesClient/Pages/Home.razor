@@ -33,12 +33,12 @@
         Area="@advert.Residence.Area"
                              BiArea="@advert.Residence.BiArea"
                              Room="@advert.Residence.Rooms"
-                             Floor="2"
+                             Floor="@advert.Residence.Floors"
                              FloorRow="@advert.Residence.FloorRows"
         MonthlyFee="@advert.Residence.MonthlyFee.ToString()"
         OperatingCost="@advert.Residence.OperatingCost.ToString()"
-        Description="@advert.Residence."
-        Facilities="@(new string[] {"Balkong", "Parkering"})">
+        Description="@advert.Residence.Description"
+        Facilities="@advert.Residence.Facilities.ToArray()">
             <MudButton Variant="Variant.Text" Color="Color.Primary">Share</MudButton>
             <MudButton Variant="Variant.Text" Color="Color.Primary">Learn More</MudButton>
         </RealtorActiveAdvert>
@@ -58,7 +58,7 @@ else
     ICollection<AdvertDto> result;
     AdvertFilterDto advertFilter = new AdvertFilterDto
         {
-            ResidenceTypes = new List<ResidenceType> { ResidenceType.Apartment, ResidenceType.House }
+            ResidenceTypes = new List<ResidenceType> { ResidenceType.House }
         };
 
     protected override async Task OnInitializedAsync()
