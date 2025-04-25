@@ -8,5 +8,6 @@ namespace FribergRealEstatesClient.Services
         Task<RealtorProfileDto> GetRealtorProfile(int id);
 
         Task<List<RealtorAdvertsDto>> GetSoldByRealtorAsync(int id);
+
     }
 }
