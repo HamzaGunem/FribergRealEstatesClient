@@ -18,8 +18,22 @@
     }
 </div>
 
-@code {
+            <MudButton Variant="Variant.Text" Color="Color.Primary">Share</MudButton>
 
+        </RealtorActiveAdvert>
+    }
+
+}
+else
+{
+    <p>Laddar profil...</p>
+}
+
+@code {
+    private string img = "";
+    private MudTheme Theme = new MudTheme();
+
+    RealtorProfileDto test;
     ICollection<AdvertDto> result;
     AdvertFilterDto advertFilter = new AdvertFilterDto
         {
@@ -30,6 +44,7 @@
     {
         result = await httpClient.FilterAsync(advertFilter);
     }
+    */
 
 }
 

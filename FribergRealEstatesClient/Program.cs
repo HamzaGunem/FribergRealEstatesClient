@@ -34,8 +34,8 @@ namespace FribergRealEstatesClient
             });
 
             // Client Services
-            builder.Services.AddTransient<IRealtorService, RealtorService>(); // Samuel
-            builder.Services.AddTransient<IAgencyService, AgencyService>(); // Samuel
+            builder.Services.AddScoped<IRealtorService, RealtorService>(); // Samuel
+            builder.Services.AddScoped<IAgencyService, AgencyService>(); // Samuel
 
             await builder.Build().RunAsync();
         }

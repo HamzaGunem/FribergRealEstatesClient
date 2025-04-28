@@ -2631,6 +2631,9 @@ namespace FribergRealEstatesClient.Services.Base
         [Newtonsoft.Json.JsonProperty("agency", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Agency { get; set; }
 
+        [Newtonsoft.Json.JsonProperty("imageUrls", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public List<string> ImageUrls { get; set; }
+
         private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
 
         [Newtonsoft.Json.JsonExtensionData]
