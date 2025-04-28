@@ -1,0 +1,54 @@
+﻿@* Auth Hamza*@
+
+<div class="realtor-profile-container">
+    <MudPaper Class="realtor-card" Elevation="1" Style="max-width: 350px; margin: auto; border: 1px solid #e0e0e0;">
+        <div class="card-content" style="padding: 20px;">
+            <!-- Image -->
+            <div style="display: flex; justify-content: center; margin-bottom: 16px;">
+                <MudAvatar Image="@realtorDto.ImageUrl"
+                           Style="width: 100px; height: 100px; border: 2px solid #e0e0e0;"
+                           Size="Size.Large" />
+            </div>
+
+            <MudText Typo="Typo.h6" Style="text-align: center; font-weight: 600; margin-bottom: 8px;">
+                @realtorDto.FirstName @realtorDto.LastName
+            </MudText>
+
+            <div style="text-align: center; margin-bottom: 16px;">
+                <MudText Typo="Typo.body2" Style="display: block; margin-bottom: 4px;">
+                    <MudIcon Icon="@Icons.Material.Filled.Phone" Size="Size.Small" Class="mr-1" />
+                    @realtorDto.PhoneNumber
+                </MudText>
+                <MudText Typo="Typo.body2" Style="display: block;">
+                    <MudIcon Icon="@Icons.Material.Filled.Email" Size="Size.Small" Class="mr-1" />
+                    @realtorDto.Email
+                </MudText>
+            </div>
+
+            <!-- Extra space -->
+            <MudDivider Style="margin: 12px 0;" />
+
+            <!-- Agency Info -->
+            <MudText Typo="Typo.caption" Style="text-align: center; color: #666;">
+                @realtorDto.AgencyName
+            </MudText>
+        </div>
+    </MudPaper>
+</div>
+
+<style>
+    .realtor-profile-container {
+        display: flex;
+        justify-content: center;
+        padding: 16px;
+    }
+
+    .realtor-card {
+        border-radius: 8px !important;
+        background-color: white;
+    }
+</style>
+
+@code {
+    [Parameter] public RealtorSummaryDto realtorDto { get; set; }
+}
