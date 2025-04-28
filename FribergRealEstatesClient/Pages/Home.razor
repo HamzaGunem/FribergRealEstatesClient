@@ -7,25 +7,9 @@
 <div class="container-large">
     @if (result != null)
     {
-        foreach (var advert in result)
+        foreach (var item in result)
         {
-            <RealtorActiveAdvert Title="@advert.Residence.Address.Street"
-                                 City="@advert.Residence.Address.City"
-                                 Commune="@advert.Residence.Address.CommunName"
-                                 ImageUrl="@advert.Residence.ImageUrls.FirstOrDefault()"
-                                 CurrentPrice="@advert.CurrentPrice.ToString()"
-                                 Area="@advert.Residence.Area"
-                                 BiArea="@advert.Residence.BiArea"
-                                 Room="@advert.Residence.Rooms"
-                                 Floor="@advert.Residence.Floors"
-                                 FloorRow="@advert.Residence.FloorRows"
-                                 MonthlyFee="@advert.Residence.MonthlyFee.ToString()"
-                                 OperatingCost="@advert.Residence.OperatingCost.ToString()"
-                                 Description="@advert.Residence.Description"
-                                 Facilities="@advert.Residence.Facilities.ToArray()"
-                                 AgencyName="@advert.Realtor.AgencyName">
-            </RealtorActiveAdvert>
-            <br />
+            <RealtorActiveAdvert Advert="@item"></RealtorActiveAdvert>
         }
     }
     else
