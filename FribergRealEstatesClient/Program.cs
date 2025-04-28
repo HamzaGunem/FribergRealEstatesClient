@@ -18,7 +18,7 @@ namespace FribergRealEstatesClient
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7053") });
 
             builder.Services.AddScoped<IClient, Client>();
-
+            
             // MudBlazor
             builder.Services.AddMudServices();
             builder.Services.AddMudServices(config =>
@@ -32,10 +32,12 @@ namespace FribergRealEstatesClient
                 config.SnackbarConfiguration.ShowTransitionDuration = 500;
                 config.SnackbarConfiguration.SnackbarVariant = Variant.Filled;
             });
+                
 
             // Client Services
             builder.Services.AddTransient<IRealtorService, RealtorService>(); // Samuel
             builder.Services.AddTransient<IAgencyService, AgencyService>(); // Samuel
+            builder.Services.AddTransient<IAdvertService, AdvertService>(); // Oscar
 
             await builder.Build().RunAsync();
         }

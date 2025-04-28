@@ -1,0 +1,146 @@
+﻿@page "/advert-search"
+@inject IAdvertService AdvertService
+@using FribergRealEstatesClient.Models
+@using Newtonsoft.Json
+
+
+<MudPaper Class="p-4">
+    <MudText Typo="Typo.h5" Class="mb-4">Sök bostäder</MudText>
+
+    <MudGrid>
+        <MudItem xs="12" sm="6" Class="mb-4">
+            <MudTextField @bind-Value="_filter.Address"
+                          Label="Sök adress"
+                          Variant="Variant.Outlined"
+                          Clearable="true" />
+        </MudItem>
+
+        <MudItem xs="12" sm="6" Class="mb-4">
+            <MudSelect T="ResidenceType"
+                       Label="Bostadstyp"
+                       MultiSelection="true"
+                       SelectedValues="_filter.ResidenceTypes ?? new List<ResidenceType>()"
+                       SelectedValuesChanged="OnResidenceTypesChanged">
+                @foreach (var item in Enum.GetValues<ResidenceType>())
+                {
+                    <MudSelectItem Value="@item">@item.ToString()</MudSelectItem>
+                }
+            </MudSelect>
+        </MudItem>
+
+        <MudItem xs="12" sm="3" Class="mb-4">
+            <MudNumericField @bind-Value="_filter.MinRooms"
+                             Label="Min antal rum"
+                             Variant="Variant.Outlined"
+                             Min="1" />
+        </MudItem>
+        <MudItem xs="12" sm="3" Class="mb-4">
+            <MudNumericField @bind-Value="_filter.MaxRooms"
+                             Label="Max antal rum"
+                             Variant="Variant.Outlined"
+                             Min="1" />
+        </MudItem>
+
+        <MudItem xs="12" sm="3" Class="mb-4">
+            <MudNumericField @bind-Value="_filter.MinPrice"
+                             Label="Min pris (SEK)"
+                             Variant="Variant.Outlined"
+                             Min="0" />
+        </MudItem>
+        <MudItem xs="12" sm="3" Class="mb-4">
+            <MudNumericField @bind-Value="_filter.MaxPrice"
+                             Label="Max pris (SEK)"
+                             Variant="Variant.Outlined"
+                             Min="0" />
+        </MudItem>
+
+        <MudItem xs="12" sm="3" Class="mb-4">
+            <MudNumericField @bind-Value="_filter.MinArea"
+                             Label="Min area (m²)"
+                             Variant="Variant.Outlined"
+                             Min="0" />
+        </MudItem>
+        <MudItem xs="12" sm="3" Class="mb-4">
+            <MudNumericField @bind-Value="_filter.MaxArea"
+                             Label="Max area (m²)"
+                             Variant="Variant.Outlined"
+                             Min="0" />
+        </MudItem>
+    </MudGrid>
+
+    <div class="mt-4 text-center">
+        <MudButton Variant="Variant.Filled"
+                   Color="Color.Primary"
+                   OnClick="ApplyFilter"
+                   Class="px-8">
+            Sök
+        </MudButton>
+    </div>
+    <MudPaper Class="mt-6 p-4" Elevation="3">
+        <MudText Typo="Typo.h6" Class="mb-4">Sökresultat (@(_result?.Count ?? 0))</MudText>
+
+        @if (_result == null)
+        {
+            <MudText>Ange sökkriterier och klicka på Sök</MudText>
+        }
+        else if (!_result.Any())
+        {
+            <MudAlert Severity="Severity.Info">Inga bostäder hittades med valda sökkriterier</MudAlert>
+        }
+        else
+        {
+            <MudTable Items="@_result" Hover="true" Breakpoint="Breakpoint.Sm" Class="mt-4">
+                <HeaderContent>
+                    <MudTh>Adress</MudTh>
+                    <MudTh>Typ</MudTh>
+                    <MudTh>Rum</MudTh>
+                    <MudTh>Pris</MudTh>
+                    <MudTh>Area</MudTh>
+                    <MudTh></MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd DataLabel="Adress">@context.Residence.Address.Street</MudTd>
+                    <MudTd DataLabel="Typ">@context.Residence.Type</MudTd>
+                    <MudTd DataLabel="Rum">@context.Residence.Rooms</MudTd>
+                    <MudTd DataLabel="Pris">@context.CurrentPrice.ToString("C0")</MudTd>
+                    <MudTd DataLabel="Area">@context.Residence.Area m²</MudTd>
+                    <MudTd DataLabel="">
+                        <MudButton Variant="Variant.Text"
+                                   Color="Color.Primary"
+                                   Size="Size.Small"
+                                   Href="@($"/advert-details/{context.Id}")">
+                            Visa
+                        </MudButton>
+                    </MudTd>
+                </RowTemplate>
+            </MudTable>
+        }
+    </MudPaper>
+</MudPaper>
+
+
+@code {
+    private AdvertFilterModel _filter = new();
+    private ICollection<AdvertDto>? _result;
+    private bool _isLoading;
+
+    private void OnResidenceTypesChanged(IEnumerable<ResidenceType> values)
+    {
+        _filter.ResidenceTypes = values.ToList();
+    }
+
+    private async Task ApplyFilter()
+    {
+        _isLoading = true;
+        try
+        {
+            
+            _result = await AdvertService.GetFilteredAsync(_filter);
+        }
+        finally
+        {
+            _isLoading = false;
+            StateHasChanged();
+        }
+    }
+}
