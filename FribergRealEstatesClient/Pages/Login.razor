@@ -1,7 +1,7 @@
 ﻿@* Oscar, Robert, Samuel, Viktor, Jonathan *@
 @page "/Login"
 
-@inject IClient client
+@inject IAuthenticationService authenticationService
 @inject ISnackbar snackbar
 @inject NavigationManager navManager
 <h3>Login</h3>
@@ -13,15 +13,15 @@
             <MudText Class="pa-3" Typo="Typo.h5">Login</MudText>
         </div>
         <MudForm Class="pa-3" @ref="form" @bind-IsValid="@success">
-            <MudTextField @bind-Value="LoginModel.Email" InputType="InputType.Email" Label="Email" Required="true" For="@(() => LoginModel.Email)"></MudTextField>
-            <MudTextField @bind-Value="LoginModel.Password" InputType="InputType.Password" Label="Password" Required="true" For="@(() => LoginModel.Password)"></MudTextField>
+            <MudTextField @bind-Value="loginModel.Email" InputType="InputType.Email" Label="Email" Required="true" For="@(() => loginModel.Email)"></MudTextField>
+            <MudTextField @bind-Value="loginModel.Password" InputType="InputType.Password" Label="Password" Required="true" For="@(() => loginModel.Password)"></MudTextField>
             <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" OnClick="@HandleLogin" Class="ml-auto mt-3">Login</MudButton>
         </MudForm>
     </MudPaper>
 </div>
 
 @code {
-    LoginUserDto LoginModel = new LoginUserDto();
+    LoginUserDto loginModel = new LoginUserDto();
     private bool success = false;
     private MudForm form;
 
@@ -30,8 +30,8 @@
         string message = string.Empty;  
         try
         {
-            var response = await client.LoginAsync(LoginModel);
-            if (response != null)
+            var response = await authenticationService.AuthenticateAsync(loginModel);
+            if (response)
             {
                 snackbar.Add("Lyckad inloggning!", Severity.Success);
                 navManager.NavigateTo("/");
