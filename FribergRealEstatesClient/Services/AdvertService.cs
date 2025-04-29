@@ -8,7 +8,7 @@ namespace FribergRealEstatesClient.Services
 
         public AdvertService(IClient client) : base(client)
         {
-            this._client = client;
+            _client = client;
         }
     }
 }
