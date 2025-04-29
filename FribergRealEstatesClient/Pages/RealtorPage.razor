@@ -1,0 +1,34 @@
+﻿@*Auth Hamza*@
+@page "/realtor"
+@inject IClient httpClient
+
+<div class="container-large">
+
+    @if (realtorFullProfileDto != null)
+    {
+        <RealtorProfileCard realtorDto="@realtorFullProfileDto.Realtor"></RealtorProfileCard>
+
+        foreach (var item in realtorFullProfileDto.ActiveAdverts)
+        {
+            <RealtorActiveAdvert Advert="@item"></RealtorActiveAdvert>
+        }
+        foreach (var item in realtorFullProfileDto.SoldAdverts)
+        {
+            <div style="color: red">
+                <h2 style="color:red">Sold</h2>
+                <RealtorActiveAdvert Advert="@item"></RealtorActiveAdvert>
+            </div>
+        }
+    }
+
+</div>
+
+@code {
+
+    RealtorFullProfileDto realtorFullProfileDto;
+
+    protected override async Task OnInitializedAsync()
+    {
+        realtorFullProfileDto = await httpClient.FullProfileAsync(10);
+    }
+}

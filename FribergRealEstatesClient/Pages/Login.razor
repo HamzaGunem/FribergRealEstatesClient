@@ -1,0 +1,45 @@
+﻿@* Oscar, Robert, Samuel, Viktor, Jonathan *@
+@page "/Login"
+
+@inject IAuthenticationService authenticationService
+@inject ISnackbar snackbar
+@inject NavigationManager navManager
+<h3>Login</h3>
+
+<div>
+
+    <MudPaper Class="pa-0 mx-auto mt-6" MaxWidth="400px" Elevation="4">
+        <div style="background-color: #594ae2; color: white; padding: 0px; margin: 0px; border-radius: 4px 4px 0 0; text-align: center">
+            <MudText Class="pa-3" Typo="Typo.h5">Login</MudText>
+        </div>
+        <MudForm Class="pa-3" @ref="form" @bind-IsValid="@success">
+            <MudTextField @bind-Value="loginModel.Email" InputType="InputType.Email" Label="Email" Required="true" For="@(() => loginModel.Email)"></MudTextField>
+            <MudTextField @bind-Value="loginModel.Password" InputType="InputType.Password" Label="Password" Required="true" For="@(() => loginModel.Password)"></MudTextField>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" OnClick="@HandleLogin" Class="ml-auto mt-3">Login</MudButton>
+        </MudForm>
+    </MudPaper>
+</div>
+
+@code {
+    LoginUserDto loginModel = new LoginUserDto();
+    private bool success = false;
+    private MudForm form;
+
+    public async Task HandleLogin()
+    {
+        string message = string.Empty;  
+        try
+        {
+            var response = await authenticationService.AuthenticateAsync(loginModel);
+            if (response)
+            {
+                snackbar.Add("Lyckad inloggning!", Severity.Success);
+                navManager.NavigateTo("/");
+            }
+        }
+        catch (Exception ex)
+        {
+            snackbar.Add($"Meltdown is imminent -> {ex}", Severity.Error);
+        }
+    }
+}

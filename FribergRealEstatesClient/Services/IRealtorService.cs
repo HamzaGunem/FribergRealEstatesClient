@@ -6,5 +6,8 @@ namespace FribergRealEstatesClient.Services
     public interface IRealtorService
     {
         Task<RealtorProfileDto> GetRealtorProfile(int id);
+
+        Task<List<RealtorAdvertsDto>> GetSoldByRealtorAsync(int id);
+
     }
 }

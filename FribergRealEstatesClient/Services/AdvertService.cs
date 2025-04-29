@@ -9,7 +9,7 @@ namespace FribergRealEstatesClient.Services
 
         public AdvertService(IClient client) : base(client)
         {
-            this._client = client;
+            _client = client;
         }
 
         public async Task<ICollection<AdvertDto>> GetFilteredAsync(AdvertFilterDto filter)

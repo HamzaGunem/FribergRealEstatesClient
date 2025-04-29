@@ -1,0 +1,78 @@
+﻿@inject IRealtorService realtorService
+
+@* made by Samuel *@
+<div class="container d-flex flex-wrap">
+	@if (getAdverts != null)
+	{
+		<div>
+			<MudPaper Class="d-flex flex-row overflow-auto" Elevation="4">
+				@foreach (var advert in showAdverts)
+				{
+					<MudCard Class="m-2" Style="min-width: 100px; max-width: 200px; background-color:#594ae2; color: white;">
+						<div>
+							@if (advert.ImageUrls.Count > 0)
+							{
+								<MudCardMedia Image="@advert.ImageUrls[0]" Style="height: 140px" />
+							}
+							else
+							{
+								<MudCardMedia Image="https://upload.wikimedia.org/wikipedia/commons/1/12/Property_Guardians_logo.png" Style="object-fit: cover; width: 140px;  height: 100%;" />
+							}
+
+						</div>
+
+						<MudCardContent>
+							<MudText Typo="Typo.subtitle1"><strong>Address:</strong> @advert.Street @advert.City</MudText>
+							<MudText Typo="Typo.subtitle1"><strong>Yta:</strong> @advert.Area m2</MudText>
+							<MudText Typo="Typo.subtitle1"><strong>Slutpris:</strong> @advert.CurrentPrice kr</MudText>
+						</MudCardContent>
+					</MudCard>
+				}
+			</MudPaper>
+
+			<MudSpacer />
+			<div class="d-flex justify-content-center mt-2">
+				<MudButton Variant.Outlined Disabled="@(_startIndex == 0)" OnClick="Previous">Föregående</MudButton>
+				<MudButton Class="ml-2 m-3" Variant="Variant.Outlined" Disabled="@(_startIndex + _pageSize >= showAdverts.Count)" onclick="Next">Nästa</MudButton>
+			</div>
+		</div>
+
+	}
+	else
+	{
+		<p>Laddar annonser...</p>
+	}
+
+</div>
+
+@code {
+	[Parameter]
+	public int Id { get; set; }
+
+	private List<RealtorAdvertsDto> getAdverts { get; set; } = new();
+
+	private List<RealtorAdvertsDto> showAdverts => getAdverts.Skip(_startIndex).Take(_pageSize).ToList();
+
+
+	private int _startIndex = 0;
+	private int _pageSize = 5;
+
+	
+	protected override async Task OnParametersSetAsync() =>
+		getAdverts = await realtorService.GetSoldByRealtorAsync(Id);
+	
+	
+	
+	private void Next()
+	{
+		if (_startIndex + _pageSize < getAdverts.Count)
+		//if (_startIndex + _pageSize < showAdverts.Count)
+			_startIndex += _pageSize;
+	}
+
+	private void Previous()
+	{
+		if (_startIndex - _pageSize >= 0)
+			_startIndex -= _pageSize;
+	}
+}

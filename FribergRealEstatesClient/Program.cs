@@ -1,3 +1,4 @@
+using Blazored.LocalStorage;
 using FribergRealEstatesClient.Services;
 using FribergRealEstatesClient.Services.Base;
 using Microsoft.AspNetCore.Components.Web;
@@ -18,7 +19,10 @@ namespace FribergRealEstatesClient
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7053") });
 
             builder.Services.AddScoped<IClient, Client>();
-            
+
+            builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+            builder.Services.AddBlazoredLocalStorage();
+
             // MudBlazor
             builder.Services.AddMudServices();
             builder.Services.AddMudServices(config =>

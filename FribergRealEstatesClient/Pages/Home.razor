@@ -3,6 +3,8 @@
 
 <PageTitle>Home</PageTitle>
 
+<RealtorSoldAdverts Id="11"></RealtorSoldAdverts>
+
 <!-- Exempel hur använda RealtorActiveAdvert -->
 <div class="container-large">
     @if (result != null)
@@ -11,6 +13,7 @@
         {
             <RealtorActiveAdvert Advert="@item"></RealtorActiveAdvert>
         }
+        <MudButton Variant="Variant.Text" Color="Color.Primary">Share</MudButton>
     }
     else
     {
@@ -19,7 +22,10 @@
 </div>
 
 @code {
+    private string img = "";
+    private MudTheme Theme = new MudTheme();
 
+    RealtorProfileDto test;
     ICollection<AdvertDto> result;
     AdvertFilterDto advertFilter = new AdvertFilterDto
         {
@@ -30,7 +36,6 @@
     {
         result = await httpClient.FilterAsync(advertFilter);
     }
-
 }
 
 
