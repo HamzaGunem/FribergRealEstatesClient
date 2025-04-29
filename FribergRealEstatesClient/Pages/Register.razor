@@ -1,0 +1,57 @@
+﻿@* Samuel, Jonatha, Hamza, Robert*@
+@page "/Register"
+@inject IClient client
+@inject NavigationManager navManager
+@inject ISnackbar snackbar
+
+@if (string.IsNullOrEmpty(message) == false)
+{
+    <MudAlert Severity="Severity.Error">Meltdown is imminent -> @message</MudAlert>
+}
+<div>    
+
+<MudPaper Class="pa-0 mx-auto mt-6" MaxWidth="400px" Elevation="4">
+        <div style="background-color: #594ae2; color: white; padding: 0px; margin: 0px; border-radius: 4px 4px 0 0; text-align: center">
+            <MudText Class="pa-3" Typo="Typo.h5">Register</MudText>
+        </div>
+    <MudForm Class="pa-3" @ref="form" @bind-IsValid="@success">
+        <MudTextField @bind-Value="registerModel.FirstName" Label="Firstname" Required="true" For="@(() => registerModel.FirstName)"></MudTextField>
+        <MudTextField @bind-Value="registerModel.LastName" Label="Lastname" Required="true" For="@(() => registerModel.LastName)"></MudTextField>
+        <MudTextField @bind-Value="registerModel.Email" InputType="InputType.Email" Label="Email" Required="true" For="@(() => registerModel.Email)"></MudTextField>
+        <MudTextField @bind-Value="registerModel.Password" InputType="InputType.Password" Label="Password" Required="true" For="@(() => registerModel.Password)"></MudTextField>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" OnClick="@HandleSubmit" Class="ml-auto mt-3">Register</MudButton>
+    </MudForm>
+</MudPaper>
+</div>
+
+@code {
+    private bool success = false;
+    private MudForm form;
+    UserDto registerModel = new UserDto();
+    private string message;
+
+    private async Task HandleSubmit()
+    {
+        await form.Validate();
+
+        if (form.IsValid)
+        {
+            try
+            {
+                await client.RegisterAsync(registerModel);
+
+                snackbar.Add("Lyckad registrering", Severity.Success);
+                navManager.NavigateTo("/");
+            }
+            catch (Exception ex)
+            {
+                snackbar.Add($"Meltdown is imminent -> {ex}", Severity.Error);
+            }
+        }
+        else
+        {
+            snackbar.Add("Meltdown is imminent");
+
+        }
+    }
+}
