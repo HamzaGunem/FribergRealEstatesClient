@@ -17,11 +17,22 @@
     <MudAppBar Color="Color.Primary" Elevation="4" Dense="true" Class="px-4 d-flex align-left">
         <MudText Typo="Typo.h6" Class="my-auto">FribergRealEstates</MudText>
 
-        <div class="d-flex ml-6" style="gap: 16px; align-items:center"
-            <MudNavLink Href="/" Match="NavLinkMatch.All">Sök bostad</MudNavLink>
-            <MudNavLink Href="/counter">Sök mäklare</MudNavLink>
-            <MudNavLink Href="/realtor">Mäklare</MudNavLink>
+        <div class="d-flex ml-6" style="gap: 16px; align-items:center">
+            <AuthorizeView>
+                <Authorized>
+                    <MudNavLink Href="/" Match="NavLinkMatch.All">Sök bostad</MudNavLink>
+                    <MudNavLink Href="/counter">Sök mäklare</MudNavLink>
+                    <MudNavLink Href="/realtor">Mäklare</MudNavLink>
+                    
+                </Authorized>
+
+                <NotAuthorized>
+                    <MudNavLink Href="/login">Login</MudNavLink>
+                    <MudNavLink Href="/register">Register</MudNavLink>
+                </NotAuthorized>
+            </AuthorizeView>
         </div>
+
     </MudAppBar>
 
     <main>
@@ -34,7 +45,7 @@
         </article>
     </main>
 </div>
-@code{
+@code {
     private bool _drawerOpen = false;
 
     void ToggleDrawer() => _drawerOpen = !_drawerOpen;

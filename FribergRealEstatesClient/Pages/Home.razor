@@ -3,10 +3,10 @@
 
 <PageTitle>Home</PageTitle>
 
-<RealtorSoldAdverts Id="11"></RealtorSoldAdverts>
+@* <RealtorSoldAdverts Id="11"></RealtorSoldAdverts> *@
 
 <!-- Exempel hur använda RealtorActiveAdvert -->
-<div class="container-large">
+@* div class="container-large">
     @if (result != null)
     {
         foreach (var item in result)
@@ -19,7 +19,7 @@
     {
         <p>Laddar annons...</p>
     }
-</div>
+</div> *@
 
 @code {
     private string img = "";
@@ -32,10 +32,10 @@
             ResidenceTypes = new List<ResidenceType> { ResidenceType.House }
         };
 
-    protected override async Task OnInitializedAsync()
-    {
-        result = await advertService.GetFilteredAdverts(advertFilter);
-    }
+    //protected override async Task OnInitializedAsync()
+    //{
+    //    result = await advertService.GetFilteredAdverts(advertFilter);
+    //}
 }
 
 

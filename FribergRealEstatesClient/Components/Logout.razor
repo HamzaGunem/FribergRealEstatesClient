@@ -1,0 +1,13 @@
+﻿@inject AuthenticationService authenticationService
+@inject NavigationManager navigation
+
+<MudButton OnClick="@HandleLogout">Logout</MudButton>
+
+@code {
+
+    public async Task HandleLogout()
+    {
+        authenticationService.Logout();
+        navigation.NavigateTo("/");
+    }
+}
