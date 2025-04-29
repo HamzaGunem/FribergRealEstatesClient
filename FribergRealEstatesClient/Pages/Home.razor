@@ -1,5 +1,5 @@
 ﻿@page "/"
-@inject IClient httpClient
+@inject IAdvertService advertService
 
 <PageTitle>Home</PageTitle>
 
@@ -34,7 +34,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        result = await httpClient.FilterAsync(advertFilter);
+        result = await advertService.GetFilteredAdverts(advertFilter);
     }
 }
 

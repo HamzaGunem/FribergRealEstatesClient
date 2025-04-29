@@ -18,9 +18,13 @@ namespace FribergRealEstatesClient
             builder.RootComponents.Add<App>("#app");
             builder.RootComponents.Add<HeadOutlet>("head::after");
 
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7053") });
+            /*builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7053") });
 
-            builder.Services.AddScoped<IClient, Client>();
+            builder.Services.AddScoped<IClient, Client>();*/
+            builder.Services.AddHttpClient<IClient, Client>(client =>
+            {
+                client.BaseAddress = new Uri("https://localhost:7053"); // din API URL
+            });
 
             builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
             builder.Services.AddScoped<ApiAuthenticationStateProvider>();
@@ -45,6 +49,7 @@ namespace FribergRealEstatesClient
             // Client Services
             builder.Services.AddScoped<IRealtorService, RealtorService>(); // Samuel
             builder.Services.AddScoped<IAgencyService, AgencyService>(); // Samuel
+            builder.Services.AddScoped<IAdvertService, AdvertService>(); // Robert
 
             await builder.Build().RunAsync();
         }

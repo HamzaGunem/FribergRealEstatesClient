@@ -1,5 +1,5 @@
 ﻿@* Oscar, Robert, Samuel, Viktor, Jonathan *@
-@page "/Login"
+@page "/login"
 
 @inject IAuthenticationService authenticationService
 @inject ISnackbar snackbar
@@ -19,6 +19,9 @@
         </MudForm>
     </MudPaper>
 </div>
+
+<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@HandleLogout" Class="ml-auto mt-3">Login</MudButton>
+
 
 @code {
     LoginUserDto loginModel = new LoginUserDto();
@@ -41,5 +44,10 @@
         {
             snackbar.Add($"Meltdown is imminent -> {ex}", Severity.Error);
         }
+    }
+
+    public async Task HandleLogout()
+    {
+        authenticationService.Logout();
     }
 }
