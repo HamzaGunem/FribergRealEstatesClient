@@ -28,9 +28,10 @@ namespace FribergRealEstatesClient.Services
             return true;
         }
 
-        public Task Logout()
+        public async Task Logout()
         {
-            throw new NotImplementedException();
+            await((ApiAuthenticationStateProvider)_authenticationStateProvider).LoggedOut();
+
         }
     }
 }
