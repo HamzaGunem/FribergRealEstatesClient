@@ -18,9 +18,9 @@
 							{
 								<MudCardMedia Image="https://upload.wikimedia.org/wikipedia/commons/1/12/Property_Guardians_logo.png" Style="object-fit: cover; width: 140px;  height: 100%;" />
 							}
-							
+
 						</div>
-						
+
 						<MudCardContent>
 							<MudText Typo="Typo.subtitle1"><strong>Address:</strong> @advert.Street @advert.City</MudText>
 							<MudText Typo="Typo.subtitle1"><strong>Yta:</strong> @advert.Area m2</MudText>
@@ -53,12 +53,14 @@
 
 	private List<RealtorAdvertsDto> showAdverts => getAdverts.Skip(_startIndex).Take(_pageSize).ToList();
 
+
 	private int _startIndex = 0;
 	private int _pageSize = 5;
 
-
+	
 	protected override async Task OnParametersSetAsync() =>
 		getAdverts = await realtorService.GetSoldByRealtorAsync(Id);
+	
 	
 	
 	private void Next()
