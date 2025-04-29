@@ -5,10 +5,10 @@
 	@if (getAdverts != null)
 	{
 		<div>
-			<MudPaper Class="d-flex flex-row overflow-auto" Elevation="4">
+			<MudPaper Style="background-color:#594ae2;" Class="d-flex flex-row overflow-auto" Elevation="4">
 				@foreach (var advert in showAdverts)
 				{
-					<MudCard Class="m-2" Style="min-width: 100px; max-width: 200px; background-color:#594ae2; color: white;">
+					<MudCard Class="m-2" Style="min-width: 100px; max-width: 200px;">
 						<div>
 							@if (advert.ImageUrls.Count > 0)
 							{
