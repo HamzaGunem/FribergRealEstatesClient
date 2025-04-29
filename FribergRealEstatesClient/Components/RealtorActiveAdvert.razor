@@ -3,35 +3,35 @@
 <!-- Layout för större skärmar -->
 <div class="only-above-1440">
     <MudCard Class="responsive-card" Style="height: 330px; display: flex; flex-direction: row; overflow: hidden; border: 1px solid gray;">
-        <MudCardMedia Image="@ImageUrl" Style="width: 400px; height: 100%; object-fit: cover;" />
+        <MudCardMedia Image="@Advert.Residence.ImageUrls.FirstOrDefault()" Style="width: 400px; height: 100%; object-fit: cover;" />
 
         <div style="flex: 1; display: flex; flex-direction: column; padding: 16px; height: 100%;">
             <div class="mb-1">
-                <MudText Typo="Typo.h6">@Title</MudText>
+                <MudText Typo="Typo.h6">@Advert.Residence.Address.Street</MudText>
             </div>
             <div class="mb-2">
-                
+
                 <MudText Typo="Typo.body2" Style="color: gray"><MudIcon Icon="fas fa-home" Color="Color.Primary" />
-                    &nbsp @City, @Commune kommun
+                    &nbsp @Advert.Residence.Address.City, @Advert.Residence.Address.CommunName kommun
                 </MudText>
             </div>
             <div class="row">
                 <div style="display: flex; flex-direction: row; justify-content: space-between; height: 100%; width: 80%">
-                    <MudText Typo="Typo.body1"><b>@CurrentPrice kr</b></MudText>
+                    <MudText Typo="Typo.body1"><b>@Advert.CurrentPrice.ToString() kr</b></MudText>
                     <MudText Typo="Typo.body1">
                         <b>
-                            @Area m²@if (BiArea != null && BiArea > 0)
+                            @Advert.Residence.Area m²@if (Advert.Residence.BiArea != null && Advert.Residence.BiArea > 0)
                             {
-                                   <span>+ @BiArea m²</span>
+                                <span>+ @Advert.Residence.BiArea m²</span>
                             }
                         </b>
                     </MudText>
-                    <MudText Typo="Typo.body1"><b>@Room rum</b></MudText>
+                    <MudText Typo="Typo.body1"><b>@Advert.Residence.Rooms rum</b></MudText>
                     <MudText Typo="Typo.body1">
                         <b>
-                            @if (Floor != null && Floor > 1)
+                            @if (Advert.Residence.Floors != null && Advert.Residence.Floors > 1)
                             {
-                                <span>vån @FloorRow</span>
+                                <span>vån @Advert.Residence.FloorRows</span>
                             }
                         </b>
                     </MudText>
@@ -40,20 +40,20 @@
             </div>
             <div>
                 <div class="mb-2" style="display: flex; flex-direction: row; justify-content: space-between; height: 100%; width: 40%">
-                    <MudText Typo="Typo.body2" Style="color: gray">@MonthlyFee kr/mån</MudText>
-                    <MudText Typo="Typo.body2" Style="color: gray">@OperatingCost kr/m²</MudText>
+                    <MudText Typo="Typo.body2" Style="color: gray">@Advert.Residence.MonthlyFee.ToString() kr/mån</MudText>
+                    <MudText Typo="Typo.body2" Style="color: gray">@Advert.Residence.OperatingCost.ToString() kr/m²</MudText>
                 </div>
             </div>
 
             <div class="mb-2" style="flex: 1; display: flex; align-items: center;">
                 <MudText Typo="Typo.subtitle2" Class="description-truncate">
-                    @Description
+                    @Advert.Residence.Description
                 </MudText>
             </div>
             <div class="m-0">
-                @if (Facilities != null && Facilities.Length > 0)
+                @if (Advert.Residence.Facilities != null && Advert.Residence.Facilities.Count > 0)
                 {
-                    foreach (var item in Facilities)
+                    foreach (var item in Advert.Residence.Facilities)
                     {
                         <MudChip T="string" Variant="Variant.Outlined">@item</MudChip>
                     }
@@ -61,7 +61,7 @@
             </div>
             <hr />
             <div>
-                <MudText Typo="Typo.h6" Style="color: gray">@AgencyName</MudText>
+                <MudText Typo="Typo.h6" Style="color: gray">@Advert.Realtor.AgencyName</MudText>
             </div>
         </div>
     </MudCard>
@@ -70,37 +70,37 @@
 <!-- Layout för små skärmar -->
 <div class="only-below-1440">
     <MudCard Class="responsive-card" Style="overflow: hidden; border: 1px solid gray;">
-        <MudCardMedia Image="@ImageUrl"
-                      Style="object-fit: cover; Height:300px;" />
+        <MudCardMedia Image="@Advert.Residence.ImageUrls.FirstOrDefault()"
+        Style="object-fit: cover; Height:300px;" />
 
         <MudCardContent>
             <div>
-                <MudText Typo="Typo.h6">@Title</MudText>
+                <MudText Typo="Typo.h6">@Advert.Residence.Address.Street</MudText>
             </div>
             <div class="mb-2 mt-2">
 
                 <MudText Typo="Typo.body2" Style="color: gray">
                     <MudIcon Icon="fas fa-home" Color="Color.Primary" />
-                    &nbsp @City, @Commune kommun
+                    &nbsp @Advert.Residence.Address.City, @Advert.Residence.Address.CommunName kommun
                 </MudText>
             </div>
             <div class="row">
                 <div style="display: flex; flex-direction: row; justify-content: space-between; height: 100%; width: 80%">
-                    <MudText Typo="Typo.body1"><b>@CurrentPrice kr</b></MudText>
+                    <MudText Typo="Typo.body1"><b>@Advert.CurrentPrice.ToString() kr</b></MudText>
                     <MudText Typo="Typo.body1">
                         <b>
-                            @Area m²@if (BiArea != null && BiArea > 0)
+                            @Advert.Residence.Area m²@if (Advert.Residence.BiArea != null && Advert.Residence.BiArea > 0)
                             {
-                                <span>+ @BiArea m²</span>
+                                <span>+ @Advert.Residence.BiArea m²</span>
                             }
                         </b>
                     </MudText>
-                    <MudText Typo="Typo.body1"><b>@Room rum</b></MudText>
+                    <MudText Typo="Typo.body1"><b>@Advert.Residence.Rooms rum</b></MudText>
                     <MudText Typo="Typo.body1">
                         <b>
-                            @if (Floor != null && Floor > 1)
+                            @if (Advert.Residence.Floors != null && Advert.Residence.Floors > 1)
                             {
-                                <span>vån @FloorRow</span>
+                                <span>vån @Advert.Residence.FloorRows</span>
                             }
                         </b>
                     </MudText>
@@ -109,20 +109,20 @@
             </div>
             <div>
                 <div class="mb-2" style="display: flex; flex-direction: row; justify-content: space-between; height: 100%; width: 40%">
-                    <MudText Typo="Typo.body2" Style="color: gray">@MonthlyFee kr/mån</MudText>
-                    <MudText Typo="Typo.body2" Style="color: gray">@OperatingCost kr/m²</MudText>
+                    <MudText Typo="Typo.body2" Style="color: gray">@Advert.Residence.MonthlyFee.ToString() kr/mån</MudText>
+                    <MudText Typo="Typo.body2" Style="color: gray">@Advert.Residence.OperatingCost.ToString() kr/m²</MudText>
                 </div>
             </div>
 
             <div class="mb-1" style="flex: 1; display: flex; align-items: center;">
                 <MudText Typo="Typo.subtitle2" Class="description-truncate">
-                    @Description
+                    @Advert.Residence.Description
                 </MudText>
             </div>
             <div>
-                @if (Facilities != null && Facilities.Length > 0)
+                @if (Advert.Residence.Facilities != null && Advert.Residence.Facilities.Count > 0)
                 {
-                    foreach (var item in Facilities)
+                    foreach (var item in Advert.Residence.Facilities)
                     {
                         <MudChip T="string" Variant="Variant.Outlined">@item</MudChip>
                     }
@@ -130,7 +130,7 @@
             </div>
             <hr />
             <div class="p-0">
-                <MudText Typo="Typo.h6" Style="color: gray">@AgencyName</MudText>
+                <MudText Typo="Typo.h6" Style="color: gray">@Advert.Realtor.AgencyName</MudText>
             </div>
         </MudCardContent>
     </MudCard>
@@ -138,30 +138,14 @@
 
 <style>
     .description-truncate {
-        overflow: hidden;
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
     }
 </style>
 
 @code {
-    [Parameter] public string ImageUrl { get; set; }
-    [Parameter] public string Title { get; set; }
-    [Parameter] public string CurrentPrice { get; set; }
-    [Parameter] public int Area { get; set; }
-    [Parameter] public int? BiArea { get; set; }
-    [Parameter] public int Room { get; set; }
-    [Parameter] public int? Floor { get; set; }
-    [Parameter] public int FloorRow { get; set; }
-    [Parameter] public string MonthlyFee { get; set; }
-    [Parameter] public string OperatingCost { get; set; }
-    [Parameter] public string[] Facilities { get; set; }
-    [Parameter] public string City { get; set; }
-    [Parameter] public string Commune { get; set; }
-
-    [Parameter] public string Description { get; set; }
-
-    [Parameter] public string AgencyName { get; set; }
+    [Parameter] public AdvertDto Advert { get; set; }    
 }
