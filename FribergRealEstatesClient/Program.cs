@@ -1,6 +1,8 @@
 using Blazored.LocalStorage;
+using FribergRealEstatesClient.Providers;
 using FribergRealEstatesClient.Services;
 using FribergRealEstatesClient.Services.Base;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor;
@@ -21,6 +23,9 @@ namespace FribergRealEstatesClient
             builder.Services.AddScoped<IClient, Client>();
 
             builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+            builder.Services.AddScoped<ApiAuthenticationStateProvider>();
+            builder.Services.AddScoped<AuthenticationStateProvider>(p => p.GetRequiredService<ApiAuthenticationStateProvider>());
+            builder.Services.AddAuthorizationCore();
             builder.Services.AddBlazoredLocalStorage();
 
             // MudBlazor
