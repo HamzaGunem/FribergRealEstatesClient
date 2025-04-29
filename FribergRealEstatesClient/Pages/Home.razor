@@ -3,6 +3,8 @@
 
 <PageTitle>Home</PageTitle>
 
+<RealtorSoldAdverts Id="11"></RealtorSoldAdverts>
+
 <!-- Exempel hur använda RealtorActiveAdvert -->
 <div class="container-large">
     @if (result != null)
@@ -19,9 +21,7 @@
 </div>
 
             <MudButton Variant="Variant.Text" Color="Color.Primary">Share</MudButton>
-
-        </RealtorActiveAdvert>
-    }
+            
 
 }
 else
@@ -44,8 +44,6 @@ else
     {
         result = await httpClient.FilterAsync(advertFilter);
     }
-    */
-
 }
 
 

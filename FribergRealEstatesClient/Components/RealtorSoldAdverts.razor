@@ -2,7 +2,7 @@
 
 @* made by Samuel *@
 <div class="container d-flex flex-wrap">
-	@if (showAdverts != null)
+	@if (getAdverts != null)
 	{
 		<div>
 			<MudPaper Class="d-flex flex-row overflow-auto" Elevation="1">
@@ -32,7 +32,7 @@
 			<MudSpacer />
 			<div class="d-flex justify-content-center mt-2">
 				<MudButton Variant.Outlined Disabled="@(_startIndex == 0)" OnClick="Previous">Föregående</MudButton>
-				<MudButton Class="ml-2" Variant="Variant.Outlined" Disabled="@(_startIndex + _pageSize >= showAdverts.Count)" onclick="Next">Nästa</MudButton>
+				<MudButton Class="ml-2 m-3" Variant="Variant.Outlined" Disabled="@(_startIndex + _pageSize >= showAdverts.Count)" onclick="Next">Nästa</MudButton>
 			</div>
 		</div>
 
@@ -62,8 +62,8 @@
 	
 	private void Next()
 	{
-		//if (_startIndex + _pageSize < getAdverts.Count)
-		if (_startIndex + _pageSize < showAdverts.Count)
+		if (_startIndex + _pageSize < getAdverts.Count)
+		//if (_startIndex + _pageSize < showAdverts.Count)
 			_startIndex += _pageSize;
 	}
 
