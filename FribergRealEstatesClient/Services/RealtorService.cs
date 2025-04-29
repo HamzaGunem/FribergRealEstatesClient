@@ -1,4 +1,5 @@
 ﻿using FribergRealEstatesClient.Services.Base;
+using System.Collections.Generic;
 
 namespace FribergRealEstatesClient.Services
 {
@@ -14,20 +15,38 @@ namespace FribergRealEstatesClient.Services
 
         public async Task<RealtorProfileDto> GetRealtorProfile(int realtorId)
         {
-            var realtor = await _client.ProfileGETAsync(realtorId);
-
+            RealtorProfileDto realtor = new();
+            try
+            {
+                var result = await _client.ProfileGETAsync(realtorId);
+                realtor = result;
+            }
+            catch(Exception ex)
+            {
+                Console.Error.WriteLine($"Fel vid hämtning av mäklarprofil med Id: {realtorId}: {ex.Message}");
+            }
             return realtor;
         }
 
         public async Task<List<RealtorAdvertsDto>> GetSoldByRealtorAsync(int id)
         {
-            // Ensure all related data (e.g., ImageUrls) is fetched in one call
-            var getSoldAdverts = await _client.SoldAsync(id);
-            return getSoldAdverts.Select(advert =>
+            List<RealtorAdvertsDto> getSoldAdverts = new();
+
+            try
             {
-                advert.ImageUrls = advert.ImageUrls ?? new List<string>(); // Ensure non-null
-                return advert;
-            }).ToList();
+                var result = await _client.SoldAsync(id);
+                getSoldAdverts = result.Select(advert =>
+                {
+                    advert.ImageUrls ??= new List<string>();
+                    return advert;
+                }).ToList();
+            }
+            catch(Exception ex)
+            {
+                Console.Error.WriteLine($"Fel vid hämtning av Annonser för mäklarprofil med Id: {id}: {ex.Message}");
+            }
+            return getSoldAdverts;
+            
         }
     }
 }
