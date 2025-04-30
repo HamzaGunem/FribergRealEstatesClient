@@ -39,7 +39,7 @@ namespace FribergRealEstatesClient.Services
                  throw new UnauthorizedAccessException("Ej behörig");
              }
          }*/
-
+        //Auth: Oscar
         public async Task<ICollection<AdvertDto>> GetFilteredAsync(AdvertFilterDto filter)
         {
             

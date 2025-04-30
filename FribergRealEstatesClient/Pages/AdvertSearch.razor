@@ -7,7 +7,7 @@
     <MudMainContent Class="p-4">
         <div style="display: flex; align-items: flex-start;">
 
-            @* Sökformuläret *@
+            @* Searchform *@
             @if (_searchPanelOpen)
             {
                 <MudPaper Class="p-4" Elevation="3" Style="background-color: #405168; width: 400px; margin-right: 0px; border-radius: 15px;">
@@ -92,13 +92,13 @@
                 </MudPaper>
             }
 
-            @* Hamburgermenyn *@
+            @* Hamburgermenu *@
             <MudIconButton Icon="@Icons.Material.Filled.Menu"
                            Color="Color.Primary"
                            Size="Size.Large"
                            OnClick="@ToggleSearchPanel" />
 
-            @* Annonser*@
+            @* Adverts *@
             <div style="flex-grow: 1; background-color: #D7D9DD; padding: 16px; border-radius: 8px; display: flex; flex-direction: column; gap: 24px;">
                 @if (_isLoading)
                 {
