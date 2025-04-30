@@ -1,4 +1,5 @@
 @* Made by Robert *@
+<div >
 <MudCarousel Class="carousel-custom rounded-lg" Style="height:300px;" AutoCycle="false" TData="object">
     <BulletTemplate Context="selected">
         <div Class="mud-button-root mud-icon-button mud-icon-button-color-inherit mud-ripple mud-ripple-icon">
@@ -27,13 +28,13 @@
         {
             <MudCarouselItem Color="@Color.Secondary">
                 <div class="d-flex" style="height:100%">
-                    <MudImage Height="300" Width="500" Src="@item" Alt="bild" Elevation="25" Class="rounded-lg" />
+                        <MudImage Height="300" Width="500" Src="@item" Alt="bild" Elevation="25" Class="rounded-lg" />
                 </div>
             </MudCarouselItem>
         }
     </ChildContent>
 </MudCarousel>
-
+</div>
 <style type="text/css">
     .carousel-custom {
         display: flex;
@@ -43,7 +44,6 @@
     .mud-ripple-icon {
         color: white;
     }
-
 </style>
 
 @code{

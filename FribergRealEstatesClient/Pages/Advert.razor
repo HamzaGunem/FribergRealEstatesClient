@@ -1,21 +1,56 @@
 ﻿@*Made by Robert*@
 @page "/advert"
 @inject IAdvertService advertService
+@inject IClient client
 
-@if (result != null)
-{
-    <ImageCarousel ImageUrls="@result.FirstOrDefault().Residence.ImageUrls.ToList()"></ImageCarousel>
-}
-else
-{
-    <p>Laddar annons...</p>
-}
+<div class="container" style="display: flex; justify-content:center; align-items:center">
+    <div class="row">
+        <!-- Bild-raden, alltid centrerad -->
+        <div class="container" style="display:flex; justify-content:center">
+            @if (result != null)
+            {
+
+                <ImageCarousel ImageUrls="@result.FirstOrDefault().Residence.ImageUrls.ToList()"></ImageCarousel>
+
+            }
+            else
+            {
+                <p>Laddar bilder</p>
+            }
+        </div>
+
+        <div class="row gx-0 justify-content-center">
+            <div class="col-auto">
+                @if (result != null)
+                {
+                    <RealtorProfileCard realtorDto="@realtorFullProfileDto.Realtor"></RealtorProfileCard>
+                }
+                else
+                {
+                    <p>Laddar profil</p>
+                }
+            </div>
+            <div class="col-auto">
+                @if (result != null)
+                {
+                    <RealtorProfileCard realtorDto="@realtorFullProfileDto.Realtor"></RealtorProfileCard>
+                }
+                else
+                {
+                    <p>Laddar profil</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>
 
 
 
 @code {
 
     ICollection<AdvertDto> result;
+    RealtorFullProfileDto realtorFullProfileDto;
+
     AdvertFilterDto advertFilter = new AdvertFilterDto
         {
             ResidenceTypes = new List<ResidenceType> { ResidenceType.House }
@@ -24,5 +59,9 @@ else
     protected override async Task OnInitializedAsync()
     {
         result = await advertService.GetFilteredAdverts(advertFilter);
+        if (result.Count > 1)
+        {
+            realtorFullProfileDto = await client.FullProfileAsync(result.FirstOrDefault().Realtor.Id);
+        }
     }
 }
