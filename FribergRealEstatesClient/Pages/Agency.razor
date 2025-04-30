@@ -1,0 +1,23 @@
+﻿@page "/agency/{id:int}"
+@inject IClient httpClient
+
+<div class="container-large">
+	@if(agencyDto != null)
+	{
+		<AgencyProfile Id="Id"></AgencyProfile>
+		<RealtorProfileSmall Id="Id"></RealtorProfileSmall>
+	}
+</div>
+
+@code {
+	[Parameter]
+	public int Id { get; set; }
+
+	AgencyWithSimpleRealtorsDto agencyDto;
+
+	protected override async Task OnInitializedAsync()
+	{
+		agencyDto = await httpClient.WithRealtorsAsync(Id);
+	}
+
+}
