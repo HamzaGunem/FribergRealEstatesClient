@@ -1,6 +1,8 @@
 using Blazored.LocalStorage;
+using FribergRealEstatesClient.Providers;
 using FribergRealEstatesClient.Services;
 using FribergRealEstatesClient.Services.Base;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor;
@@ -16,11 +18,18 @@ namespace FribergRealEstatesClient
             builder.RootComponents.Add<App>("#app");
             builder.RootComponents.Add<HeadOutlet>("head::after");
 
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7053") });
+            /*builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7053") });
 
-            builder.Services.AddScoped<IClient, Client>();
+            builder.Services.AddScoped<IClient, Client>();*/
+            builder.Services.AddHttpClient<IClient, Client>(client =>
+            {
+                client.BaseAddress = new Uri("https://localhost:7053"); // din API URL
+            });
 
             builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+            builder.Services.AddScoped<ApiAuthenticationStateProvider>();
+            builder.Services.AddScoped<AuthenticationStateProvider>(p => p.GetRequiredService<ApiAuthenticationStateProvider>());
+            builder.Services.AddAuthorizationCore();
             builder.Services.AddBlazoredLocalStorage();
 
             // MudBlazor
@@ -39,9 +48,9 @@ namespace FribergRealEstatesClient
                 
 
             // Client Services
-            builder.Services.AddTransient<IRealtorService, RealtorService>(); // Samuel
-            builder.Services.AddTransient<IAgencyService, AgencyService>(); // Samuel
-            builder.Services.AddTransient<IAdvertService, AdvertService>(); // Oscar
+            builder.Services.AddScoped<IRealtorService, RealtorService>(); // Samuel
+            builder.Services.AddScoped<IAgencyService, AgencyService>(); // Samuel
+            builder.Services.AddScoped<IAdvertService, AdvertService>(); // Robert
 
             await builder.Build().RunAsync();
         }
