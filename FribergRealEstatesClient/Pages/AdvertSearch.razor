@@ -1,160 +1,183 @@
-﻿@page "/advert-search"
+﻿@*Auth: Oscar*@
+@page "/advert-search"
 @inject IAdvertService AdvertService
 @using Newtonsoft.Json
 
-
-<MudDrawerContainer>
-
-    <!-- SÖKFILTRET -->
-    <MudDrawer @bind-Open="_searchPanelOpen"
-               Anchor="Anchor.Left"
-               Elevation="1"
-               Variant="DrawerVariant.Responsive"
-               Breakpoint="Breakpoint.Md"
-               Class="p-4"
-               Width="300px">
-        <MudText Typo="Typo.h5" Class="mb-4">Sök bostäder</MudText>
-
-        <MudGrid>
-            <MudItem xs="12" sm="12" Class="mb-4">
-                <MudTextField @bind-Value="_filter.Address"
-                              Label="Sök adress"
-                              Variant="Variant.Outlined"
-                              Clearable="true" />
-            </MudItem>
-
-            <MudItem xs="12" sm="12" Class="mb-4">
-                <MudSelect T="ResidenceType"
-                           Label="Bostadstyp"
-                           MultiSelection="true"
-                           SelectedValues="_filter.ResidenceTypes ?? new List<ResidenceType>()"
-                           SelectedValuesChanged="OnResidenceTypesChanged">
-                    @foreach (var item in Enum.GetValues<ResidenceType>())
-                    {
-                        <MudSelectItem Value="@item">@item.ToString()</MudSelectItem>
-                    }
-                </MudSelect>
-            </MudItem>
-
-            <MudItem xs="6" Class="mb-4">
-                <MudNumericField @bind-Value="_filter.MinRooms"
-                                 Label="Min antal rum"
-                                 Variant="Variant.Outlined"
-                                 Min="1" />
-            </MudItem>
-            <MudItem xs="6" Class="mb-4">
-                <MudNumericField @bind-Value="_filter.MaxRooms"
-                                 Label="Max antal rum"
-                                 Variant="Variant.Outlined"
-                                 Min="1" />
-            </MudItem>
-
-            <MudItem xs="6" Class="mb-4">
-                <MudNumericField @bind-Value="_filter.MinPrice"
-                                 Label="Min pris (SEK)"
-                                 Variant="Variant.Outlined"
-                                 Min="0" />
-            </MudItem>
-            <MudItem xs="6" Class="mb-4">
-                <MudNumericField @bind-Value="_filter.MaxPrice"
-                                 Label="Max pris (SEK)"
-                                 Variant="Variant.Outlined"
-                                 Min="0" />
-            </MudItem>
-
-            <MudItem xs="6" Class="mb-4">
-                <MudNumericField @bind-Value="_filter.MinArea"
-                                 Label="Min area (m²)"
-                                 Variant="Variant.Outlined"
-                                 Min="0" />
-            </MudItem>
-            <MudItem xs="6" Class="mb-4">
-                <MudNumericField @bind-Value="_filter.MaxArea"
-                                 Label="Max area (m²)"
-                                 Variant="Variant.Outlined"
-                                 Min="0" />
-            </MudItem>
-        </MudGrid>
-
-        <div class="mt-4 text-center">
-            <MudButton Variant="Variant.Filled"
-                       Color="Color.Primary"
-                       OnClick="ApplyFilter"
-                       Class="px-8">
-                Sök
-            </MudButton>
-        </div>
-    </MudDrawer>
-
-    <!-- HAMBURGER KNAPP -->
-    <MudAppBar Elevation="0" Dense="true">
-        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleSearchPanel" />
-        <MudText Typo="Typo.h6" Class="ml-2">Bostadssök</MudText>
-    </MudAppBar>
-
-    <!-- RESULTAT -->
+<div class="container-large">
     <MudMainContent Class="p-4">
-        <MudPaper Class="p-4" Elevation="3">
-            <MudText Typo="Typo.h6" Class="mb-4">Sökresultat (@(_result?.Count ?? 0))</MudText>
+        <div style="display: flex; align-items: flex-start;">
 
-            @if (_result == null)
+            @* Sökformuläret *@
+            @if (_searchPanelOpen)
             {
-                <MudText>Ange sökkriterier och klicka på Sök</MudText>
+                <MudPaper Class="p-4" Elevation="3" Style="background-color: #405168; width: 400px; margin-right: 0px; border-radius: 15px;">
+                    <MudText Typo="Typo.h5" Class="mb-4" Style="color: white;">Sök bostäder</MudText>
+
+                    <MudGrid>
+                        <MudItem xs="12" sm="12" Class="mb-4">
+                            <MudTextField @bind-Value="_filter.Address"
+                                          Placeholder="Område"
+                                          Variant="Variant.Outlined"
+                                          Clearable="true"
+                                          Style="background-color: white; color: black; border-radius: 15px;" />
+                        </MudItem>
+
+                        <MudItem xs="12" sm="12" Class="mb-4">
+                            <MudSelect T="ResidenceType"
+                                       Placeholder="Bostadstyp"
+                                       MultiSelection="true"
+                                       SelectedValues="_filter.ResidenceTypes ?? new List<ResidenceType>()"
+                                       SelectedValuesChanged="OnResidenceTypesChanged"
+                                       Style="background-color: white; color: black; border-radius: 15px; height: 55px;">
+                                @foreach (var item in Enum.GetValues<ResidenceType>())
+                                {
+                                    <MudSelectItem Value="@item">@item.ToString()</MudSelectItem>
+                                }
+                            </MudSelect>
+                        </MudItem>
+
+                        <MudItem xs="6" Class="mb-4">
+                            <MudNumericField @bind-Value="_filter.MinRooms"
+                                             Placeholder="Min antal rum"
+                                             Variant="Variant.Text"
+                                             Min="1"
+                                             Style="background-color: white; color: black; border-radius: 15px; height: 55px" />
+                        </MudItem>
+                        <MudItem xs="6" Class="mb-4">
+                            <MudNumericField @bind-Value="_filter.MaxRooms"
+                                             Placeholder="Max antal rum"
+                                             Variant="Variant.Text"
+                                             Min="1"
+                                             Style="background-color: white; color: black; border-radius: 15px; height: 55px" />
+                        </MudItem>
+
+                        <MudItem xs="6" Class="mb-4">
+                            <MudNumericField @bind-Value="_filter.MinPrice"
+                                             Placeholder="Min pris (SEK)"
+                                             Variant="Variant.Text"
+                                             Min="0"
+                                             Style="background-color: white; color: black; border-radius: 15px; height: 55px" />
+                        </MudItem>
+                        <MudItem xs="6" Class="mb-4">
+                            <MudNumericField @bind-Value="_filter.MaxPrice"
+                                             Placeholder="Max pris (SEK)"
+                                             Variant="Variant.Text"
+                                             Min="0"
+                                             Style="background-color: white; color: black; border-radius: 15px; height: 55px" />
+                        </MudItem>
+
+                        <MudItem xs="6" Class="mb-4">
+                            <MudNumericField @bind-Value="_filter.MinArea"
+                                             Placeholder="Min area (m²)"
+                                             Min="0"
+                                             Style="background-color: white; color: black; border-radius: 15px; height: 55px" />
+                        </MudItem>
+                        <MudItem xs="6" Class="mb-4">
+                            <MudNumericField @bind-Value="_filter.MaxArea"
+                                             Placeholder="Max area (m²)"
+                                             
+                                             Min="0"
+                                             Style="background-color: white; color: black; border-radius: 15px; height: 55px" />
+                        </MudItem>
+                    </MudGrid>
+
+                    <div class="mt-4 text-center">
+                        <MudButton Variant="Variant.Filled"
+                                   FullWidth="true"
+                                   OnClick="ApplyFilter"
+                                   Style="background-color: #FFDE6F; color: black; min-height: 50px; border-radius: 15px">
+                            Sök
+                        </MudButton>
+                    </div>
+                </MudPaper>
             }
-            else if (!_result.Any())
-            {
-                <MudAlert Severity="Severity.Info">Inga bostäder hittades med valda sökkriterier</MudAlert>
-            }
-            else
-            {
-                <MudTable Items="@_result" Hover="true" Breakpoint="Breakpoint.Sm" Class="mt-4">
-                    <HeaderContent>
-                        <MudTh>Bild</MudTh>
-                        <MudTh>Adress</MudTh>
-                        <MudTh>Typ</MudTh>
-                        <MudTh>Rum</MudTh>
-                        <MudTh>Pris</MudTh>
-                        <MudTh>Area</MudTh>
-                        <MudTh></MudTh>
-                    </HeaderContent>
-                    <RowTemplate>
-                        <MudTd DataLabel="Bild">
-                            @if (context.Residence.ImageUrls != null && context.Residence.ImageUrls.Any())
-                            {
-                                <MudAvatar Image="@context.Residence.ImageUrls.First()" Size="Size.Large" />
-                            }
-                            else
-                            {
-                                <MudAvatar Icon="@Icons.Material.Filled.Home" Size="Size.Large" />
-                            }
-                        </MudTd>
-                        <MudTd DataLabel="Adress">@context.Residence.Address.Street</MudTd>
-                        <MudTd DataLabel="Typ">@context.Residence.Type</MudTd>
-                        <MudTd DataLabel="Rum">@context.Residence.Rooms</MudTd>
-                        <MudTd DataLabel="Pris">@context.CurrentPrice.ToString("C0")</MudTd>
-                        <MudTd DataLabel="Area">@context.Residence.Area m²</MudTd>
-                        <MudTd DataLabel="">
-                            <MudButton Variant="Variant.Text"
-                                       Color="Color.Primary"
-                                       Size="Size.Small"
-                                       Href="@($"/advert-details/{context.Id}")">
-                                Visa
-                            </MudButton>
-                        </MudTd>
-                    </RowTemplate>
-                </MudTable>
-            }
-        </MudPaper>
+
+            @* Hamburgermenyn *@
+            <MudIconButton Icon="@Icons.Material.Filled.Menu"
+                           Color="Color.Primary"
+                           Size="Size.Large"
+                           OnClick="@ToggleSearchPanel" />
+
+            @* Annonser*@
+            <div style="flex-grow: 1; background-color: #D7D9DD; padding: 16px; border-radius: 8px; display: flex; flex-direction: column; gap: 24px;">
+                @if (_isLoading)
+                {
+                    <MudProgressCircular Indeterminate="true" Color="Color.Primary" />
+                }
+                else if (_result == null)
+                {
+                    <MudText>Ange sökkriterier och klicka på Sök</MudText>
+                }
+                else if (!_result.Any())
+                {
+                    <MudAlert Severity="Severity.Info">Inga bostäder hittades med valda sökkriterier</MudAlert>
+                }
+                else
+                {
+                    @foreach (var advert in _result)
+                    {
+                        <MudCard Class="responsive-card"
+                                 Style="background-color: white; color: black; display: flex; flex-direction: row; overflow: hidden; border: 1px solid gray; width: 100%; min-height:370px">
+                            <MudCardMedia Image="@advert.Residence?.ImageUrls?.FirstOrDefault()"
+                                          Style="height: 300px; width: 400px; object-fit: cover;" />
+
+                            <div style="flex: 1; display: flex; flex-direction: column; padding: 16px;">
+                                <MudText Typo="Typo.h6">@advert.Residence?.Address?.Street</MudText>
+
+                                <MudText Typo="Typo.body2" Style="color: gray" Class="mb-2">
+                                    <MudIcon Icon="fas fa-home" Color="Color.Primary" />
+                                    &nbsp; @advert.Residence?.Address?.City, @advert.Residence?.Address?.CommunName kommun
+                                </MudText>
+
+                                <div class="row" style="display: flex; justify-content: space-between; width: 80%;">
+                                    <MudText Typo="Typo.body1"><b>@advert.CurrentPrice.ToString("N0") kr</b></MudText>
+                                    <MudText Typo="Typo.body1"><b>@advert.Residence?.Area m²@(advert.Residence?.BiArea > 0 ? $" + {advert.Residence.BiArea} m²" : "")</b></MudText>
+                                    <MudText Typo="Typo.body1"><b>@advert.Residence?.Rooms rum</b></MudText>
+                                    @if (advert.Residence?.Floors != null && advert.Residence?.Floors > 1)
+                                    {
+                                        <MudText Typo="Typo.body1"><b>vån @advert.Residence?.FloorRows</b></MudText>
+                                    }
+                                </div>
+
+                                <div class="mb-2" style="display: flex; justify-content: space-between; width: 40%;">
+                                    <MudText Typo="Typo.body2" Style="color: gray;">@advert.Residence?.MonthlyFee?.ToString("N0") kr/mån</MudText>
+                                    <MudText Typo="Typo.body2" Style="color: gray;">@advert.Residence?.OperatingCost.ToString("N0") kr/m²</MudText>
+                                </div>
+
+                                <div class="flex-1 mb-2" style="display: flex; align-items: center;">
+                                    <MudText Typo="Typo.subtitle2" Class="description-truncate">
+                                        @advert.Residence?.Description
+                                    </MudText>
+                                </div>
+
+                                <div class="mb-2">
+                                    @if (advert.Residence?.Facilities != null && advert.Residence.Facilities.Any())
+                                    {
+                                        foreach (var facility in advert.Residence.Facilities)
+                                        {
+                                            <MudChip T="string" Variant="Variant.Outlined">@facility</MudChip>
+                                        }
+                                    }
+                                </div>
+
+                                <hr />
+
+                                <MudText Typo="Typo.h6" Style="color: gray;">@advert.Realtor?.AgencyName</MudText>
+                            </div>
+                        </MudCard>
+                    }
+                }
+            </div>
+        </div>
     </MudMainContent>
-
-</MudDrawerContainer>
+</div>
 
 
 @code {
     private AdvertFilterDto _filter = new();
     private ICollection<AdvertDto>? _result;
     private bool _isLoading;
-    private bool _searchPanelOpen = false;
+    private bool _searchPanelOpen = true;
 
     private void ToggleSearchPanel()
     {
@@ -171,7 +194,6 @@
         _isLoading = true;
         try
         {
-            
             _result = await AdvertService.GetFilteredAsync(_filter);
         }
         finally
@@ -181,3 +203,5 @@
         }
     }
 }
+
+
