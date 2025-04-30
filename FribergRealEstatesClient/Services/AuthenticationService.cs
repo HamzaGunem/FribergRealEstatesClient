@@ -22,10 +22,17 @@ namespace FribergRealEstatesClient.Services
 
         public async Task<bool> AuthenticateAsync(LoginUserDto loginUserDto)
         {
-            var response = await _client.LoginAsync(loginUserDto);
-            await _localStorageService.SetItemAsync("accessToken", response.Token);
-            await ((ApiAuthenticationStateProvider)_authenticationStateProvider).LoggedIn();
-            return true;
+            try
+            {
+                var response = await _client.LoginAsync(loginUserDto);
+                await _localStorageService.SetItemAsync("accessToken", response.Token);
+                await ((ApiAuthenticationStateProvider)_authenticationStateProvider).LoggedIn();
+                return true;
+            }
+            catch (ApiException ex) when (ex.StatusCode == 401)
+            {
+                return false;
+            }
         }
 
         public async Task Logout()
