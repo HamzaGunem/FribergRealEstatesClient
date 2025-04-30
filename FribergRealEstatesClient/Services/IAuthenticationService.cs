@@ -6,6 +6,6 @@ namespace FribergRealEstatesClient.Services
     {
         Task<bool> AuthenticateAsync(LoginUserDto loginUserDto);
 
-        Task Logout();
+        public Task Logout();
     }
 }

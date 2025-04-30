@@ -1,10 +1,9 @@
 ﻿@* Oscar, Robert, Samuel, Viktor, Jonathan *@
-@page "/Login"
+@page "/login"
 
 @inject IAuthenticationService authenticationService
 @inject ISnackbar snackbar
 @inject NavigationManager navManager
-<h3>Login</h3>
 
 <div>
 
@@ -19,6 +18,7 @@
         </MudForm>
     </MudPaper>
 </div>
+
 
 @code {
     LoginUserDto loginModel = new LoginUserDto();

@@ -1,4 +1,5 @@
-﻿using FribergRealEstatesClient.Services.Base;
+﻿using Blazored.LocalStorage;
+using FribergRealEstatesClient.Services.Base;
 
 namespace FribergRealEstatesClient.Services
 {
@@ -7,7 +8,7 @@ namespace FribergRealEstatesClient.Services
     {
         private readonly IClient _client;
 
-        public AgencyService(IClient client) : base(client)
+        public AgencyService(IClient client, ILocalStorageService localStorage) : base(client, localStorage)
         {
             _client = client;
         }
