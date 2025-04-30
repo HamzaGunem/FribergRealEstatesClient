@@ -1,0 +1,11 @@
+﻿body {
+}
+.advert-list-container {
+    flex-grow: 1;
+    background-color: #D7D9DD;
+    padding: 16px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
