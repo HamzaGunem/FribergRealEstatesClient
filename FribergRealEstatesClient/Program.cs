@@ -45,11 +45,12 @@ namespace FribergRealEstatesClient
                 config.SnackbarConfiguration.ShowTransitionDuration = 500;
                 config.SnackbarConfiguration.SnackbarVariant = Variant.Filled;
             });
+                
 
             // Client Services
             builder.Services.AddScoped<IRealtorService, RealtorService>(); // Samuel
             builder.Services.AddScoped<IAgencyService, AgencyService>(); // Samuel
-            builder.Services.AddScoped<IAdvertService, AdvertService>(); // Robert
+            builder.Services.AddScoped<IAdvertService, AdvertService>(); // Robert/Oscar
 
             await builder.Build().RunAsync();
         }

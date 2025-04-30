@@ -39,5 +39,12 @@ namespace FribergRealEstatesClient.Services
                  throw new UnauthorizedAccessException("Ej behörig");
              }
          }*/
+        //Auth: Oscar
+        public async Task<ICollection<AdvertDto>> GetFilteredAsync(AdvertFilterDto filter)
+        {
+            
+            var result = await _client.FilterAsync(filter);
+            return result.ToList();
+        }
     }
 }

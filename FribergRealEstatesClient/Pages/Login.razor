@@ -27,19 +27,28 @@
 
     public async Task HandleLogin()
     {
-        string message = string.Empty;  
+        await form.Validate();
+        if (!form.IsValid)
+        {
+            snackbar.Add("Please fill in all required fields", Severity.Warning);
+            return;
+        }
         try
         {
-            var response = await authenticationService.AuthenticateAsync(loginModel);
-            if (response)
+            var isAuthenticated = await authenticationService.AuthenticateAsync(loginModel);
+            if(isAuthenticated)
             {
-                snackbar.Add("Lyckad inloggning!", Severity.Success);
+                snackbar.Add("Login successful!", Severity.Success);
                 navManager.NavigateTo("/");
             }
+            else
+            {
+                snackbar.Add("Invalid email or password", Severity.Error);
+            }
         }
-        catch (Exception ex)
+        catch(Exception ex)
         {
-            snackbar.Add($"Meltdown is imminent -> {ex}", Severity.Error);
+            snackbar.Add("This user dosent exists", Severity.Error);
         }
     }
 }
