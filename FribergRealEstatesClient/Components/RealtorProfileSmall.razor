@@ -1,0 +1,98 @@
+﻿@inject IAgencyService agencyService
+
+@*made by Samuel*@
+<div style="display: flex; overflow: auto; gap: 16px; padding-bottom: 8px;">
+	@if (agency != null)
+	{
+		@if (agencyRealtors.Count == 0)
+		{
+			<MudProgressCircular Indeterminate="true" Color="Color.Primary"/>
+		}
+		else
+		{
+			<MudGrid GutterSize ="3">
+				@foreach (var person in agencyRealtors)
+				{
+					@* max 5 per rad => lg="2" eftersom 12/2=6 (för 6), 12/2.4=5 så nära vi kan *@
+					<MudItem xs="12" sm="6" md="4" lg="2">
+						<div style="position: relative; flex: 0 0 auto; width: 150px; height: 150px; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.2)">
+							<div style="position: absolute; bottom: 0; width: 100%; background-color: #594ae2; color: white; text-align: center; font-weight: bold; padding: 4px 0;">
+								@person.FirstName
+							</div>
+							@if (string.IsNullOrEmpty(person.PictureUrl))
+							{
+								<MudImage Src="https://www.ohio.edu/voinovich-school/sites/ohio.edu.voinovich-school/files/styles/max_650x650/public/default_images/portrait-missing.png?itok=ZIakRUEV"
+								Alt="@person.FirstName" Style="width: 100%; height: 100%, object-fit: cover;"></MudImage>
+							}
+							else
+							{
+								<MudImage Src="@person.PictureUrl" 
+								Alt="@person.FirstName" Style="width: 100%; height: 100%, object-fit: cover;"></MudImage>
+							}
+						</div>
+					</MudItem>
+				}
+			</MudGrid>
+			@*
+			<div class="d-flex justify-content-center mt-4">
+				<MudTablePager PageSizeOptions="new int[] { PageSize }"
+				PageSize="@PageSize"
+				Page="@CurrentPage"
+				OnPageChanged="OnPageChanged"
+				RowsPerPageString="Visa per sida"
+				HideRowsPerPage="true"
+				RowsPerPageSelectionVisible="false"
+				Rows="@agencyRealtors.Count"/>
+			</div>
+			*@
+		}
+	}
+	else
+	{
+		<p>Loading...</p>
+	}
+
+</div>
+
+
+
+@code {
+	[Parameter]
+	public int Id { get; set; }
+
+	//private int CurrentPage = 1;
+	//private int PageSize = 4;
+
+	private AgencyWithSimpleRealtorsDto agency = new();
+	private List<SimpleRealtorDto> agencyRealtors = new();
+	
+	/*private List<SimpleRealtorDto> agencyRealtors => 
+			agency.Realtors?.Skip((CurrentPage - 1) * PageSize)
+			.Take(PageSize)
+			.ToList();
+	*/
+
+	protected override async Task OnParametersSetAsync()
+	{
+
+		try
+		{
+			agency = await agencyService.GetAgencyProfile(Id);
+
+			foreach(var profile in agency.Realtors)
+			{
+				agencyRealtors.Add(profile);
+			}
+			//CurrentPage = 1;
+		}
+		catch (Exception ex)
+		{
+			//isError = true;
+			Console.Error.WriteLine($"Fel vid hämtning av mäklarprofiler för byrå med id: {Id}: {ex.Message}");
+		}
+	}// End
+
+	/*
+	private void OnPageChanged(int page) =>
+		CurrentPage = page;*/
+}
