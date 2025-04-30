@@ -1,0 +1,52 @@
+﻿<MudCard Class="responsive-card"
+         Style="background-color: white; color: black; display: flex; flex-direction: row; overflow: hidden; border: 1px solid gray; width: 100%; min-height:370px">
+    <MudCardMedia Image="@Advert.Residence?.ImageUrls?.FirstOrDefault()"
+                  Style="height: 300px; width: 400px; object-fit: cover;" />
+
+    <div style="flex: 1; display: flex; flex-direction: column; padding: 16px;">
+        <MudText Typo="Typo.h6">@Advert.Residence?.Address?.Street</MudText>
+
+        <MudText Typo="Typo.body2" Style="color: gray" Class="mb-2">
+            <MudIcon Icon="fas fa-home" Color="Color.Primary" />
+            &nbsp; @Advert.Residence?.Address?.City, @Advert.Residence?.Address?.CommunName kommun
+        </MudText>
+
+        <div class="row" style="display: flex; justify-content: space-between; width: 80%;">
+            <MudText Typo="Typo.body1"><b>@Advert.CurrentPrice.ToString("N0") kr</b></MudText>
+            <MudText Typo="Typo.body1"><b>@Advert.Residence?.Area m²@(Advert.Residence?.BiArea > 0 ? $" + {Advert.Residence.BiArea} m²" : "")</b></MudText>
+            <MudText Typo="Typo.body1"><b>@Advert.Residence?.Rooms rum</b></MudText>
+            @if (Advert.Residence?.Type == ResidenceType.Apartment)
+            {
+                <MudText Typo="Typo.body1"><b>vån @Advert.Residence?.Floors / @Advert.Residence?.FloorRows</b></MudText>
+            }
+            else 
+            {
+                <MudText Typo="Typo.body1"><b>@Advert.Residence?.FloorRows våningar</b></MudText>
+            }
+        </div>
+
+        <div class="flex-1 mb-2" style="display: flex; align-items: center;">
+            <MudText Typo="Typo.subtitle2" Class="description-truncate">
+                @Advert.Residence?.Description
+            </MudText>
+        </div>
+
+        <div class="mb-2">
+            @if (Advert.Residence?.Facilities != null && Advert.Residence.Facilities.Any())
+            {
+                foreach (var facility in Advert.Residence.Facilities)
+                {
+                    <MudChip T="string" Variant="Variant.Outlined">@facility</MudChip>
+                }
+            }
+        </div>
+
+        <hr />
+
+        <MudText Typo="Typo.h6" Style="color: gray;">@Advert.Realtor?.AgencyName</MudText>
+    </div>
+</MudCard>
+
+@code {
+    [Parameter] public AdvertDto Advert { get; set; } = default!;
+}

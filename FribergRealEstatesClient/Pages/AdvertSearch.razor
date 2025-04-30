@@ -1,8 +1,10 @@
 ﻿@*Auth: Oscar*@
 @page "/advert-search"
+
 @inject IAdvertService AdvertService
 @using Newtonsoft.Json
 
+<PageTitle>Sök Bostäder</PageTitle>
 <div class="container-large">
     <MudMainContent Class="p-4">
         <div style="display: flex; align-items: flex-start;">
@@ -10,86 +12,9 @@
             @* Searchform *@
             @if (_searchPanelOpen)
             {
-                <MudPaper Class="p-4" Elevation="3" Style="background-color: #405168; width: 400px; margin-right: 0px; border-radius: 15px;">
-                    <MudText Typo="Typo.h5" Class="mb-4" Style="color: white;">Sök bostäder</MudText>
-
-                    <MudGrid>
-                        <MudItem xs="12" sm="12" Class="mb-4">
-                            <MudTextField @bind-Value="_filter.Address"
-                                          Placeholder="Område"
-                                          Variant="Variant.Outlined"
-                                          Clearable="true"
-                                          Style="background-color: white; color: black; border-radius: 15px;" />
-                        </MudItem>
-
-                        <MudItem xs="12" sm="12" Class="mb-4">
-                            <MudSelect T="ResidenceType"
-                                       Placeholder="Bostadstyp"
-                                       MultiSelection="true"
-                                       SelectedValues="_filter.ResidenceTypes ?? new List<ResidenceType>()"
-                                       SelectedValuesChanged="OnResidenceTypesChanged"
-                                       Style="background-color: white; color: black; border-radius: 15px; height: 55px;">
-                                @foreach (var item in Enum.GetValues<ResidenceType>())
-                                {
-                                    <MudSelectItem Value="@item">@item.ToString()</MudSelectItem>
-                                }
-                            </MudSelect>
-                        </MudItem>
-
-                        <MudItem xs="6" Class="mb-4">
-                            <MudNumericField @bind-Value="_filter.MinRooms"
-                                             Placeholder="Min antal rum"
-                                             Variant="Variant.Text"
-                                             Min="1"
-                                             Style="background-color: white; color: black; border-radius: 15px; height: 55px" />
-                        </MudItem>
-                        <MudItem xs="6" Class="mb-4">
-                            <MudNumericField @bind-Value="_filter.MaxRooms"
-                                             Placeholder="Max antal rum"
-                                             Variant="Variant.Text"
-                                             Min="1"
-                                             Style="background-color: white; color: black; border-radius: 15px; height: 55px" />
-                        </MudItem>
-
-                        <MudItem xs="6" Class="mb-4">
-                            <MudNumericField @bind-Value="_filter.MinPrice"
-                                             Placeholder="Min pris (SEK)"
-                                             Variant="Variant.Text"
-                                             Min="0"
-                                             Style="background-color: white; color: black; border-radius: 15px; height: 55px" />
-                        </MudItem>
-                        <MudItem xs="6" Class="mb-4">
-                            <MudNumericField @bind-Value="_filter.MaxPrice"
-                                             Placeholder="Max pris (SEK)"
-                                             Variant="Variant.Text"
-                                             Min="0"
-                                             Style="background-color: white; color: black; border-radius: 15px; height: 55px" />
-                        </MudItem>
-
-                        <MudItem xs="6" Class="mb-4">
-                            <MudNumericField @bind-Value="_filter.MinArea"
-                                             Placeholder="Min area (m²)"
-                                             Min="0"
-                                             Style="background-color: white; color: black; border-radius: 15px; height: 55px" />
-                        </MudItem>
-                        <MudItem xs="6" Class="mb-4">
-                            <MudNumericField @bind-Value="_filter.MaxArea"
-                                             Placeholder="Max area (m²)"
-                                             
-                                             Min="0"
-                                             Style="background-color: white; color: black; border-radius: 15px; height: 55px" />
-                        </MudItem>
-                    </MudGrid>
-
-                    <div class="mt-4 text-center">
-                        <MudButton Variant="Variant.Filled"
-                                   FullWidth="true"
-                                   OnClick="ApplyFilter"
-                                   Style="background-color: #FFDE6F; color: black; min-height: 50px; border-radius: 15px">
-                            Sök
-                        </MudButton>
-                    </div>
-                </MudPaper>
+                <AdvertSearchForm Filter="_filter"
+                                  OnApplyFilter="OnApplyFilter"
+                                  OnResidenceTypesChanged="OnResidenceTypesChanged" />
             }
 
             @* Hamburgermenu *@
@@ -99,7 +24,7 @@
                            OnClick="@ToggleSearchPanel" />
 
             @* Adverts *@
-            <div style="flex-grow: 1; background-color: #D7D9DD; padding: 16px; border-radius: 8px; display: flex; flex-direction: column; gap: 24px;">
+            <div class="advert-list-container">
                 @if (_isLoading)
                 {
                     <MudProgressCircular Indeterminate="true" Color="Color.Primary" />
@@ -116,55 +41,7 @@
                 {
                     @foreach (var advert in _result)
                     {
-                        <MudCard Class="responsive-card"
-                                 Style="background-color: white; color: black; display: flex; flex-direction: row; overflow: hidden; border: 1px solid gray; width: 100%; min-height:370px">
-                            <MudCardMedia Image="@advert.Residence?.ImageUrls?.FirstOrDefault()"
-                                          Style="height: 300px; width: 400px; object-fit: cover;" />
-
-                            <div style="flex: 1; display: flex; flex-direction: column; padding: 16px;">
-                                <MudText Typo="Typo.h6">@advert.Residence?.Address?.Street</MudText>
-
-                                <MudText Typo="Typo.body2" Style="color: gray" Class="mb-2">
-                                    <MudIcon Icon="fas fa-home" Color="Color.Primary" />
-                                    &nbsp; @advert.Residence?.Address?.City, @advert.Residence?.Address?.CommunName kommun
-                                </MudText>
-
-                                <div class="row" style="display: flex; justify-content: space-between; width: 80%;">
-                                    <MudText Typo="Typo.body1"><b>@advert.CurrentPrice.ToString("N0") kr</b></MudText>
-                                    <MudText Typo="Typo.body1"><b>@advert.Residence?.Area m²@(advert.Residence?.BiArea > 0 ? $" + {advert.Residence.BiArea} m²" : "")</b></MudText>
-                                    <MudText Typo="Typo.body1"><b>@advert.Residence?.Rooms rum</b></MudText>
-                                    @if (advert.Residence?.Floors != null && advert.Residence?.Floors > 1)
-                                    {
-                                        <MudText Typo="Typo.body1"><b>vån @advert.Residence?.FloorRows</b></MudText>
-                                    }
-                                </div>
-
-                                <div class="mb-2" style="display: flex; justify-content: space-between; width: 40%;">
-                                    <MudText Typo="Typo.body2" Style="color: gray;">@advert.Residence?.MonthlyFee?.ToString("N0") kr/mån</MudText>
-                                    <MudText Typo="Typo.body2" Style="color: gray;">@advert.Residence?.OperatingCost.ToString("N0") kr/m²</MudText>
-                                </div>
-
-                                <div class="flex-1 mb-2" style="display: flex; align-items: center;">
-                                    <MudText Typo="Typo.subtitle2" Class="description-truncate">
-                                        @advert.Residence?.Description
-                                    </MudText>
-                                </div>
-
-                                <div class="mb-2">
-                                    @if (advert.Residence?.Facilities != null && advert.Residence.Facilities.Any())
-                                    {
-                                        foreach (var facility in advert.Residence.Facilities)
-                                        {
-                                            <MudChip T="string" Variant="Variant.Outlined">@facility</MudChip>
-                                        }
-                                    }
-                                </div>
-
-                                <hr />
-
-                                <MudText Typo="Typo.h6" Style="color: gray;">@advert.Realtor?.AgencyName</MudText>
-                            </div>
-                        </MudCard>
+                        <AdvertCard Advert="advert" />
                     }
                 }
             </div>
@@ -189,7 +66,7 @@
         _filter.ResidenceTypes = values.ToList();
     }
 
-    private async Task ApplyFilter()
+    private async Task OnApplyFilter()
     {
         _isLoading = true;
         try
