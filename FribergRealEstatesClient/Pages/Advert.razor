@@ -1,0 +1,120 @@
+﻿@*Made by Robert*@
+<style type="text/css">
+
+    .bounceIn {
+        opacity: 0;
+        animation-delay: 0.5s;
+        animation-duration: 0.5s;
+        animation-name: bounceIn;
+        animation-fill-mode: forwards;
+    }
+
+    .bounceOut {
+        animation-duration: 0.5s;
+        animation-name: bounceOut;
+        animation-fill-mode: forwards;
+    }
+
+    .backInDown {
+        opacity: 0;
+        animation-delay: 0.5s;
+        animation-duration: 0.5s;
+        animation-name: backInDown;
+        animation-fill-mode: forwards;
+    }
+
+    .backOutDown {
+        animation-duration: 0.5s;
+        animation-name: backOutDown;
+        animation-fill-mode: forwards;
+    }
+
+    .rotateIn {
+        opacity: 0;
+        animation-delay: 0.5s;
+        animation-duration: 0.5s;
+        animation-name: rotateIn;
+        animation-fill-mode: forwards;
+    }
+
+    .rotateOut {
+        animation-duration: 0.5s;
+        animation-name: rotateOut;
+        animation-fill-mode: forwards;
+    }
+</style>
+
+<MudCarousel Class="mud-width-full" Style="height:200px;" TData="object" AutoCycle="false">
+    <MudCarouselItem Color="@Color.Primary" Transition="Transition.Slide">
+        <div class="d-flex" style="height:100%">
+            <MudIcon Class="mx-auto my-auto" Icon="@Icons.Custom.Brands.MudBlazor" Size="@Size.Large" />
+        </div>
+    </MudCarouselItem>
+    <MudCarouselItem Color="@Color.Secondary" Transition="Transition.Fade">
+        <div class="d-flex" style="height:100%">
+            <MudIcon Class="mx-auto my-auto" Icon="@Icons.Custom.Brands.MudBlazor" Size="@Size.Large" />
+        </div>
+    </MudCarouselItem>
+    <MudCarouselItem Color="@Color.Tertiary" Transition="Transition.Custom" CustomTransitionEnter="bounceIn" CustomTransitionExit="bounceOut">
+        <div class="d-flex" style="height:100%">
+            <MudIcon Class="mx-auto my-auto" Icon="@Icons.Custom.Brands.MudBlazor" Size="@Size.Large" />
+        </div>
+    </MudCarouselItem>
+    <MudCarouselItem Transition="Transition.Custom" CustomTransitionEnter="backInDown" CustomTransitionExit="backOutDown">
+        <div class="d-flex" style="background-color:lightgray; height:100%">
+            <MudIcon Class="mx-auto my-auto" Icon="@Icons.Custom.Brands.MudBlazor" Color="@Color.Primary" Size="@Size.Large" />
+        </div>
+    </MudCarouselItem>
+    <MudCarouselItem Transition="Transition.Custom" CustomTransitionEnter="rotateIn" CustomTransitionExit="rotateOut">
+        <div class="d-flex" style="background-color:lightgray; height:100%">
+            <MudIcon Class="mx-auto my-auto" Icon="@Icons.Custom.Brands.MudBlazor" Color="@Color.Secondary" Size="@Size.Large" />
+        </div>
+    </MudCarouselItem>
+</MudCarousel>
+Elements Templates
+Custom arrows or bullets templates:
+
+<MudCarousel Class="mud-width-full" Style="height:200px;" AutoCycle="false" TData="object">
+    <BulletTemplate Context="selected">
+        <div Class="mud-button-root mud-icon-button mud-icon-button-color-inherit mud-ripple mud-ripple-icon">
+            <span class="mud-icon-button-label">
+                <MudIcon Icon="@(selected ? Icons.Material.Filled.CheckCircle : Icons.Material.Filled.Circle)" Color="@Color.Inherit" />
+            </span>
+        </div>
+    </BulletTemplate>
+    <PreviousButtonTemplate>
+        <div Class="mud-button-root mud-icon-button mud-icon-button-color-inherit mud-ripple mud-ripple-icon">
+            <span class="mud-icon-button-label">
+                <MudIcon Class="mud-ripple mud-ripple-icon mud-icon-button-size-medium" Icon="@Icons.Material.Filled.SkipPrevious" Color="@Color.Inherit" />
+            </span>
+        </div>
+    </PreviousButtonTemplate>
+    <NextButtonTemplate>
+        <div Class="mud-button-root mud-icon-button mud-icon-button-color-inherit mud-ripple mud-ripple-icon">
+            <span class="mud-icon-button-label">
+                <MudIcon Class="mud-ripple mud-ripple-icon mud-icon-button-size-medium" Icon="@Icons.Material.Filled.SkipNext" Color="@Color.Inherit" />
+            </span>
+        </div>
+    </NextButtonTemplate>
+    <ChildContent>
+        <MudCarouselItem Color="@Color.Primary">
+            <div class="d-flex" style="height:100%">
+                <MudIcon Class="mx-auto my-auto" Icon="@Icons.Custom.Brands.MudBlazor" Size="@Size.Large" />
+            </div>
+        </MudCarouselItem>
+        <MudCarouselItem Color="@Color.Secondary">
+            <div class="d-flex" style="height:100%">
+                <MudIcon Class="mx-auto my-auto" Icon="@Icons.Custom.Brands.MudBlazor" Size="@Size.Large" />
+            </div>
+        </MudCarouselItem>
+        <MudCarouselItem>
+            <div class="d-flex" style="height:100%">
+                <MudIcon Class="mx-auto my-auto" Icon="@Icons.Custom.Brands.MudBlazor" Color="@Color.Primary" Size="@Size.Large" />
+            </div>
+        </MudCarouselItem>
+    </ChildContent>
+</MudCarousel>
+
+@code {
+
+}
