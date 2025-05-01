@@ -1,0 +1,85 @@
+﻿@*Made by Samuel*@
+@page "/realtor/search"
+@inject IRealtorService realtorService
+
+
+<PageTitle>Sök Mäklare</PageTitle>
+<div class="container-large">
+	<MudPaper Class="p-4">
+		<!-- Vänstersidan: Sökruta -->
+		<MudItem xs="12" md="3">
+			<MudText Typo="Typo.h6">Sök efter stad/ commun</MudText>
+			<MudTextField @bind-Value="_searchQuery" 
+			Placeholder="Ange stad/ commun..."
+			Adornment="Adornment.Start" 
+			AdornmentIcon="@Icons.Material.Filled.Search"/>
+
+			<MudButton Variant="Variant.Filled" 
+			Color="Color.Primary" 
+			onclick="SearchRealtors" 
+			Disabled="@string.IsNullOrWhiteSpace(_searchQuery)"
+			Class="mt-2">
+				Sök
+			</MudButton>
+		</MudItem>
+	</MudPaper>
+
+	<!-- Högersidan: Profilkort -->
+	<MudItem xs="12" md="9">
+		<MudGrid>
+			@if(_getRealtors.Any())
+			{
+				@foreach(var person in _getRealtors)
+				{
+					<MudItem xs="12" sm="6" md="4" lg="3">
+						<RealtorProfileCard RealtorSummaryDto="person"></RealtorProfileCard>
+					</MudItem>
+				}
+			}
+			else if(_searchPerformed)
+			{
+				<MudItem>
+					<MudText>Inga mäklare hittades i @_searchQuery.</MudText>
+				</MudItem>
+			}
+		</MudGrid>
+
+	</MudItem>
+</div>
+
+@code {
+	private List<RealtorSummaryDto> _getRealtors = new();
+	//private List<RealtorSummaryDto> _showRealtors = new();
+	private string _searchQuery = string.Empty;
+	private bool _searchPerformed = false;
+
+	private async Task SearchRealtors()
+	{
+		_searchPerformed = true;
+
+		if(!string.IsNullOrWhiteSpace(_searchQuery))
+		{
+			_getRealtors = await realtorService.GetAllByCity(_searchQuery);
+			/*
+			foreach(var realtor in _getRealtors)
+			{
+				_showRealtors.Add(MakeSummary(realtor));
+			}*/
+		}
+		_searchPerformed = false;
+	}
+
+	/*
+	private RealtorSummaryDto MakeSummary(RealtorDto fromRealtor)
+	{
+		RealtorSummaryDto newDto = new()
+			{
+				Id = fromRealtor.Id,
+				FirstName = fromRealtor.FirstName,
+				LastName = fromRealtor.LastName,
+				ImageUrl = fromRealtor.PictureUrl
+			};
+
+		return newDto;
+	}*/
+}

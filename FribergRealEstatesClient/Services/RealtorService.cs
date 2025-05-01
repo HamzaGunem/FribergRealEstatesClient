@@ -14,6 +14,12 @@ namespace FribergRealEstatesClient.Services
            _client = client;
         }
 
+        public async Task<List<RealtorSummaryDto>> GetAllByCity(string cityName)
+        {
+            var getRealtors = await _client.ByCommun2Async(cityName);
+            return getRealtors.ToList();
+        }
+
         public async Task<RealtorProfileDto> GetRealtorProfile(int realtorId)
         {
             RealtorProfileDto realtor = new();

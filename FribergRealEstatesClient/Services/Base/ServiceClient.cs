@@ -137,12 +137,12 @@ namespace FribergRealEstatesClient.Services.Base
 
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<RealtorDto>> ByCommun2Async(string communName);
+        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<RealtorSummaryDto>> ByCommun2Async(string communName);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<RealtorDto>> ByCommun2Async(string communName, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<RealtorSummaryDto>> ByCommun2Async(string communName, System.Threading.CancellationToken cancellationToken);
 
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
@@ -1252,7 +1252,7 @@ namespace FribergRealEstatesClient.Services.Base
 
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<RealtorDto>> ByCommun2Async(string communName)
+        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<RealtorSummaryDto>> ByCommun2Async(string communName)
         {
             return ByCommun2Async(communName, System.Threading.CancellationToken.None);
         }
@@ -1260,7 +1260,7 @@ namespace FribergRealEstatesClient.Services.Base
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<RealtorDto>> ByCommun2Async(string communName, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<RealtorSummaryDto>> ByCommun2Async(string communName, System.Threading.CancellationToken cancellationToken)
         {
             if (communName == null)
                 throw new System.ArgumentNullException("communName");
@@ -1306,7 +1306,7 @@ namespace FribergRealEstatesClient.Services.Base
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<RealtorDto>>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<RealtorSummaryDto>>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);

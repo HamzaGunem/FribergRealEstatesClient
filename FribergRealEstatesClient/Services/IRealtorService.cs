@@ -9,5 +9,6 @@ namespace FribergRealEstatesClient.Services
 
         Task<List<RealtorAdvertsDto>> GetSoldByRealtorAsync(int id);
 
+        Task<List<RealtorSummaryDto>> GetAllByCity(string cityName);
     }
 }

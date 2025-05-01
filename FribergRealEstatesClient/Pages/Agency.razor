@@ -5,6 +5,7 @@
 	@if(agencyDto != null)
 	{
 		<AgencyProfile Id="Id"></AgencyProfile>
+		<br />
 		<RealtorProfileSmall Id="Id"></RealtorProfileSmall>
 	}
 </div>
@@ -13,7 +14,7 @@
 	[Parameter]
 	public int Id { get; set; }
 
-	AgencyWithSimpleRealtorsDto agencyDto;
+	AgencyWithSimpleRealtorsDto? agencyDto;
 
 	protected override async Task OnInitializedAsync()
 	{
