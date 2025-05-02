@@ -1,0 +1,33 @@
+﻿
+@*Made by Samuel*@
+@page "/agency/search"
+@inject IAgencyService agencyService
+@inject NavigationManager navManager
+
+<PageTitle>Sök Mäklarbyrå</PageTitle>
+
+<div class="mt-4 container-fluid">
+	<MudGrid>
+		<!-- Generic SearchBox -->
+		<MudItem xs="12" sm="4">
+			<GenericSearchBox _searchTerm="@_searchTerm"
+			_searchTitle="@_setSearchBoxTitle"
+			OnSearch="SearchAgencies">
+			</GenericSearchBox>
+		</MudItem>
+	</MudGrid>
+</div>
+
+@code {
+	private List<AgencyDto> _getAgencies = new();
+	private List<RealtorDto> _getRealtors = new();
+
+	private string _searchTerm = string.Empty;
+
+	private string _setSearchBoxTitle = "Sök mäklarbyrå i stad/ kommun";
+
+	private async Task<List<AgencyDto>> SearchAgencies(string term)
+	{
+		_searchTerm = term;
+	}
+}
