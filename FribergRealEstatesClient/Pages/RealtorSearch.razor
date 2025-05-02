@@ -11,14 +11,14 @@
 		<MudItem xs="12" sm="4">
 			<GenericSearchBox 
 			_searchTerm="@_searchTerm"
-			_searchTitle="Sök mäklare i stad/ commun"
+			_searchTitle="@_setSearchBoxTitle"
 			OnSearch="SearchRealtors" >
 			</GenericSearchBox>
 		</MudItem>
-		
+
 		<!-- Buffer/ space column -->
 		<MudItem xs="1"></MudItem>
-		
+
 		<!-- Realtor Profile Card Grid -->
 		<MudItem xs="12" sm="7" Style="background-color: darkgrey; border-radius: 10px" Class="p-2">
 			<MudGrid>
@@ -28,19 +28,19 @@
 				}
 				else if (_searchPerformed && !_getRealtors.Any())
 				{
-					<MudAlert Severity="Severity.Info">Inga mäklare hittades i @_searchTerm</MudAlert>
+					<MudAlert Severity="Severity.Info">@_errorMessage @_searchTerm</MudAlert>
 				}
 				else
 				{
 					@foreach (var person in _getRealtors)
 					{
 						<MudItem xs="12" sm="6" md="4"
-								 @onclick="@(() => NavigateToPerson(person.Id))"
-								 style="cursor: pointer;
+						@onclick="@(() => NavigateToPerson(person.Id))"
+						style="cursor: pointer;
 								 transition: transform 0.3s ease-in-out;"
-								 onmouseover="this.style.transform='scale(1.05)'"
-								 onmouseout="this.style.transform='scale(1)'">
-								 <RealtorProfileCard RealtorDto="person"></RealtorProfileCard>
+						onmouseover="this.style.transform='scale(1.05)'"
+						onmouseout="this.style.transform='scale(1)'">
+							<RealtorProfileCard RealtorDto="person"></RealtorProfileCard>
 						</MudItem>
 					}
 				}
@@ -52,8 +52,10 @@
 @code {
 	private List<RealtorSummaryDto> _getRealtors = new();
 
-	private string _errorMessage = string.Empty;
 	private string _searchTerm = string.Empty;
+
+	private string _errorMessage = $"Inga mäklare hittades i ";
+	private string _setSearchBoxTitle = "Sök mäklare i stad/ commun";
 
 	private bool _searching = false;
 	private bool _searchPerformed = false;
