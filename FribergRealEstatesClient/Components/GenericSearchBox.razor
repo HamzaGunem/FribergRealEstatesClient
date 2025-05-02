@@ -1,0 +1,45 @@
+﻿@* made by Samuel *@
+
+<MudPaper Class="p-4 mud-theme-primary" Elevation="3" Style="min-width: 200px; max-height: 200px; margin-right: 0px; border-radius: 10px;">
+	<div class="SearchBox-content">
+		<MudItem>
+			<!-- SearchBox Title -->
+			<MudText Typo="Typo.h6" Class="mb-4" Style="color: #ffde6f; font-weight: bold; text-align: center;">@_searchTitle</MudText>
+
+			<!-- SearchBox InputField -->
+			<MudTextField @bind-Value="_searchTerm"
+			Style="background-color: white; color: black; border-radius: 10px; height:35px; margin-bottom: 4px;"
+			Variant="Variant.Outlined"
+			Clearable="true"
+			Placeholder="sök..."
+			Adornment="Adornment.End"
+			AdornmentIcon="@Icons.Material.Filled.Search" />
+
+			<!-- SearchBox SearchButton -->
+			<MudButton Variant="Variant.Filled"
+			FullWidth="true"
+			Color="Color.Primary"
+			onclick="SubmitSearch"
+			Disabled="@string.IsNullOrWhiteSpace(_searchTerm)"
+			Class="mt-2 ml-4"
+			Style="background-color: #FFDE6F; color: black; max-height: 50px; max-width: 50px; border-radius: 15px">
+				Sök
+			</MudButton>
+		</MudItem>
+	</div>
+</MudPaper>
+
+
+@code {
+	[Parameter] public string _searchTerm { get; set; } = "";
+
+	[Parameter] public string _searchTitle { get; set; }
+
+	[Parameter]	public EventCallback<string> OnSearch { get; set; }
+
+	private async Task SubmitSearch()
+	{
+		if (!string.IsNullOrWhiteSpace(_searchTerm))
+			await OnSearch.InvokeAsync(_searchTerm);
+	}
+}
