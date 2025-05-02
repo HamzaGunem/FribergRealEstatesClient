@@ -1,18 +1,45 @@
 ﻿@page "/counter"
+@inject IRealtorService realtorService
 
 <PageTitle>Counter</PageTitle>
 
 <h1>Counter</h1>
 
 <p role="status">Current count: @currentCount</p>
+@if(realtor != null)
+{
+    <p>@realtor.FirstName</p>
+    <p>@realtor.LastName</p>
+    <p>@realtor.PhoneNumber</p>
+    <p>@realtor.Email</p>
+    <p>@realtor.AgencyName</p>
+    <p>@realtor.PictureUrl</p>
+}
+else
+{
+    <p>loading</p>
+}
 
 <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="IncrementCount">Click me</MudButton>
 
 @code {
     private int currentCount = 0;
+    private RealtorProfileDto realtor;
 
     private void IncrementCount()
     {
         currentCount++;
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        // Testkod men fungerande
+        try
+        {
+            realtor = await realtorService.GetMyProfileAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Fel vid hämtning av profil: {ex.Message}");
+        }
     }
 }
