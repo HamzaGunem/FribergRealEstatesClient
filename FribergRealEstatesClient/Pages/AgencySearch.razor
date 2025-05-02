@@ -15,19 +15,48 @@
 			OnSearch="SearchAgencies">
 			</GenericSearchBox>
 		</MudItem>
+
+		<MudItem xs="12" sm="8" Style="background-color: darkgrey; border-radius: 10px" Class="p-2 ml-4">
+			@foreach(var agency in _getAgencies)
+			{
+				<ImageComponent 
+					ImageUrl="@agency.PictureUrl"
+				    AltText="bild på mäklarbyrå"
+					style=""></ImageComponent>
+			}
+
+		</MudItem>
 	</MudGrid>
 </div>
 
 @code {
-	private List<AgencyDto> _getAgencies = new();
-	private List<RealtorDto> _getRealtors = new();
+	private List<AgencyWithSimpleRealtorsDto> _getAgencies = new();
+	private List<SimpleRealtorDto> _getRealtors = new();
 
 	private string _searchTerm = string.Empty;
-
+	private bool _searching = false;
+	private bool _searchPerformed = false;
 	private string _setSearchBoxTitle = "Sök mäklarbyrå i stad/ kommun";
 
-	private async Task<List<AgencyDto>> SearchAgencies(string term)
+	private string _errorAgency = "Hittade inga byråer i";
+	private string _errorRealtors = "Inga registrerade mäklare";
+
+
+	private async Task SearchAgencies(string term)
 	{
+		_searching = true;
+		_searchPerformed = false;
+		StateHasChanged();
+
+		await Task.Delay(500);
 		_searchTerm = term;
+		if(!string.IsNullOrWhiteSpace(term))
+		{
+			_getAgencies = await agencyService.GetAllAgenciesInCommun(term);
+		}
+
+		_searching = false;
+		_searchPerformed = true;
+		StateHasChanged();
 	}
 }

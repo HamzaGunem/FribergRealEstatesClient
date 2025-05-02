@@ -6,5 +6,7 @@ namespace FribergRealEstatesClient.Services
     public interface IAgencyService
     {
         Task<AgencyWithSimpleRealtorsDto> GetAgencyProfile(int id);
+
+        Task<List<AgencyWithSimpleRealtorsDto>> GetAllAgenciesInCommun(string name);
     }
 }
