@@ -51,7 +51,7 @@ namespace FribergRealEstatesClient.Services
         }
 
         // TEST KOD, men fungerande
-        public async Task<RealtorProfileDto> GetMyProfileAsync()
+        public async Task<RealtorFullProfileDto> GetMyProfileAsync()
         {
             await GetBearerToken(); // <-- Lägg till token i headern
             return await _client.MeAsync(); // <-- Din Refit-metod t.ex.
