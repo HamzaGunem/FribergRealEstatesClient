@@ -19,6 +19,12 @@
                 <RealtorActiveAdvert Advert="@item"></RealtorActiveAdvert>
             </div>
         }
+        @if (realtor.Realtor.AgencyId != null)
+        {
+            int agencyId = realtor.Realtor.AgencyId.Value;
+            <RealtorProfileSmall Id="@agencyId"></RealtorProfileSmall>
+
+        }
     }
 
 </div>
