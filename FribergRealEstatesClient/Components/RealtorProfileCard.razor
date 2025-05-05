@@ -5,9 +5,9 @@
         <div class="card-content" style="padding: 20px;">
             <!-- Image -->
             <div style="display: flex; justify-content: center; margin-bottom: 16px;">
-                <MudAvatar Image="@realtorDto.PictureUrl"
-                           Style="width: 100px; height: 100px; border: 2px solid #e0e0e0;"
-                           Size="Size.Large" />
+                <MudAvatar Size="Size.Large">
+                    <MudImage Src="@realtorDto.PictureUrl" Size="Size.Large" />
+                </MudAvatar>
             </div>
 
             <MudText Typo="Typo.h6" Style="text-align: center; font-weight: 600; margin-bottom: 8px;">

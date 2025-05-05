@@ -8,6 +8,26 @@
     {
         <RealtorProfileCard realtorDto="@realtor.Realtor"></RealtorProfileCard>
 
+        <div style="display: flex; justify-content: center; align-items: center">
+            <MudPaper Class="pa-16 ma-2" Elevation="3" Style="max-width: 350px;">
+                <MudText Align="Align.Center"><b>Total adverts: @totalAdverts</b></MudText>
+                <div style="display: flex; justify-content: center;">
+                    <MudProgressCircular Color="Color.Warning" Rounded="true" Size="Size.Large" StrokeWidth="4" Value="100" />
+                </div>
+            </MudPaper>
+            <MudPaper Class="pa-16 ma-2" Elevation="3" Style="max-width: 350px;">
+                <MudText Align="Align.Center"><b>Sold adverts: @realtor.SoldAdverts.Count()</b></MudText>
+                <div style="display: flex; justify-content: center;">
+                    <MudProgressCircular Color="Color.Success" Rounded="true" Size="Size.Large" StrokeWidth="4" Value="@(realtor.SoldAdverts.Count() * 100 / totalAdverts)" />
+                </div>
+            </MudPaper>
+            <MudPaper Class="pa-16 ma-2" Elevation="3" Style="max-width: 350px;">
+                <MudText Align="Align.Center"><b>Active adverts: @realtor.ActiveAdverts.Count()</b></MudText>
+                <div style="display: flex; justify-content: center;">
+                    <MudProgressCircular Color="Color.Error" Rounded="true" Size="Size.Large" StrokeWidth="4" Value="@(realtor.ActiveAdverts.Count() * 100 / totalAdverts)" />
+                </div>
+            </MudPaper>
+        </div>
         foreach (var item in realtor.ActiveAdverts)
         {
             <RealtorActiveAdvert Advert="@item"></RealtorActiveAdvert>
@@ -25,11 +45,13 @@
 
 @code {
     private RealtorFullProfileDto realtor;
+    private int totalAdverts;
     protected override async Task OnInitializedAsync()
     {
         try
         {
             realtor = await realtorService.GetMyProfileAsync();
+            totalAdverts = realtor.ActiveAdverts.Count() + realtor.SoldAdverts.Count();
         }
         catch (Exception ex)
         {
