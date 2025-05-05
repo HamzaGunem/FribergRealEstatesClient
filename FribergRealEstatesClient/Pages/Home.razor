@@ -13,14 +13,13 @@
 
 
 <!-- Exempel hur använda RealtorActiveAdvert -->
-@* div class="container-large">
+@* <div class="container-large">
     @if (result != null)
     {
         foreach (var item in result)
         {
             <RealtorActiveAdvert Advert="@item"></RealtorActiveAdvert>
         }
-        <MudButton Variant="Variant.Text" Color="Color.Primary">Share</MudButton>
     }
     else
     {

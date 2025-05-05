@@ -17,7 +17,6 @@ namespace FribergRealEstatesClient.Services
         {
             try
             {
-                await GetBearerToken();
                 return await _client.FilterAsync(filterDto);
             }
             catch (Exception)
