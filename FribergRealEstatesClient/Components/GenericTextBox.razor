@@ -1,11 +1,11 @@
 ﻿<div>
 	@if (!string.IsNullOrWhiteSpace(TextInput))
 	{
-		<MudText Typo="Typo.body1">@TextInput</MudText>
+		<MudTextField T="string" Text="@TextInput" Variant="Variant.Text" Lines="5"></MudTextField>
 	}
 	else
 	{
-		<p>Text saknas</p>
+		<MudAlert Severity="Severity.Info">Text saknas</MudAlert>
 	}
 </div>
 

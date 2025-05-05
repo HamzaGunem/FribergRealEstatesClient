@@ -16,58 +16,76 @@
 			</GenericSearchBox>
 		</MudItem>
 
-		<MudItem xs="12" sm="8" Style="background-color: darkgrey; border-radius: 10px" Class="p-2">
-			<MudGrid>
-				@if(_searching)
+		<MudItem xs="12" sm="8">
+			@if (_searching)
+			{
+				<MudProgressCircular Indeterminate="true" Color="Color.Primary" />
+			}
+			else if (_searchPerformed && !_getAgencies.Any())
+			{
+				<MudAlert Severity="Severity.Info">@_errorAgency @_searchTerm</MudAlert>
+			}
+			else
+			{
+				@foreach (var agency in _getAgencies)
 				{
-					<MudProgressCircular Indeterminate="true" Color="Color.Primary" />
-				}
-				else if (_searchPerformed && !_getAgencies.Any())
-				{
-					<MudAlert Severity="Severity.Info">@_errorAgency @_searchTerm</MudAlert>
-				}
-				else
-				{
-					@foreach (var agency in _getAgencies)
-					{
-						<div @onclick="@(() => NavigateToAgency(agency.Id))"
-							 style="cursor: pointer; transition: transform 0.3s ease-in-out;"
-							 onmouseover="this.style.transform='scale(1.05)'"
-							 onmouseout="this.style.transform='scale(1)'">
-							 
-							<MudItem xs="12">
-								<GenericImageBox 
-									ImageUrl="@agency.LogoUrl"
-									AltText="bild på mäklarbyrå"
-									SetStyling="object-fit: cover; width: 300px; height: 100%;">
-								</GenericImageBox>
-
-								<GenericTextBox TextInput="@agency.Description"></GenericTextBox>
-								
-									
-									@foreach (var realtor in agency.Realtors)
-									{
-
-									<div @onclick="@(() => NavigateToRealtor(realtor.Id))"
+					<MudSimpleTable Class="Agency-info-card p-2" Style="display: flex; overflow: auto; border: 2px solid darkgrey; border-radius: 10px;">
+						<tbody>
+							<tr>
+								<td class="Agency-logo">
+									<div @onclick="@(() => NavigateToAgency(agency.Id))"
 										 style="cursor: pointer; transition: transform 0.3s ease-in-out;"
 										 onmouseover="this.style.transform='scale(1.05)'"
 										 onmouseout="this.style.transform='scale(1)'">
-										 <GenericImageBox 
-											 ImageUrl="@realtor.PictureUrl"
-											 AltText="bild på mäklare"
-											 SetStyling="width: 100px; height: 100%, object-fit: cover;">
 
-										 </GenericImageBox>
+										<GenericImageBox 
+											ImageUrl="@agency.LogoUrl"
+											AltText="bild på mäklarbyrå"
+											SetStyling="object-fit: cover; width: 300px; height: 100%;">
+										</GenericImageBox>
 									</div>
-									}
-								
-								
-						</MudItem>
-						</div>
-					}
-				}
-			</MudGrid>
+								</td>
 
+								<td class="Agency-Name-and-Description">
+									<MudText Typo="Typo.h6">@agency.Name</MudText>
+									<MudText Typo="Typo.caption"><strong>Address:</strong>
+										@agency.Address.Street, 
+										@agency.Address.PostalCode,
+										@agency.Address.City
+										</MudText>
+									<GenericTextBox TextInput=@agency.Description></GenericTextBox>
+
+									<div class="Agency-realtor-list" style="display: flex; overflow: auto;">
+										@if (agency.Realtors.Count > 0)
+										{
+											@foreach (var realtor in agency.Realtors)
+											{
+												<div @onclick="@(() => NavigateToRealtor(realtor.Id))"
+													 style="cursor: pointer; transition: transform 0.3s ease-in-out;"
+													 onmouseover="this.style.transform='scale(1.05)'"
+													 onmouseout="this.style.transform='scale(1)'">
+													<GenericImageBox 
+														ImageUrl="@realtor.PictureUrl"
+														AltText="bild på mäklare"
+														SetStyling="width: 100px; height: 100%; object-fit: cover;">
+													</GenericImageBox>
+													<div class="mud-theme-primary" style="width: 100%; color: white; text-align: center; font-weight: bold; padding: 4px 0;">
+														@realtor.FirstName
+													</div>
+												</div>
+											}
+										}
+										else
+										{
+											<MudAlert Severity="Severity.Info">@_errorRealtors</MudAlert>
+										}
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</MudSimpleTable>
+				}
+			}
 		</MudItem>
 	</MudGrid>
 </div>
@@ -83,7 +101,6 @@
 
 	private string _errorAgency = "Hittade inga byråer i";
 	private string _errorRealtors = "Inga registrerade mäklare";
-
 
 	private async Task SearchAgencies(string term)
 	{

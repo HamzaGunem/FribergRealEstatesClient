@@ -1,13 +1,14 @@
 ﻿
 
 <div>
-	@if(string.IsNullOrWhiteSpace(ImageUrl))
+	@if(!string.IsNullOrWhiteSpace(ImageUrl))
 	{
-		<MudImage Src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/2048px-No_image_available.svg.png" Style=@SetStyling />
+		<MudImage Src=@ImageUrl Alt=@AltText Style=@SetStyling />
 	}
 	else
 	{
-		<MudImage Src=@ImageUrl Alt=@AltText Style=@SetStyling />
+		<MudImage Src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/2048px-No_image_available.svg.png" Style=@SetStyling />
+
 	}
 </div>
 
