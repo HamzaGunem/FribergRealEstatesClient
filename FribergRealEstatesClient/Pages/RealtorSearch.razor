@@ -16,11 +16,8 @@
 			</GenericSearchBox>
 		</MudItem>
 
-		<!-- Buffer/ space column -->
-		<MudItem xs="1"></MudItem>
-
 		<!-- Realtor Profile Card Grid -->
-		<MudItem xs="12" sm="7" Style="background-color: darkgrey; border-radius: 10px" Class="p-2">
+		<MudItem xs="12" sm="8" Style="background-color: darkgrey; border-radius: 10px" Class="p-2">
 			<MudGrid>
 				@if (_searching)
 				{
@@ -54,7 +51,7 @@
 
 	private string _searchTerm = string.Empty;
 
-	private string _errorMessage = $"Inga mäklare hittades i ";
+	private string _errorMessage = "Inga mäklare hittades i ";
 	private string _setSearchBoxTitle = "Sök mäklare i stad/ commun";
 
 	private bool _searching = false;

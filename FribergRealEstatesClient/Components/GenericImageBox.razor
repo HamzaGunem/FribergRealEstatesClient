@@ -1,0 +1,20 @@
+﻿
+
+<div>
+	@if(!string.IsNullOrWhiteSpace(ImageUrl))
+	{
+		<MudImage Src=@ImageUrl Alt=@AltText Style=@SetStyling />
+	}
+	else
+	{
+		<MudImage Src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/2048px-No_image_available.svg.png" Style=@SetStyling />
+
+	}
+</div>
+
+@code {
+	[Parameter] public string ImageUrl { get; set; }
+	[Parameter] public string AltText { get; set; }
+	[Parameter] public string SetStyling { get; set; }
+
+}

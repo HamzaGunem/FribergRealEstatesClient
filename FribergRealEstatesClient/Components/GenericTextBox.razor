@@ -1,0 +1,15 @@
+﻿<div>
+	@if (!string.IsNullOrWhiteSpace(TextInput))
+	{
+		<MudTextField T="string" Text="@TextInput" Variant="Variant.Text" Lines="5"></MudTextField>
+	}
+	else
+	{
+		<MudAlert Severity="Severity.Info">Text saknas</MudAlert>
+	}
+</div>
+
+@code {
+	[Parameter] public string TextInput { get; set; }
+	[Parameter] public string SetStyling { get; set; }
+}
