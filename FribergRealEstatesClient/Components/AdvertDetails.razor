@@ -1,0 +1,65 @@
+@* Auth Robert *@
+
+<div class="d-flex justify-content-between">
+    <MudText Class="pb-0" Typo="Typo.h4" GutterBottom="true">@advert.Residence.Address.Street</MudText>
+    <MudText Typo="Typo.h5" Color="Color.Dark" Class="mb-4">
+        @advert.CurrentPrice.ToString("N0") kr
+    </MudText>
+</div>
+<MudText Typo="Typo.subtitle1">
+    @advert.Residence.Address.PostalCode @advert.Residence.Address.City
+</MudText>
+
+<div class="d-flex flex-wrap gap-0 pt-4">
+    <div style="flex: 1 1 65%; min-width: 300px;">
+        <MudText Typo="Typo.h6" GutterBottom="true">Beskrivning</MudText>
+        <MudText Class="text-justify">@advert.Residence.Description</MudText>
+
+        <div class="mt-4">
+            <MudPaper Class="p-3" Elevation="0">
+                <MudGrid Spacing="1">
+                    <MudItem xs="6"><MudText><b>Area:</b></MudText></MudItem>
+                    <MudItem xs="6"><MudText>@advert.Residence.Area m²</MudText></MudItem>
+
+                    <MudItem xs="6"><MudText><b>Biarea:</b></MudText></MudItem>
+                    <MudItem xs="6"><MudText>@(advert.Residence.BiArea?.ToString() ?? "–") m²</MudText></MudItem>
+
+                    <MudItem xs="6"><MudText><b>Rum:</b></MudText></MudItem>
+                    <MudItem xs="6"><MudText>@advert.Residence.Rooms</MudText></MudItem>
+
+                    <MudItem xs="6"><MudText><b>Driftkostnad:</b></MudText></MudItem>
+                    <MudItem xs="6"><MudText>@advert.Residence.OperatingCost.ToString("N0") kr</MudText></MudItem>
+
+                    <MudItem xs="6"><MudText><b>Våning:</b></MudText></MudItem>
+                    <MudItem xs="6"><MudText>@(advert.Residence.Floors?.ToString() ?? "–")</MudText></MudItem>
+
+                    <MudItem xs="6"><MudText><b>Totala våningar:</b></MudText></MudItem>
+                    <MudItem xs="6"><MudText>@advert.Residence.FloorRows</MudText></MudItem>
+
+                    <MudItem xs="6"><MudText><b>Månadsavgift:</b></MudText></MudItem>
+                    <MudItem xs="6"><MudText>@(advert.Residence.MonthlyFee?.ToString("N0") ?? "–") kr / mån</MudText></MudItem>
+
+                    <MudItem xs="6"><MudText><b>Typ:</b></MudText></MudItem>
+                    <MudItem xs="6"><MudText>@advert.Residence.Type</MudText></MudItem>
+
+                    @if (advert.Residence.Facilities?.Any() == true)
+                    {
+                        <MudItem xs="12" class="mt-2">
+                            <MudText><b>Faciliteter:</b></MudText>
+                            @foreach (var item in advert.Residence.Facilities)
+                            {
+                                <MudChip T="string" Variant="Variant.Outlined" Size="Size.Small">@item</MudChip>
+                            }
+                        </MudItem>
+                    }
+                </MudGrid>
+            </MudPaper>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public AdvertDto advert { get; set; }
+
+}

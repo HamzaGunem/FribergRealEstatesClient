@@ -1,11 +1,12 @@
 ﻿@*Made by Robert*@
+
 @page "/advert/{id:int}"
 @inject IAdvertService advertService
 @inject IClient client
 
 <div class="container" style="display: flex; justify-content:center; align-items:center">
     <div class="row">
-        <!-- Bild-raden, alltid centrerad -->
+
         <div class="container" style="display:flex; justify-content:center">
             @if (advert != null)
             {
@@ -17,80 +18,34 @@
             }
         </div>
 
-        @* <div class="row gx-0 justify-content-center">
-            <div class="col-auto">
-                @if (advert != null)
-                {
-                    <RealtorProfileCard realtorDto="@realtorFullProfileDto.Realtor"></RealtorProfileCard>
-                }
-                else
-                {
-                    <p>Laddar profil</p>
-                }
-            </div>
-            <div class="col-auto">
-                @if (advert != null)
-                {
-                    <RealtorProfileCard realtorDto="@realtorFullProfileDto.Realtor"></RealtorProfileCard>
-                }
-                else
-                {
-                    <p>Laddar profil</p>
-                }
-            </div>
-        </div> *@
-        @* <div class="row gx-3">
-            <div class="col-7">
-                @if (advert != null)
-                {
-                    <RealtorProfileCard realtorDto="@realtorFullProfileDto.Realtor"></RealtorProfileCard>
-                }
-                else
-                {
-                    <p>Laddar profil</p>
-                }
-            </div>
-            <div class="col-5">
-                @if (advert != null)
-                {
-                    <RealtorProfileCard realtorDto="@realtorFullProfileDto.Realtor"></RealtorProfileCard>
-                }
-                else
-                {
-                    <p>Laddar profil</p>
-                }
-            </div>
-        </div> *@
-        <div class="row gx-3">
-            <!-- Vänstra kolumnen: 70% på md+ skärmar, 100% på små -->
-            <div class="col-12 col-md-7 mb-3">
-                @if (advert != null)
-                {
-                    <RealtorProfileCard realtorDto="@realtorFullProfileDto.Realtor" />
-                }
-                else
-                {
-                    <p>Laddar profil</p>
-                }
-            </div>
+        <div class="container mt-4">
+            @if (advert != null)
+            {
+                <div class="mx-auto" style="max-width: 800px;">
 
-            <!-- Högra kolumnen: 30% på md+ skärmar, 100% på små -->
-            <div class="col-12 col-md-5">
-                @if (advert != null)
-                {
-                    <RealtorProfileCard realtorDto="@realtorFullProfileDto.Realtor" />
-                }
-                else
-                {
-                    <p>Laddar profil</p>
-                }
-            </div>
+                    <AdvertDetails advert="advert" />
+
+                    <div style="width: 100%; display:flex; justify-content: flex-start">
+                        @if (advert != null && realtorFullProfileDto != null)
+                        {
+                            <RealtorProfileCard realtorDto="@realtorFullProfileDto.Realtor" />
+                        }
+                        else
+                        {
+                            <p>Laddar profil</p>
+                        }
+                    </div>
+
+                </div>
+            }
+            else
+            {
+                <p class="text-center">Laddar information...</p>
+            }
+
         </div>
-
     </div>
 </div>
-
-
 
 @code {
     [Parameter]
@@ -105,7 +60,7 @@
 
         if (advert != null)
         {
-            realtorFullProfileDto = await client.FullProfileAsync(advert.Realtor.Id);            
+            realtorFullProfileDto = await client.FullProfileAsync(advert.Realtor.Id);
         }
     }
 }
