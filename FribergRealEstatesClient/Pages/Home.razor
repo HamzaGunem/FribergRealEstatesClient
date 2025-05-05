@@ -1,9 +1,16 @@
 ﻿@page "/"
 @inject IAdvertService advertService
-
+@inject NavigationManager Nav
 <PageTitle>Home</PageTitle>
 
-@* <RealtorSoldAdverts Id="11"></RealtorSoldAdverts> *@
+<div class="container m-3">
+    <RealtorSoldAdverts Id="11"></RealtorSoldAdverts>
+</div>
+<div class="container m-3">
+    <RealtorProfileSmall Id="11"></RealtorProfileSmall>
+</div>
+
+
 
 <!-- Exempel hur använda RealtorActiveAdvert -->
 @* <div class="container-large">
@@ -21,19 +28,23 @@
 </div> *@
 
 @code {
-    private string img = "";
-    private MudTheme Theme = new MudTheme();
+    // private string img = "";
+    // private MudTheme Theme = new MudTheme();
 
-    RealtorProfileDto test;
-    ICollection<AdvertDto> result;
-    AdvertFilterDto advertFilter = new AdvertFilterDto
-        {
-            ResidenceTypes = new List<ResidenceType> { ResidenceType.House }
-        };
+    // RealtorProfileDto test;
+    // ICollection<AdvertDto> result;
+    // AdvertFilterDto advertFilter = new AdvertFilterDto
+    //     {
+    //         ResidenceTypes = new List<ResidenceType> { ResidenceType.House }
+    //     };
 
-    protected override async Task OnInitializedAsync()
+    //protected override async Task OnInitializedAsync()
+    //{
+    //    result = await advertService.GetFilteredAdverts(advertFilter);
+    //}
+    protected override void OnInitialized()
     {
-        result = await advertService.GetFilteredAdverts(advertFilter);
+        Nav.NavigateTo("/advert-search", forceLoad: false);
     }
 }
 

@@ -1,0 +1,45 @@
+﻿@*Auth Hamza*@
+@page "/Profile"
+@inject IRealtorService realtorService
+
+<div class="container-large">
+
+    @if (realtor != null)
+    {
+        <RealtorProfileCard realtorDto="@realtor.Realtor"></RealtorProfileCard>
+
+        foreach (var item in realtor.ActiveAdverts)
+        {
+            <RealtorActiveAdvert Advert="@item"></RealtorActiveAdvert>
+        }
+        foreach (var item in realtor.SoldAdverts)
+        {
+            <div style="color: red">
+                <h2 style="color:red">Sold</h2>
+                <RealtorActiveAdvert Advert="@item"></RealtorActiveAdvert>
+            </div>
+        }
+        @if (realtor.Realtor.AgencyId != null)
+        {
+            int agencyId = realtor.Realtor.AgencyId.Value;
+            <RealtorProfileSmall Id="@agencyId"></RealtorProfileSmall>
+
+        }
+    }
+
+</div>
+
+@code {
+    private RealtorFullProfileDto realtor;
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            realtor = await realtorService.GetMyProfileAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Fel vid hämtning av profil: {ex.Message}");
+        }
+    }
+}

@@ -1,5 +1,5 @@
 ﻿@*Auth Hamza*@
-@page "/realtor"
+@page "/realtor/{id:int}"
 @inject IClient httpClient
 
 <div class="container-large">
@@ -20,15 +20,16 @@
             </div>
         }
     }
-
 </div>
 
 @code {
+    [Parameter]
+    public int Id { get; set; }
 
     RealtorFullProfileDto realtorFullProfileDto;
 
     protected override async Task OnInitializedAsync()
     {
-        realtorFullProfileDto = await httpClient.FullProfileAsync(10);
+        realtorFullProfileDto = await httpClient.FullProfileAsync(Id);
     }
 }
