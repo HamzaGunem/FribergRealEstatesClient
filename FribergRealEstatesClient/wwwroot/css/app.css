@@ -113,10 +113,35 @@ code {
     text-align: start;
 }
 
+@media (min-width: 551px)
+{
+    .advert-carousel
+    {
+        width: 500px;
+    }
+}
+@media (max-width: 550px) {
+    .advert-carousel {
+        width: 350px;
+    }
+    .carousel-custom
+    {
+        width: 350px !important;
+    }
+}
+
 @media (min-width: 901px) {
     .container-large {
         width: 75%;
         margin: 0 auto;
+    }
+    .advert-carousel {
+        width: 800px;
+        height: 400px;
+    }
+    .carousel-custom {
+        width: 800px !important;
+        height: 400px !important;
     }
 }
 
@@ -128,7 +153,7 @@ code {
 }
 
 @media (max-width: 1440px) {
-    .only-below-1440 {
+    .only-below-1440 {https://images.unsplash.com/photo-1613490493576-7fde63acd811
         display: block !important;
     }
 

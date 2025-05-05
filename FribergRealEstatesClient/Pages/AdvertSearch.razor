@@ -1,6 +1,6 @@
 ﻿@*Auth: Oscar*@
 @page "/advert-search"
-
+@inject NavigationManager navigationManager
 @inject IAdvertService AdvertService
 @using Newtonsoft.Json
 
@@ -13,15 +13,15 @@
             @if (_searchPanelOpen)
             {
                 <AdvertSearchForm Filter="_filter"
-                                  OnApplyFilter="OnApplyFilter"
-                                  OnResidenceTypesChanged="OnResidenceTypesChanged" />
+                OnApplyFilter="OnApplyFilter"
+                OnResidenceTypesChanged="OnResidenceTypesChanged" />
             }
 
             @* Hamburgermenu *@
             <MudIconButton Icon="@Icons.Material.Filled.Menu"
-                           Color="Color.Primary"
-                           Size="Size.Large"
-                           OnClick="@ToggleSearchPanel" />
+            Color="Color.Primary"
+            Size="Size.Large"
+            OnClick="@ToggleSearchPanel" />
 
             @* Adverts *@
             <div class="advert-list-container">
@@ -41,7 +41,8 @@
                 {
                     @foreach (var advert in _result)
                     {
-                        <AdvertCard Advert="advert" />
+                        // change Robert: added button
+                        <div type="button" @onclick="() => GoToAdvert(advert.Id)"><AdvertCard Advert="advert" /></div>
                     }
                 }
             </div>
@@ -78,6 +79,12 @@
             _isLoading = false;
             StateHasChanged();
         }
+    }
+
+    // Added by Robert
+    private void GoToAdvert(int advertId)
+    {
+        navigationManager.NavigateTo($"/advert/{advertId}");
     }
 }
 

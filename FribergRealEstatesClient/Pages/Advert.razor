@@ -1,0 +1,66 @@
+﻿@*Made by Robert*@
+
+@page "/advert/{id:int}"
+@inject IAdvertService advertService
+@inject IClient client
+
+<div class="container" style="display: flex; justify-content:center; align-items:center">
+    <div class="row">
+
+        <div class="container" style="display:flex; justify-content:center">
+            @if (advert != null)
+            {
+                <ImageCarousel ImageUrls="@advert.Residence.ImageUrls.ToList()"></ImageCarousel>
+            }
+            else
+            {
+                <p>Laddar bilder</p>
+            }
+        </div>
+
+        <div class="container mt-4">
+            @if (advert != null)
+            {
+                <div class="mx-auto" style="max-width: 800px;">
+
+                    <AdvertDetails advert="advert" />
+
+                    <div style="width: 100%; display:flex; justify-content: flex-start">
+                        @if (advert != null && realtorFullProfileDto != null)
+                        {
+                            <RealtorProfileCard realtorDto="@realtorFullProfileDto.Realtor" />
+                        }
+                        else
+                        {
+                            <p>Laddar profil</p>
+                        }
+                    </div>
+
+                </div>
+            }
+            else
+            {
+                <p class="text-center">Laddar information...</p>
+            }
+
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public int id { get; set; }
+
+    AdvertDto advert;
+    RealtorFullProfileDto realtorFullProfileDto;
+
+    protected override async Task OnInitializedAsync()
+    {
+        advert = await client.AdvertAsync(id);
+
+        if (advert != null)
+        {
+            realtorFullProfileDto = await client.FullProfileAsync(advert.Realtor.Id);
+        }
+    }
+}

@@ -1,0 +1,52 @@
+@* Made by Robert *@
+<div >
+<MudCarousel Class="carousel-custom rounded-lg" Style="height:300px;" AutoCycle="false" TData="object">
+    <BulletTemplate Context="selected">
+        <div Class="mud-button-root mud-icon-button mud-icon-button-color-inherit mud-ripple mud-ripple-icon">
+            <span class="mud-icon-button-label">
+                <MudIcon Icon="@(selected ? Icons.Material.Filled.CheckCircle : Icons.Material.Filled.Circle)" Color="@Color.Inherit" />
+            </span>
+        </div>
+    </BulletTemplate>
+    <PreviousButtonTemplate>
+        <div Class="mud-button-root mud-icon-button mud-icon-button-color-inherit mud-ripple mud-ripple-icon">
+            <span class="mud-icon-button-label">
+                <MudIcon Class="mud-ripple mud-ripple-icon mud-icon-button-size-medium" Icon="@Icons.Material.Filled.SkipPrevious" Color="@Color.Inherit" />
+            </span>
+        </div>
+    </PreviousButtonTemplate>
+    <NextButtonTemplate>
+        <div Class="mud-button-root mud-icon-button mud-icon-button-color-inherit mud-ripple mud-ripple-icon">
+            <span class="mud-icon-button-label">
+                <MudIcon Class="mud-ripple mud-ripple-icon mud-icon-button-size-medium" Icon="@Icons.Material.Filled.SkipNext" Color="@Color.Inherit" />
+            </span>
+        </div>
+    </NextButtonTemplate>
+    
+    <ChildContent>
+        @foreach (var item in ImageUrls)
+        {
+            <MudCarouselItem Color="@Color.Secondary">
+                <div class="d-flex" style="height:100%">
+                        <MudImage Height="300" Width="500" Src="@item" Alt="bild" Elevation="25" Class="rounded-lg advert-carousel" />
+                </div>
+            </MudCarouselItem>
+        }
+    </ChildContent>
+</MudCarousel>
+</div>
+<style type="text/css">
+    .carousel-custom {
+        display: flex;
+        width: 500px;
+    }
+
+    .mud-ripple-icon {
+        color: white;
+    }
+</style>
+
+@code{
+    
+    [Parameter] public List<string> ImageUrls { get; set; }
+}

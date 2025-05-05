@@ -18,18 +18,31 @@
         <MudText Typo="Typo.h6" Class="my-auto">FribergRealEstates</MudText>
 
         <div class="d-flex ml-6" style="gap: 16px; align-items:center">
+
+            @*Dropdown /Hamza*@
             <AuthorizeView>
                 <Authorized>
                     <MudNavLink Href="/" Match="NavLinkMatch.All">Sök bostad</MudNavLink>
-                    <MudNavLink Href="/agency/search">Sök mäklarbyrå</MudNavLink>
-                    <MudNavLink Href="/realtor/search">Sök mäklare</MudNavLink>
-                    <MudNavLink Href="/realtor">Mäklare</MudNavLink>
+                    <MudNavLink Href="/counter">Sök mäklare</MudNavLink>
+                    <MudMenu Hover="true" OffsetY="true" Direction="Direction.Start">
+                        <ActivatorContent>
+                            <MudButton Variant="Variant.Text" Color="Color.Inherit" EndIcon="@Icons.Material.Filled.ArrowDropDown" Class="px-2" Style="text-transform:none">
+                                Profil
+                            </MudButton>
+                        </ActivatorContent>
+                        <ChildContent>
+                            <MudMenuItem Href="/profile" Icon="@Icons.Material.Filled.Person">Min Profil</MudMenuItem>
+                            <MudMenuItem Href="/My-agency" Icon="@Icons.Material.Filled.Business">Mäklarebyrå</MudMenuItem>
+                            <MudDivider />
+                        </ChildContent>
+                    </MudMenu>
                     <Logout></Logout>
+
+
                 </Authorized>
                 <NotAuthorized>
                     <MudNavLink Href="/advert-search">Sök bostad</MudNavLink>
-                    <MudNavLink Href="/agency/search">Sök mäklarbyrå</MudNavLink>
-                    <MudNavLink Href="/realtor/search">Sök mäklare</MudNavLink>
+                    <MudNavLink Href="/counter">Sök mäklare</MudNavLink>
                     <MudNavLink Href="/realtor">Mäklare</MudNavLink>
                     <MudNavLink Href="/login">Login</MudNavLink>
                     <MudNavLink Href="/register">Register</MudNavLink>
