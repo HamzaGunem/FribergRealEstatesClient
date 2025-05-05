@@ -1,0 +1,31 @@
+﻿@*Auth Hamza*@
+@page "/My-agency"
+@inject IRealtorService realtorService
+
+<div class="container-large">
+
+    @if (realtor != null)
+    {
+        <h3 style="margin: 1rem auto; text-align:center; justify-content: center">Om</h3>
+        <AgencyProfile Id="@realtor.Realtor.AgencyId.Value"></AgencyProfile>
+        <div class="mt-2">
+            <h3 style="margin: 1rem auto; text-align:center; justify-content: center">Mäklare</h3>
+            <RealtorProfileSmall Id="@realtor.Realtor.AgencyId.Value"></RealtorProfileSmall>
+        </div>
+    }
+</div>
+
+@code {
+    private RealtorFullProfileDto realtor;
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            realtor = await realtorService.GetMyProfileAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Fel vid hämtning av profil: {ex.Message}");
+        }
+    }
+}
