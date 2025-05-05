@@ -1,5 +1,5 @@
 ﻿@*Made by Robert*@
-@page "/advert"
+@page "/advert/{id:int}"
 @inject IAdvertService advertService
 @inject IClient client
 
@@ -7,11 +7,9 @@
     <div class="row">
         <!-- Bild-raden, alltid centrerad -->
         <div class="container" style="display:flex; justify-content:center">
-            @if (result != null)
+            @if (advert != null)
             {
-
-                <ImageCarousel ImageUrls="@result.FirstOrDefault().Residence.ImageUrls.ToList()"></ImageCarousel>
-
+                <ImageCarousel ImageUrls="@advert.Residence.ImageUrls.ToList()"></ImageCarousel>
             }
             else
             {
@@ -19,9 +17,9 @@
             }
         </div>
 
-        <div class="row gx-0 justify-content-center">
+        @* <div class="row gx-0 justify-content-center">
             <div class="col-auto">
-                @if (result != null)
+                @if (advert != null)
                 {
                     <RealtorProfileCard realtorDto="@realtorFullProfileDto.Realtor"></RealtorProfileCard>
                 }
@@ -31,9 +29,56 @@
                 }
             </div>
             <div class="col-auto">
-                @if (result != null)
+                @if (advert != null)
                 {
                     <RealtorProfileCard realtorDto="@realtorFullProfileDto.Realtor"></RealtorProfileCard>
+                }
+                else
+                {
+                    <p>Laddar profil</p>
+                }
+            </div>
+        </div> *@
+        @* <div class="row gx-3">
+            <div class="col-7">
+                @if (advert != null)
+                {
+                    <RealtorProfileCard realtorDto="@realtorFullProfileDto.Realtor"></RealtorProfileCard>
+                }
+                else
+                {
+                    <p>Laddar profil</p>
+                }
+            </div>
+            <div class="col-5">
+                @if (advert != null)
+                {
+                    <RealtorProfileCard realtorDto="@realtorFullProfileDto.Realtor"></RealtorProfileCard>
+                }
+                else
+                {
+                    <p>Laddar profil</p>
+                }
+            </div>
+        </div> *@
+        <div class="row gx-3">
+            <!-- Vänstra kolumnen: 70% på md+ skärmar, 100% på små -->
+            <div class="col-12 col-md-7 mb-3">
+                @if (advert != null)
+                {
+                    <RealtorProfileCard realtorDto="@realtorFullProfileDto.Realtor" />
+                }
+                else
+                {
+                    <p>Laddar profil</p>
+                }
+            </div>
+
+            <!-- Högra kolumnen: 30% på md+ skärmar, 100% på små -->
+            <div class="col-12 col-md-5">
+                @if (advert != null)
+                {
+                    <RealtorProfileCard realtorDto="@realtorFullProfileDto.Realtor" />
                 }
                 else
                 {
@@ -41,27 +86,26 @@
                 }
             </div>
         </div>
+
     </div>
 </div>
 
 
 
 @code {
+    [Parameter]
+    public int id { get; set; }
 
-    ICollection<AdvertDto> result;
+    AdvertDto advert;
     RealtorFullProfileDto realtorFullProfileDto;
-
-    AdvertFilterDto advertFilter = new AdvertFilterDto
-        {
-            ResidenceTypes = new List<ResidenceType> { ResidenceType.House }
-        };
 
     protected override async Task OnInitializedAsync()
     {
-        result = await advertService.GetFilteredAdverts(advertFilter);
-        if (result.Count > 1)
+        advert = await client.AdvertAsync(id);
+
+        if (advert != null)
         {
-            realtorFullProfileDto = await client.FullProfileAsync(result.FirstOrDefault().Realtor.Id);
+            realtorFullProfileDto = await client.FullProfileAsync(advert.Realtor.Id);            
         }
     }
 }
