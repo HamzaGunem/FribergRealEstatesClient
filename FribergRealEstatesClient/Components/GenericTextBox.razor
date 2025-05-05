@@ -1,0 +1,15 @@
+﻿<div>
+	@if (!string.IsNullOrWhiteSpace(TextInput))
+	{
+		<MudText Typo="Typo.body1">@TextInput</MudText>
+	}
+	else
+	{
+		<p>Text saknas</p>
+	}
+</div>
+
+@code {
+	[Parameter] public string TextInput { get; set; }
+	[Parameter] public string SetStyling { get; set; }
+}

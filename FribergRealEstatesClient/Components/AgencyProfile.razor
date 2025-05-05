@@ -1,6 +1,6 @@
 ﻿@inject IAgencyService agencyService
 
-@*made by Samuel upd*@
+@*made by Samuel*@
 @if (isError)
 {
 	<MudAlert Severity="Severity.Error">
@@ -11,15 +11,13 @@ else if (profileDto != null)
 {
 	<div style="height: 200px;">
 		<MudCard Style="display: flex; flex-direction: row; height: 100%;">
+			
 			<div>
-				@if (!string.IsNullOrEmpty(profileDto.PictureUrl))
-				{
-					<MudCardMedia Image="@profileDto.PictureUrl" Style="object-fit: cover; width: 150px; height: 100%;" />
-				}
-				else
-				{
-					<MudCardMedia Image="https://upload.wikimedia.org/wikipedia/commons/1/12/Property_Guardians_logo.png" Style="object-fit: cover; width: 150px;  height: 100%;" />
-				}
+				<GenericImageBox 
+				ImageUrl=@profileDto.LogoUrl
+				AltText="byrå logga"
+				SetStyling="object-fit: cover; width: 150px; height: 100%;">
+				</GenericImageBox>			
 			</div>
 
 			<div>
@@ -37,7 +35,7 @@ else if (profileDto != null)
 			</div>
 		</MudCard>
 	</div>
-	
+
 }
 else
 {
@@ -52,7 +50,7 @@ else
 	private AgencyWithSimpleRealtorsDto profileDto;
 
 	private bool isError = false;
-
+		
 	protected override async Task OnParametersSetAsync()
 	{
 		isError = false;

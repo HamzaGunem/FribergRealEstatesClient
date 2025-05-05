@@ -16,14 +16,57 @@
 			</GenericSearchBox>
 		</MudItem>
 
-		<MudItem xs="12" sm="8" Style="background-color: darkgrey; border-radius: 10px" Class="p-2 ml-4">
-			@foreach(var agency in _getAgencies)
-			{
-				<ImageComponent 
-					ImageUrl="@agency.PictureUrl"
-				    AltText="bild på mäklarbyrå"
-					style=""></ImageComponent>
-			}
+		<MudItem xs="12" sm="8" Style="background-color: darkgrey; border-radius: 10px" Class="p-2">
+			<MudGrid>
+				@if(_searching)
+				{
+					<MudProgressCircular Indeterminate="true" Color="Color.Primary" />
+				}
+				else if (_searchPerformed && !_getAgencies.Any())
+				{
+					<MudAlert Severity="Severity.Info">@_errorAgency @_searchTerm</MudAlert>
+				}
+				else
+				{
+					@foreach (var agency in _getAgencies)
+					{
+						<div @onclick="@(() => NavigateToAgency(agency.Id))"
+							 style="cursor: pointer; transition: transform 0.3s ease-in-out;"
+							 onmouseover="this.style.transform='scale(1.05)'"
+							 onmouseout="this.style.transform='scale(1)'">
+							 
+							<MudItem xs="12">
+								<GenericImageBox 
+									ImageUrl="@agency.LogoUrl"
+									AltText="bild på mäklarbyrå"
+									SetStyling="object-fit: cover; width: 300px; height: 100%;">
+								</GenericImageBox>
+
+								<GenericTextBox TextInput="@agency.Description"></GenericTextBox>
+								
+									
+									@foreach (var realtor in agency.Realtors)
+									{
+
+									<div @onclick="@(() => NavigateToRealtor(realtor.Id))"
+										 style="cursor: pointer; transition: transform 0.3s ease-in-out;"
+										 onmouseover="this.style.transform='scale(1.05)'"
+										 onmouseout="this.style.transform='scale(1)'">
+										 <GenericImageBox 
+											 ImageUrl="@realtor.PictureUrl"
+											 AltText="bild på mäklare"
+											 SetStyling="width: 100px; height: 100%, object-fit: cover;">
+
+										 </GenericImageBox>
+									</div>
+									}
+								
+								
+						</MudItem>
+						</div>
+					}
+				}
+			</MudGrid>
 
 		</MudItem>
 	</MudGrid>
@@ -50,13 +93,23 @@
 
 		await Task.Delay(500);
 		_searchTerm = term;
-		if(!string.IsNullOrWhiteSpace(term))
+		if(!string.IsNullOrWhiteSpace(_searchTerm))
 		{
-			_getAgencies = await agencyService.GetAllAgenciesInCommun(term);
+			_getAgencies = await agencyService.GetAllAgenciesInCommun(_searchTerm);
 		}
 
 		_searching = false;
 		_searchPerformed = true;
 		StateHasChanged();
+	}
+
+	private void NavigateToAgency(int id)
+	{
+		navManager.NavigateTo($"/agency/{id}");
+	}
+
+	private void NavigateToRealtor(int id)
+	{
+		navManager.NavigateTo($"/realtor/{id}");
 	}
 }
