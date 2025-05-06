@@ -2,9 +2,11 @@
 @page "/admindashboard"
 
 
-<MudPaper Class="pa-10 ma-2">
-    <MudText Typo="Typo.h3" Style="text-align:center; justify-content:center; align-items:center;">ADMIN DASHBOARD</MudText>
-</MudPaper>
+<MudItem>
+    <MudPaper style="background-color: var(--bg-baseblue-color);" MinHeight="150px" Class="pa-8 ma-2">
+        <MudText Typo="Typo.h3" Class="p-4" Style="text-align:center; background-color: white;">ADMIN DASHBOARD</MudText>
+    </MudPaper>
+</MudItem>
 
 <MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.False">
     <MudGrid>
@@ -14,11 +16,12 @@
                     <MudExpansionPanel Text="Bostäder" Style="text-align:center;" MaxHeight="300" Expanded="false">
                         <MudList T="string" Style="background-color: white;">
                             <MudDivider />
-                            <MudListItem>Skapa</MudListItem>
+                            <MudListItem Icon="@Icons.Material.Filled.Create"
+                                         IconColor="Color.Success">Skapa</MudListItem>
                             <MudDivider />
-                            <MudListItem>Ändra</MudListItem>
+                            <MudListItem Icon="@Icons.Material.Filled.ChangeCircle" IconColor="Color.Primary">Ändra</MudListItem>
                             <MudDivider />
-                            <MudListItem>Ta bort</MudListItem>
+                            <MudListItem Icon="@Icons.Material.Filled.RemoveCircleOutline" IconColor="Color.Error">Ta bort</MudListItem>
                         </MudList>
                     </MudExpansionPanel>
                 </MudExpansionPanels>
@@ -31,13 +34,14 @@
                     <MudExpansionPanel Text="Mäklare" Style="text-align:center;" MaxHeight="300" Expanded="false">
                         <MudList T="string" Style="background-color: white;">
                             <MudDivider />
-                            <MudListItem>Godkänna konton</MudListItem>
+                            <MudListItem Icon="@Icons.Material.Filled.ContactMail" IconColor="Color.Info">Godkänna konton</MudListItem>
                             <MudDivider />
-                            <MudListItem>Skapa</MudListItem>
+                            <MudListItem Icon="@Icons.Material.Filled.Create"
+                                         IconColor="Color.Success">Skapa</MudListItem>
                             <MudDivider />
-                            <MudListItem>Ändra</MudListItem>
+                            <MudListItem Icon="@Icons.Material.Filled.ChangeCircle" IconColor="Color.Primary">Ändra</MudListItem>
                             <MudDivider />
-                            <MudListItem>Ta bort</MudListItem>
+                            <MudListItem Icon="@Icons.Material.Filled.RemoveCircleOutline" IconColor="Color.Error">Ta bort</MudListItem>
                         </MudList>
                     </MudExpansionPanel>
                 </MudExpansionPanels>
@@ -49,13 +53,14 @@
                     <MudExpansionPanel Text="Mäklarbyrå" Style="text-align:center;" MaxHeight="300" Expanded="false">
                         <MudList T="string" Style="background-color: white;">
                             <MudDivider />
-                            <MudListItem>Skapa</MudListItem>
+                            <MudListItem Icon="@Icons.Material.Filled.Create"
+                                         IconColor="Color.Success">Skapa</MudListItem>
                             <MudDivider />
-                            <MudListItem>Ändra</MudListItem>
+                            <MudListItem Icon="@Icons.Material.Filled.ChangeCircle" IconColor="Color.Primary">Ändra</MudListItem>
                             <MudDivider />
-                            <MudListItem>Koppla mäklare</MudListItem>
+                            <MudListItem Icon="@Icons.Material.Filled.AssignmentInd" IconColor="Color.Warning">Koppla mäklare till byrå</MudListItem>
                             <MudDivider />
-                            <MudListItem>Ta bort</MudListItem>
+                            <MudListItem Icon="@Icons.Material.Filled.RemoveCircleOutline" IconColor="Color.Error">Ta bort</MudListItem>
                         </MudList>
                     </MudExpansionPanel>
                 </MudExpansionPanels>
@@ -66,13 +71,15 @@
                 <MudExpansionPanels>
                     <MudExpansionPanel Text="Annonser" Style="text-align:center;" MaxHeight="300" Expanded="false">
                         <MudList T="string" Style="background-color: white;">
-                            <MudListItem>Skapa</MudListItem>
+                            <MudListItem Icon="@Icons.Material.Filled.Create"
+                                         IconColor="Color.Success">Skapa</MudListItem>
                             <MudDivider />
-                            <MudListItem>Ändra</MudListItem>
+                            <MudListItem Icon="@Icons.Material.Filled.ChangeCircle" IconColor="Color.Primary">Ändra annons</MudListItem>
                             <MudDivider />
-                            <MudListItem>Ta bort</MudListItem>
+                            <MudListItem Icon="@Icons.Material.Filled.AssignmentInd" IconColor="Color.Warning">Ändra tilldelad Mäklare</MudListItem>
                             <MudDivider />
-                            <MudListItem>Ändra Mäklare</MudListItem>
+                            <MudListItem Icon="@Icons.Material.Filled.RemoveCircleOutline" IconColor="Color.Error">Ta bort</MudListItem>
+
                         </MudList>
                     </MudExpansionPanel>
                 </MudExpansionPanels>
@@ -80,7 +87,27 @@
         </MudItem>
     </MudGrid>
 </MudContainer>
+<style>
+    .mud-expand-panel-header {
+        color: white;
+        background-color: var(--bg-baseblue-color);
+    }
 
+    .mud-expand-panel-content {
+        background-color: whitesmoke;
+    }
+
+    .mud-divider {
+        border-color: black;
+    }
+
+    .mud-list-item-icon {
+        min-width: 35px;
+    }
+
+    .mud-icon-root.mud-svg-icon {
+    }
+</style>
 @code {
 
 }
