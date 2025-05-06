@@ -1,3 +1,7 @@
+:root {
+    --bg-baseblue-color: #594ae2M;
+}
+
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
@@ -170,4 +174,8 @@ code {
     .only-above-1440 {
         display: block !important;
     }
+}
+.exppanel-text .mud-expansion-panel-header .mud-typography {
+    color: red; /* Change this to your desired color */
+    background-color: coral;
 }
