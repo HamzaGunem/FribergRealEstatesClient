@@ -8,7 +8,11 @@
                 <MudList T="string" Style="background-color: white;">
                     <MudDivider />
                     <MudListItem Icon="@Icons.Material.Filled.Create"
-                                 IconColor="Color.Success">Skapa</MudListItem>
+                    IconColor="Color.Success">
+                        <MudText Color="Color.Default" Class="custom-link" @onclick="CreateNewAgency">
+                            Skapa
+                        </MudText>
+                    </MudListItem>
                     <MudDivider />
                     <MudListItem Icon="@Icons.Material.Filled.ChangeCircle" IconColor="Color.Primary">Ändra</MudListItem>
                     <MudDivider />
@@ -23,4 +27,8 @@
 
 @code{
 
+    public void CreateNewAgency()
+    {
+        navManager.NavigateTo("/create-agency");
+    }
 }

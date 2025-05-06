@@ -1,20 +1,21 @@
-@* Made by Robert *@
+@* Made By Robert *@
 @inject NavigationManager navManager
 
 <MudItem xs="12" sm="6" md="6">
     <MudPaper Elevation="3" Class="pa-4">
         <MudExpansionPanels>
-            <MudExpansionPanel Text="Bostäder" Style="text-align:center;" MaxHeight="300" Expanded="false">
+            <MudExpansionPanel Text="Annonser" Style="text-align:center;" MaxHeight="300" Expanded="false">
                 <MudList T="string" Style="background-color: white;">
-                    <MudDivider />
                     <MudListItem Icon="@Icons.Material.Filled.Create"
                     IconColor="Color.Success">
-                        <MudText Color="Color.Default" Class="custom-link" @onclick="CreateResidence">
+                        <MudText Color="Color.Default" Class="custom-link" @onclick="CreateAdvert">
                             Skapa
                         </MudText>
                     </MudListItem>
                     <MudDivider />
-                    <MudListItem Icon="@Icons.Material.Filled.ChangeCircle" IconColor="Color.Primary">Ändra</MudListItem>
+                    <MudListItem Icon="@Icons.Material.Filled.ChangeCircle" IconColor="Color.Primary">Ändra annons</MudListItem>
+                    <MudDivider />
+                    <MudListItem Icon="@Icons.Material.Filled.AssignmentInd" IconColor="Color.Warning">Ändra tilldelad Mäklare</MudListItem>
                     <MudDivider />
                     <MudListItem Icon="@Icons.Material.Filled.RemoveCircleOutline" IconColor="Color.Error">Ta bort</MudListItem>
                 </MudList>
@@ -24,8 +25,8 @@
 </MudItem>
 
 @code{
-    public void CreateResidence()
+    public void CreateAdvert()
     {
-        navManager.NavigateTo("/create-residence");
+        navManager.NavigateTo("/create-advert");
     }
 }
