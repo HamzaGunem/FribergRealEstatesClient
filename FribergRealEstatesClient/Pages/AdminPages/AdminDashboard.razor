@@ -1,97 +1,81 @@
 ﻿@* Made by Robert *@
 @page "/admindashboard"
+@inject NavigationManager navManager
 
 <div class="container">
-<MudItem>
-    <MudPaper style="background-color: var(--bg-baseblue-color);" MinHeight="150px" Class="pa-6 ma-2">
-        <MudText Typo="Typo.h3" Class="p-4" Style="text-align:center; background-color: white;">ADMIN DASHBOARD</MudText>
-    </MudPaper>
-</MudItem>
+    <MudItem>
+        <MudPaper style="background-color: var(--bg-baseblue-color);" MinHeight="150px" Class="pa-6 ma-2">
+            <MudText Typo="Typo.h3" Class="p-4" Style="text-align:center; background-color: white;">ADMIN DASHBOARD</MudText>
+        </MudPaper>
+    </MudItem>
 
-<MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.False">
-    <MudGrid>
+    <MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.False">
+        <MudGrid>
 
-        <MudItem xs="12" sm="6" md="6">
-            <MudPaper Elevation="3" Class="pa-4">
-                <MudExpansionPanels>
-                    <MudExpansionPanel Text="Bostäder" Style="text-align:center;" MaxHeight="300" Expanded="false">
-                        <MudList T="string" Style="background-color: white;">
-                            <MudDivider />
-                            <MudListItem Icon="@Icons.Material.Filled.Create"
-                                         IconColor="Color.Success">Skapa</MudListItem>
-                            <MudDivider />
-                            <MudListItem Icon="@Icons.Material.Filled.ChangeCircle" IconColor="Color.Primary">Ändra</MudListItem>
-                            <MudDivider />
-                            <MudListItem Icon="@Icons.Material.Filled.RemoveCircleOutline" IconColor="Color.Error">Ta bort</MudListItem>
-                        </MudList>
-                    </MudExpansionPanel>
-                </MudExpansionPanels>
-            </MudPaper>
-        </MudItem>
+            <MudItem xs="12" sm="6" md="6">
+                <MudPaper Elevation="3" Class="pa-4">
+                    <MudExpansionPanels>
+                        <MudExpansionPanel Text="Bostäder" Style="text-align:center;" MaxHeight="300" Expanded="false">
+                            <MudList T="string" Style="background-color: white;">
+                                <MudDivider />
+                                <MudListItem Icon="@Icons.Material.Filled.Create"
+                                             IconColor="Color.Success">Skapa</MudListItem>
+                                <MudDivider />
+                                <MudListItem Icon="@Icons.Material.Filled.ChangeCircle" IconColor="Color.Primary">Ändra</MudListItem>
+                                <MudDivider />
+                                <MudListItem Icon="@Icons.Material.Filled.RemoveCircleOutline" IconColor="Color.Error">Ta bort</MudListItem>
+                            </MudList>
+                        </MudExpansionPanel>
+                    </MudExpansionPanels>
+                </MudPaper>
+            </MudItem>
 
-        <MudItem xs="12" sm="6" md="6">
-            <MudPaper Elevation="3" Class="pa-4">
-                <MudExpansionPanels>
-                    <MudExpansionPanel Text="Mäklare" Style="text-align:center;" MaxHeight="300" Expanded="false">
-                        <MudList T="string" Style="background-color: white;">
-                            <MudDivider />
-                            <MudListItem Icon="@Icons.Material.Filled.ContactMail" IconColor="Color.Info">Godkänna konton</MudListItem>
-                            <MudDivider />
-                            <MudListItem Icon="@Icons.Material.Filled.Create"
-                                         IconColor="Color.Success">Skapa</MudListItem>
-                            <MudDivider />
-                            <MudListItem Icon="@Icons.Material.Filled.ChangeCircle" IconColor="Color.Primary">Ändra</MudListItem>
-                            <MudDivider />
-                            <MudListItem Icon="@Icons.Material.Filled.RemoveCircleOutline" IconColor="Color.Error">Ta bort</MudListItem>
-                        </MudList>
-                    </MudExpansionPanel>
-                </MudExpansionPanels>
-            </MudPaper>
-        </MudItem>
+            <AdminRealtorMenuCard />
 
-        <MudItem xs="12" sm="6" md="6">
-            <MudPaper Elevation="3" Class="pa-4">
-                <MudExpansionPanels>
-                    <MudExpansionPanel Text="Mäklarbyrå" Style="text-align:center;" MaxHeight="300" Expanded="false">
-                        <MudList T="string" Style="background-color: white;">
-                            <MudDivider />
-                            <MudListItem Icon="@Icons.Material.Filled.Create"
-                                         IconColor="Color.Success">Skapa</MudListItem>
-                            <MudDivider />
-                            <MudListItem Icon="@Icons.Material.Filled.ChangeCircle" IconColor="Color.Primary">Ändra</MudListItem>
-                            <MudDivider />
-                            <MudListItem Icon="@Icons.Material.Filled.AssignmentInd" IconColor="Color.Warning">Koppla mäklare till byrå</MudListItem>
-                            <MudDivider />
-                            <MudListItem Icon="@Icons.Material.Filled.RemoveCircleOutline" IconColor="Color.Error">Ta bort</MudListItem>
-                        </MudList>
-                    </MudExpansionPanel>
-                </MudExpansionPanels>
-            </MudPaper>
-        </MudItem>
+            <MudItem xs="12" sm="6" md="6">
+                <MudPaper Elevation="3" Class="pa-4">
+                    <MudExpansionPanels>
+                        <MudExpansionPanel Text="Mäklarbyrå" Style="text-align:center;" MaxHeight="300" Expanded="false">
+                            <MudList T="string" Style="background-color: white;">
+                                <MudDivider />
+                                <MudListItem Icon="@Icons.Material.Filled.Create"
+                                             IconColor="Color.Success">Skapa</MudListItem>
+                                <MudDivider />
+                                <MudListItem Icon="@Icons.Material.Filled.ChangeCircle" IconColor="Color.Primary">Ändra</MudListItem>
+                                <MudDivider />
+                                <MudListItem Icon="@Icons.Material.Filled.AssignmentInd" IconColor="Color.Warning">Koppla mäklare till byrå</MudListItem>
+                                <MudDivider />
+                                <MudListItem Icon="@Icons.Material.Filled.RemoveCircleOutline" IconColor="Color.Error">Ta bort</MudListItem>
+                            </MudList>
+                        </MudExpansionPanel>
+                    </MudExpansionPanels>
+                </MudPaper>
+            </MudItem>
 
-        <MudItem xs="12" sm="6" md="6">
-            <MudPaper Elevation="3" Class="pa-4">
-                <MudExpansionPanels>
-                    <MudExpansionPanel Text="Annonser" Style="text-align:center;" MaxHeight="300" Expanded="false">
-                        <MudList T="string" Style="background-color: white;">
-                            <MudListItem Icon="@Icons.Material.Filled.Create"
-                                         IconColor="Color.Success">Skapa</MudListItem>
-                            <MudDivider />
-                            <MudListItem Icon="@Icons.Material.Filled.ChangeCircle" IconColor="Color.Primary">Ändra annons</MudListItem>
-                            <MudDivider />
-                            <MudListItem Icon="@Icons.Material.Filled.AssignmentInd" IconColor="Color.Warning">Ändra tilldelad Mäklare</MudListItem>
-                            <MudDivider />
-                            <MudListItem Icon="@Icons.Material.Filled.RemoveCircleOutline" IconColor="Color.Error">Ta bort</MudListItem>
-                        </MudList>
-                    </MudExpansionPanel>
-                </MudExpansionPanels>
-            </MudPaper>
-        </MudItem>
+            <MudItem xs="12" sm="6" md="6">
+                <MudPaper Elevation="3" Class="pa-4">
+                    <MudExpansionPanels>
+                        <MudExpansionPanel Text="Annonser" Style="text-align:center;" MaxHeight="300" Expanded="false">
+                            <MudList T="string" Style="background-color: white;">
+                                <MudListItem Icon="@Icons.Material.Filled.Create"
+                                             IconColor="Color.Success">Skapa</MudListItem>
+                                <MudDivider />
+                                <MudListItem Icon="@Icons.Material.Filled.ChangeCircle" IconColor="Color.Primary">Ändra annons</MudListItem>
+                                <MudDivider />
+                                <MudListItem Icon="@Icons.Material.Filled.AssignmentInd" IconColor="Color.Warning">Ändra tilldelad Mäklare</MudListItem>
+                                <MudDivider />
+                                <MudListItem Icon="@Icons.Material.Filled.RemoveCircleOutline" IconColor="Color.Error">Ta bort</MudListItem>
+                            </MudList>
+                        </MudExpansionPanel>
+                    </MudExpansionPanels>
+                </MudPaper>
+            </MudItem>
 
-    </MudGrid>
-</MudContainer>
+        </MudGrid>
+    </MudContainer>
 </div>
 
+@* styling *@
 <style>
     .mud-expand-panel-header {
         color: white;
@@ -112,8 +96,13 @@
 
     .mud-icon-root.mud-svg-icon {
     }
+
+    .mud-link:visited,
+    .mud-link:active {
+        color: black !important;
+    }
 </style>
 
 @code {
-
+    
 }
