@@ -42,7 +42,8 @@
                     @foreach (var advert in _result)
                     {
                         // change Robert: added button
-                        <div type="button" @onclick="() => GoToAdvert(advert.Id)"><AdvertCard Advert="advert" /></div>
+                        //<div type="button" @onclick="() => GoToAdvert(advert.Id)"><AdvertCard Advert="advert" /></div>
+                        <div type="button" @onclick="() => GoToAdvert(advert.Id)"><RealtorActiveAdvert Advert="advert" /></div>
                     }
                 }
             </div>
