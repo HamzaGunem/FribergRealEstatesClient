@@ -1,0 +1,12 @@
+﻿.mud-expand-panel-header {
+    color: white;
+    background-color: var(--bg-baseblue-color);
+}
+
+.mud-expand-panel-content {
+    background-color: whitesmoke;
+}
+
+.mud-divider {
+    border-color: black;
+}
