@@ -2,8 +2,8 @@
 @page "/admindashboard"
 
 
-<MudPaper Class="pa-16 ma-2">
-    <MudText Typo="Typo.h3" Style="text-align-center;">ADMIN DASHBOARD</MudText>
+<MudPaper Class="pa-10 ma-2">
+    <MudText Typo="Typo.h3" Style="text-align:center; justify-content:center; align-items:center;">ADMIN DASHBOARD</MudText>
 </MudPaper>
 
 <MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.False">
@@ -11,15 +11,14 @@
         <MudItem xs="12" sm="6" md="6">
             <MudPaper Elevation="3" Class="pa-4">
                 <MudExpansionPanels>
-                    <MudExpansionPanel Text="Hantera Lägenheter" Style="text-align:center;" MaxHeight="150" Expanded="false">
+                    <MudExpansionPanel Text="Bostäder" Style="text-align:center;" MaxHeight="300" Expanded="false">
                         <MudList T="string" Style="background-color: white;">
-                            <MudListItem Style="background-color: white;">Inbox</MudListItem>
                             <MudDivider />
-                            <MudListItem>Sent</MudListItem>
+                            <MudListItem>Skapa</MudListItem>
                             <MudDivider />
-                            <MudListItem>Drafts</MudListItem>
+                            <MudListItem>Ändra</MudListItem>
                             <MudDivider />
-                            <MudListItem>Spam</MudListItem>
+                            <MudListItem>Ta bort</MudListItem>
                         </MudList>
                     </MudExpansionPanel>
                 </MudExpansionPanels>
@@ -29,15 +28,16 @@
         <MudItem xs="12" sm="6" md="6">
             <MudPaper Elevation="3" Class="pa-4">
                 <MudExpansionPanels>
-                    <MudExpansionPanel Text="Hantera Lägenheter" Style="text-align:center;" MaxHeight="150" Expanded="false">
+                    <MudExpansionPanel Text="Mäklare" Style="text-align:center;" MaxHeight="300" Expanded="false">
                         <MudList T="string" Style="background-color: white;">
-                            <MudListItem Style="background-color: white;">Inbox</MudListItem>
                             <MudDivider />
-                            <MudListItem>Sent</MudListItem>
+                            <MudListItem>Godkänna konton</MudListItem>
                             <MudDivider />
-                            <MudListItem>Drafts</MudListItem>
+                            <MudListItem>Skapa</MudListItem>
                             <MudDivider />
-                            <MudListItem>Spam</MudListItem>
+                            <MudListItem>Ändra</MudListItem>
+                            <MudDivider />
+                            <MudListItem>Ta bort</MudListItem>
                         </MudList>
                     </MudExpansionPanel>
                 </MudExpansionPanels>
@@ -46,15 +46,16 @@
         <MudItem xs="12" sm="6" md="6">
             <MudPaper Elevation="3" Class="pa-4">
                 <MudExpansionPanels>
-                    <MudExpansionPanel Text="Hantera Lägenheter" Style="text-align:center;" MaxHeight="150" Expanded="false">
+                    <MudExpansionPanel Text="Mäklarbyrå" Style="text-align:center;" MaxHeight="300" Expanded="false">
                         <MudList T="string" Style="background-color: white;">
-                            <MudListItem Style="background-color: white;">Inbox</MudListItem>
                             <MudDivider />
-                            <MudListItem>Sent</MudListItem>
+                            <MudListItem>Skapa</MudListItem>
                             <MudDivider />
-                            <MudListItem>Drafts</MudListItem>
+                            <MudListItem>Ändra</MudListItem>
                             <MudDivider />
-                            <MudListItem>Spam</MudListItem>
+                            <MudListItem>Koppla mäklare</MudListItem>
+                            <MudDivider />
+                            <MudListItem>Ta bort</MudListItem>
                         </MudList>
                     </MudExpansionPanel>
                 </MudExpansionPanels>
@@ -63,15 +64,15 @@
         <MudItem xs="12" sm="6" md="6">
             <MudPaper Elevation="3" Class="pa-4">
                 <MudExpansionPanels>
-                    <MudExpansionPanel Text="Hantera Lägenheter" Style="text-align:center;" MaxHeight="150" Expanded="false">
+                    <MudExpansionPanel Text="Annonser" Style="text-align:center;" MaxHeight="300" Expanded="false">
                         <MudList T="string" Style="background-color: white;">
-                            <MudListItem Style="background-color: white;">Inbox</MudListItem>
+                            <MudListItem>Skapa</MudListItem>
                             <MudDivider />
-                            <MudListItem>Sent</MudListItem>
+                            <MudListItem>Ändra</MudListItem>
                             <MudDivider />
-                            <MudListItem>Drafts</MudListItem>
+                            <MudListItem>Ta bort</MudListItem>
                             <MudDivider />
-                            <MudListItem>Spam</MudListItem>
+                            <MudListItem>Ändra Mäklare</MudListItem>
                         </MudList>
                     </MudExpansionPanel>
                 </MudExpansionPanels>
@@ -82,8 +83,18 @@
 
 <style>
     .mud-expand-panel-header {
-        color: red; /* Change this to your desired color */
-        background-color: black;
+        color: white; /* Change this to your desired color */
+        background-color: var(--bg-baseblue-color);
+    }
+
+    .mud-expand-panel-content
+    {
+        background-color: whitesmoke;
+    }
+
+    .mud-divider
+    {
+        border-color: black;
     }
 </style>
 @code {
