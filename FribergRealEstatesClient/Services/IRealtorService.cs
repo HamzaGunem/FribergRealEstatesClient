@@ -12,6 +12,7 @@ namespace FribergRealEstatesClient.Services
 
         Task<List<RealtorSummaryDto>> GetAllByCity(string cityName);
         Task<IEnumerable<AdminRealtorUserDto>> GetAllRealtors(); // Robert
+        Task UpdateRealtorUserAsync(AdminRealtorUserDto realtorUserDto); // Robert
     }
 
 }

@@ -69,5 +69,19 @@ namespace FribergRealEstatesClient.Services
             await GetBearerToken();
             return await _client.ValidaterealtorAsync();
         }
+
+        // Auth: Robert
+        public async Task UpdateRealtorUserAsync(AdminRealtorUserDto realtorUserDto)
+        {
+            try
+            {
+                await GetBearerToken();
+                await _client.ProfileapiuserAsync(realtorUserDto.ApiUserId, realtorUserDto.Id.ToString(), realtorUserDto);
+            }
+            catch (ApiException ex)
+            {
+                Console.WriteLine($"Fel vid uppdatering av RealtorUser: {ex.Message}");
+            }           
+        }
     }
 }
