@@ -62,5 +62,12 @@ namespace FribergRealEstatesClient.Services
             await GetBearerToken(); // <-- Lägg till token i headern
             return await _client.MeAsync(); // <-- Din Refit-metod t.ex.
         }
+
+        // Auth: Robert
+        public async Task<IEnumerable<AdminRealtorUserDto>> GetAllRealtors()
+        {
+            await GetBearerToken();
+            return await _client.ValidaterealtorAsync();
+        }
     }
 }
