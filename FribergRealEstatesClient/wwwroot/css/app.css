@@ -152,8 +152,8 @@ code {
     }
 }
 
-@media (max-width: 1440px) {
-    .only-below-1440 {https://images.unsplash.com/photo-1613490493576-7fde63acd811
+@media (max-width: 1600px) {
+    .only-below-1440 {
         display: block !important;
     }
 
@@ -162,7 +162,7 @@ code {
     }
 }
 
-@media (min-width: 1441px) {
+@media (min-width: 1601px) {
     .only-below-1440 {
         display: none !important;
     }

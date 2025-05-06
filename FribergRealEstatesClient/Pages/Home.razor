@@ -3,37 +3,7 @@
 @inject NavigationManager Nav
 <PageTitle>Home</PageTitle>
 
-
-<!-- Exempel hur använda RealtorActiveAdvert -->
-@* <div class="container-large">
-    @if (result != null)
-    {
-        foreach (var item in result)
-        {
-            <RealtorActiveAdvert Advert="@item"></RealtorActiveAdvert>
-        }
-    }
-    else
-    {
-        <p>Laddar annons...</p>
-    }
-</div> *@
-
 @code {
-    // private string img = "";
-    // private MudTheme Theme = new MudTheme();
-
-    // RealtorProfileDto test;
-    // ICollection<AdvertDto> result;
-    // AdvertFilterDto advertFilter = new AdvertFilterDto
-    //     {
-    //         ResidenceTypes = new List<ResidenceType> { ResidenceType.House }
-    //     };
-
-    //protected override async Task OnInitializedAsync()
-    //{
-    //    result = await advertService.GetFilteredAdverts(advertFilter);
-    //}
     protected override void OnInitialized()
     {
         Nav.NavigateTo("/advert-search", forceLoad: false);
