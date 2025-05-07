@@ -179,3 +179,9 @@ code {
     color: red; /* Change this to your desired color */
     background-color: coral;
 }
+
+/*Jonathan*/
+.residence-btn.mud-button-root:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(255, 222, 111, 0.5);
+}
