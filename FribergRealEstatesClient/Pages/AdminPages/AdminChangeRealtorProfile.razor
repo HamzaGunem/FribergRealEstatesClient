@@ -114,7 +114,12 @@ else
 
     private async Task UpdateRealtor(EditContext context)
     {
-        realtorProfileDto.AgencyId = Convert.ToInt32(_selectedAgency);
+        Console.WriteLine(_selectedAgency);
+
+        if (!string.IsNullOrEmpty(_selectedAgency))
+        {
+            realtorProfileDto.AgencyId = Convert.ToInt32(_selectedAgency);
+        }
 
         await realtorService.UpdateRealtorProfileAsync(realtorProfileDto);
         await LoadRealtors();
