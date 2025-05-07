@@ -185,6 +185,7 @@ code {
         display: block;
         transform: rotate(90deg);
         margin: 1rem auto;
+        margin-top: 20px;
         order: 1;
     }
     .zone1 {
