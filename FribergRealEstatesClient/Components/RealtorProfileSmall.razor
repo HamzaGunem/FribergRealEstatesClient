@@ -22,20 +22,15 @@
 							onmouseover="this.style.transform='scale(1.05)'"
 							onmouseout="this.style.transform='scale(1)'">
 							
-							@*<div style="position: absolute; bottom: 0; width: 100%; background-color: #594ae2; color: white; text-align: center; font-weight: bold; padding: 4px 0;">*@
 							<div class="mud-theme-primary" style="position: absolute; bottom: 0; width: 100%; color: white; text-align: center; font-weight: bold; padding: 4px 0;">
 								@person.FirstName
 							</div>
-							@if (string.IsNullOrEmpty(person.PictureUrl))
-							{
-								<MudImage Src="https://www.ohio.edu/voinovich-school/sites/ohio.edu.voinovich-school/files/styles/max_650x650/public/default_images/portrait-missing.png?itok=ZIakRUEV"
-								Alt="@person.FirstName" Style="width: 100%; height: 100%, object-fit: cover;"></MudImage>
-							}
-							else
-							{
-								<MudImage Src="@person.PictureUrl" 
-								Alt="@person.FirstName" Style="width: 100%; height: 100%, object-fit: cover;"></MudImage>
-							}
+							
+							<GenericImageBox
+								ImageUrl="@person.PictureUrl"
+								AltText="bild på mäklare"
+								SetStyling="width: 100%; height: 100%, object-fit: cover;">
+							</GenericImageBox>
 						</div>
 					</MudItem>
 				}
