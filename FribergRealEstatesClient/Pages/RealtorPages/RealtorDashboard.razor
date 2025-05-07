@@ -1,0 +1,38 @@
+﻿@*Auth Hamza*@
+@page "/realtordashboard"
+@inject NavigationManager navManager
+@inject IRealtorService realtorService
+
+@if (realtor != null)
+{
+    <div class="container">
+        <h3 style="margin: 1rem auto; text-align:center; justify-content: center">Välkommen @realtor.Realtor.FirstName</h3>
+        <MudItem>
+            <MudPaper style="background-color: var(--bg-baseblue-color);" MinHeight="150px" Class="pa-6 ma-2">
+                <MudText Typo="Typo.h3" Class="p-4" Style="text-align:center; background-color: white;">REALTOR DASHBOARD</MudText>
+            </MudPaper>
+        </MudItem>
+
+        <MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.False">
+            <MudGrid>
+                    <RealtorAdvertMenuCard realtor="realtor" />
+            </MudGrid>
+        </MudContainer>
+    </div>
+}
+
+@code {
+
+    private RealtorFullProfileDto realtor;
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            realtor = await realtorService.GetMyProfileAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Fel vid hämtning av profil: {ex.Message}");
+        }
+    }
+}
