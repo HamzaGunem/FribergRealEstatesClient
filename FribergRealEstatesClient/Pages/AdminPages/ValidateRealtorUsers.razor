@@ -45,17 +45,18 @@
 <div class="container">
     <MudDropContainer T="DropItem" Items="_items" ItemsSelector="@((item,dropzone) => item.Identifier == dropzone)" ItemDropped="ItemUpdated" Class="d-flex flex-wrap flex-grow-1">
         <ChildContent>
-            <MudDropZone T="DropItem" Identifier="Zone1" Class="rounded mud-background-gray pa-2 ma-8 flex-grow-1">
+            <MudDropZone T="DropItem" Identifier="Zone1" Class="rounded mud-background-gray pa-4 ma-2 ms-8 flex-grow-1 zone1">
                 <MudText Typo="Typo.h5" Class="mb-4 title text-center">Bekräftade</MudText>
             </MudDropZone>
-            <MudDropZone T="DropItem" Identifier="Zone2" Class="rounded mud-background-gray pa-2 ma-8 flex-grow-1">
+            <MudIcon Class="compare-icon" Icon="@Icons.Material.Filled.CompareArrows"></MudIcon>
+            <MudDropZone T="DropItem" Identifier="Zone2" Class="rounded mud-background-gray pa-4 ma-2 me-8 flex-grow-1 zone2">
                 <MudText Typo="Typo.h5" Class="mb-4 title text-center">Obekräftade</MudText>
             </MudDropZone>
         </ChildContent>
         <ItemRenderer>
             <MudPaper Elevation="25" Class="pa-0 my-3">
                 <MudExpansionPanels>
-                    <MudExpansionPanel Text="@($"{context.FirstName} {context.LastName}")" Style="text-align:center;" MaxHeight="300" Expanded="false">
+                    <MudExpansionPanel Text="@($"{context.FirstName} {context.LastName}")" Style="text-align:center; background-color: white;" MaxHeight="300" Expanded="false">
                         <MudList T="string" Style="background-color: white;">
                             <MudListItem Icon="@Icons.Material.Filled.Email" IconColor="Color.Warning"><b>Email: </b>@context.Email</MudListItem>
                             <MudDivider />
@@ -87,7 +88,7 @@
     }
 
     .mud-expand-panel-header {
-        color: white;
+        color: white;        
     }
 
     .title {
@@ -109,6 +110,16 @@
     .mud-divider {
         border-color: black;
     }
+
+    .compare-icon {
+        margin-top: 25px;
+        font-size: 48px;        
+    }
+
+    .mud-expand-panel-icon{
+        color: black;
+    }
+    
 </style>
 
 @code {
