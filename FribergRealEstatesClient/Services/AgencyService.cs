@@ -22,5 +22,11 @@ namespace FribergRealEstatesClient.Services
             var agencies = await _client.ByCommunAsync(name);
             return agencies.ToList();
         }
+
+        public async Task<IEnumerable<AgencySummaryDto>> GetAllAgenciesAsync()
+        {
+            var agencies = await _client.AllAsync();
+            return agencies;
+        }
     }
 }

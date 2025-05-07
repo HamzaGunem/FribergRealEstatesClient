@@ -1,0 +1,131 @@
+﻿@* Made by Robert *@
+@page "/admin-changerealtor"
+@inject IRealtorService realtorService
+@inject IAgencyService agencyService
+
+@if (adminRealtors != null)
+{
+    <div class="container">
+        <MudPaper Style="border: 1px solid black; background-color: ghostwhite" MinHeight="150px" Class="p-1 ma-6">
+            <MudText Typo="Typo.h3" Class="px-5 m-0 mb-4" Style="text-align:center; background-color:#273845; color: white;">Ändra mäklare</MudText>
+            <MudItem xs="6" md="6" Class="pa-4 mb-4">
+                <MudSelect @bind-Value:event="onchange" ValueChanged="@((string val) => OnRealtorChanged(val))" @bind-Value="_selectedRealtor" Label="Välj en mäklare" FullWidth="_fullWidth" FitContent="_fitContent" Variant="Variant.Outlined" Clearable>
+                    @foreach (var item in adminRealtors)
+                    {
+                        <MudSelectItem Value="@item.Id.ToString()">@item.FirstName @item.LastName</MudSelectItem>
+                    }
+                </MudSelect>
+            </MudItem>
+        </MudPaper>
+    </div>
+}
+
+@if (adminRealtors != null)
+{
+    // change selected realtor
+    <div class="container">
+        <EditForm Model="realtorProfileDto" OnValidSubmit="UpdateRealtor">
+            <DataAnnotationsValidator />
+            <MudGrid>
+                <MudItem xs="12" sm="7">
+                    <MudPaper Class="pa-4">
+                        <MudForm Spacing="4">
+                            <MudTextField @bind-Value="realtorProfileDto.FirstName" For="@(() => realtorProfileDto.FirstName)" Label="Förnamn" />
+                            <MudTextField @bind-Value="realtorProfileDto.LastName" For="@(() => realtorProfileDto.LastName)" Label="Efternamn" />
+                            <MudTextField @bind-Value="realtorProfileDto.Email" For="@(() => realtorProfileDto.Email)" InputType="InputType.Email" Label="E-post" />
+                            <MudTextField @bind-Value="realtorProfileDto.PhoneNumber" For="@(() => realtorProfileDto.PhoneNumber)" Label="Telefon" />
+                            <MudTextField @bind-Value="realtorProfileDto.PictureUrl" For="@(() => realtorProfileDto.PictureUrl)" Label="Profilbild-länk" />
+
+                            <MudSelect @bind-Value="_selectedAgency" Label="Välj en mäklarbyrå" Placeholder="" FullWidth="_fullWidth" FitContent="_fitContent" Variant="Variant.Outlined" Clearable>
+                                @if (agencies != null)
+                                {
+                                    @foreach (var item in agencies)
+                                    {
+                                        <MudSelectItem Value="@item.Id.ToString()">@item.Name</MudSelectItem>
+                                    }
+                                }
+                            </MudSelect>
+                        </MudForm>
+                        <MudCardActions>
+                            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="m-lg-auto">Uppdatera</MudButton>
+                        </MudCardActions>
+                    </MudPaper>
+                </MudItem>
+            </MudGrid>
+        </EditForm>
+    </div>
+}
+else
+{
+    <p>Loading...</p>
+}
+
+@code {
+    private bool _fullWidth;
+    private bool _fitContent;
+    private string _selectedAgency;
+    private string _selectedRealtor;
+
+    private List<AdminRealtorUserDto> adminRealtors = new();
+    private List<AgencySummaryDto> agencies = new();
+    private UpdateRealtorProfileDto realtorProfileDto = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadRealtors();
+        agencies = (await agencyService.GetAllAgenciesAsync()).ToList();
+    }
+
+    private async Task LoadRealtors()
+    {
+        adminRealtors = (await realtorService.GetAllRealtors()).ToList();
+    }
+
+    private async Task OnRealtorChanged(string selectedRealtor)
+    {
+        var realtor = adminRealtors.FirstOrDefault(r => r.Id.ToString() == selectedRealtor);
+
+        if (realtor != null)
+        {
+            realtorProfileDto.Id = realtor.Id;
+            realtorProfileDto.FirstName = realtor.FirstName;
+            realtorProfileDto.LastName = realtor.LastName;
+            realtorProfileDto.Email = realtor.Email;
+            realtorProfileDto.PhoneNumber = realtor.PhoneNumber;
+            realtorProfileDto.PictureUrl = realtor.PictureUrl;
+
+            if (realtor.AgencyId != null)
+            {
+                realtorProfileDto.AgencyId = realtor.AgencyId.Value;
+            }
+
+            _selectedRealtor = new string($"{realtor.FirstName} {realtor.LastName}");
+        }
+
+        var agency = agencies.FirstOrDefault(i => i.Id == realtor.AgencyId);
+
+        if (agency != null)
+        {
+            _selectedAgency = agency.Name;
+        }
+
+        StateHasChanged();
+    }
+
+    private async Task UpdateRealtor(EditContext context)
+    {
+        Console.WriteLine(_selectedAgency);
+
+        if (!string.IsNullOrEmpty(_selectedAgency))
+        {
+            realtorProfileDto.AgencyId = Convert.ToInt32(_selectedAgency);
+        }
+
+        await realtorService.UpdateRealtorProfileAsync(realtorProfileDto);
+        await LoadRealtors();
+
+        _selectedRealtor = new string($"{realtorProfileDto.FirstName} {realtorProfileDto.LastName}");
+
+        StateHasChanged();
+    }
+}

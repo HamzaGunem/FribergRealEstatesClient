@@ -146,12 +146,12 @@ namespace FribergRealEstatesClient.Services.Base
 
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<AdminRealtorUserDto>> ValidaterealtorAsync();
+        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<AdminRealtorUserDto>> AllrealtorsAsync();
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<AdminRealtorUserDto>> ValidaterealtorAsync(System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<AdminRealtorUserDto>> AllrealtorsAsync(System.Threading.CancellationToken cancellationToken);
 
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
@@ -1384,15 +1384,15 @@ namespace FribergRealEstatesClient.Services.Base
 
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<AdminRealtorUserDto>> ValidaterealtorAsync()
+        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<AdminRealtorUserDto>> AllrealtorsAsync()
         {
-            return ValidaterealtorAsync(System.Threading.CancellationToken.None);
+            return AllrealtorsAsync(System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<AdminRealtorUserDto>> ValidaterealtorAsync(System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<AdminRealtorUserDto>> AllrealtorsAsync(System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -1405,8 +1405,8 @@ namespace FribergRealEstatesClient.Services.Base
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                 
-                    // Operation Path: "api/Realtor/admin/validaterealtor"
-                    urlBuilder_.Append("api/Realtor/admin/validaterealtor");
+                    // Operation Path: "api/Realtor/admin/allrealtors"
+                    urlBuilder_.Append("api/Realtor/admin/allrealtors");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -2865,6 +2865,12 @@ namespace FribergRealEstatesClient.Services.Base
 
         [Newtonsoft.Json.JsonProperty("emailConfirmed", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool EmailConfirmed { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("agencyId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? AgencyId { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("pictureUrl", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string PictureUrl { get; set; }
 
         private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
 
