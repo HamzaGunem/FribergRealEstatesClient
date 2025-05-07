@@ -6,57 +6,54 @@
 
 <MudCard>
     <MudCardContent>
-        @if (advert == null)
+        @if (advertDto == null)
         {
             <MudProgressLinear Color="Color.Primary" Indeterminate="true" />
         }
         else
         {
-            <EditForm Model="advert" OnValidSubmit="HandleSubmit">
-                <MudForm @ref="form">
-                    <MudGrid>
-                        @*Price*@
-                        <MudItem xs="12" md="6">
-                            <MudNumericField @bind-Value="advert.CurrentPrice"
-                                             Label="Current Price"
-                                             Variant="Variant.Outlined"
-                                             Required="true"
-                                             Min="0">
-                            </MudNumericField>
-                        </MudItem>
+            <EditForm Model="advertDto" OnValidSubmit="HandleSubmit">
+                <DataAnnotationsValidator />
+                <MudGrid>
+                    @*Price*@
+                    <MudItem xs="12" md="6">
+                        <MudNumericField @bind-Value="advertDto.CurrentPrice"
+                                         Label="Current Price"
+                                         Variant="Variant.Outlined"
+                                         Required="true"
+                                         Min="0">
+                        </MudNumericField>
+                    </MudItem>
 
-                        @*Bool*@
-                        <MudItem xs="12" md="6">
-                            <MudSwitch @bind-Value="advert.Sold"
-                                       Label="Sold"
-                                       Color="Color.Info" />
-                        </MudItem>
+                    @*Datetime update*@
+                    <MudItem xs="12">
+                        <MudText Typo="Typo.body2">Last Updated: @advertDto.Updated.ToString("g")</MudText>
+                    </MudItem>
 
-                        @*Datetime update*@
-                        <MudItem xs="12">
-                            <MudText Typo="Typo.body2">Last Updated: @advert.Updated.ToString("g")</MudText>
-                        </MudItem>
+                    @*Bool*@
+                    <MudItem xs="12">
+                        <MudSwitch @bind-Value="advertDto.Sold"
+                                   Label="Sold"
+                                   Color="Color.Info" />
+                    </MudItem>
 
-                        @*Button*@
-                        <MudItem xs="12" class="mt-4">
-                            <MudButton Variant="Variant.Filled"
-                                       Color="Color.Primary"
-                                       ButtonType="ButtonType.Submit"
-                                       Disabled="isProcessing">
-                                @(isProcessing ? "Saving..." : "Save Changes")
-                            </MudButton>
+                    @*Button*@
+                    <MudItem xs="12" class="mt-4">
+                        <MudButton Variant="Variant.Filled"
+                                   Color="Color.Primary"
+                                   ButtonType="ButtonType.Submit">
+                            Save
+                        </MudButton>
 
-                            <MudButton Variant="Variant.Text"
-                                       Color="Color.Default"
-                                       Class="ml-2"
-                                       OnClick="Cancel"
-                                       Disabled="isProcessing">
-                                Cancel
-                            </MudButton>
-                        </MudItem>
+                        <MudButton Variant="Variant.Text"
+                                   Color="Color.Default"
+                                   Class="ml-2"
+                                   OnClick="Cancel">
+                            Cancel
+                        </MudButton>
+                    </MudItem>
 
-                    </MudGrid>
-                </MudForm>
+                </MudGrid>
             </EditForm>
         }
     </MudCardContent>
@@ -66,43 +63,44 @@
 @code {
     [Parameter]
     public int id { get; set; }
-    private AdvertDto advert;
-    private MudForm form;
-    private bool isProcessing = false;
+    private AdvertUpdateDto advertUpdatedDto;
+    private AdvertDto advertDto;
 
     private async Task HandleSubmit()
     {
-        await form.Validate();
-
-        if (form.IsValid)
+        try
         {
-            isProcessing = true;
+            advertUpdatedDto.CurrentPrice = advertDto.CurrentPrice;
+            advertUpdatedDto.Sold = advertDto.Sold;
+            advertUpdatedDto.Updated = DateTime.UtcNow;
+            await client.EditAsync(id, advertUpdatedDto);
 
-            try
-            {
-                advert.Updated = DateTime.Now;
-
-                //await client.UpdateAdvertAsync(id, advert);
-
-                Snackbar.Add("Advert updated successfully!", Severity.Success);
-                Navigation.NavigateTo($"/advert-details/{id}");
-            }
-            catch (Exception ex)
-            {
-                Snackbar.Add($"Error updating advert: {ex.Message}", Severity.Error);
-                isProcessing = false;
-            }
+            Snackbar.Add("Advert updated successfully!", Severity.Success);
+            Navigation.NavigateTo($"/my-active-advert");
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Error updating advert: {ex.Message}", Severity.Error);
         }
     }
+
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            advert = await client.AdvertAsync(id);
-            if (advert == null)
+            advertDto = await client.AdvertAsync(id);
+            if (advertDto == null)
             {
                 Snackbar.Add("Advert not found", Severity.Error);
                 Navigation.NavigateTo("/");
+            }
+            else
+            {
+                advertUpdatedDto = new AdvertUpdateDto
+                    {
+                        CurrentPrice = advertDto.CurrentPrice,
+                        Sold = advertDto.Sold
+                    };
             }
         }
         catch (Exception ex)
@@ -112,7 +110,7 @@
     }
     private void Cancel()
     {
-        Navigation.NavigateTo($"/my-active-advert");
+        Navigation.NavigateTo("/my-active-advert");
     }
 }
 
