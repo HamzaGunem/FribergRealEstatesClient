@@ -15,13 +15,33 @@
             <MudText Class="pa-3" Typo="Typo.h5">Register</MudText>
         </div>
         <MudForm Class="pa-3" @ref="form" @bind-IsValid="@success">
-            <MudTextField @bind-Value="registerModel.PictureUrl" Label="Add Picture" Required="false" For="@(() => registerModel.PictureUrl)"></MudTextField>
+            <MudTextField @bind-Value="registerModel.PictureUrl" Label="Add Picture url or write: NoImage" Required="false" For="@(() => registerModel.PictureUrl)"></MudTextField>
             <MudTextField @bind-Value="registerModel.FirstName" Label="Firstname" Required="true" For="@(() => registerModel.FirstName)"></MudTextField>
             <MudTextField @bind-Value="registerModel.LastName" Label="Lastname" Required="true" For="@(() => registerModel.LastName)"></MudTextField>
             <MudTextField @bind-Value="registerModel.Email" InputType="InputType.Email" Label="Email" Required="true" For="@(() => registerModel.Email)"></MudTextField>
             <MudTextField @bind-Value="registerModel.PhoneNumber" Label="Phonenumber" Required="false" For="@(() => registerModel.PhoneNumber)"></MudTextField>
             <MudTextField @bind-Value="registerModel.Password" InputType="InputType.Password" Label="Password" Required="true" For="@(() => registerModel.Password)"></MudTextField>
-            <MudTextField @bind-Value="registerModel.AgencyId" Label="Agency" Required="true" For="@(() => registerModel.AgencyId)"></MudTextField>
+
+            <br />
+
+            @if(agencies == null || !agencies.Any())
+            {
+                <MudAlert Severity="Severity.Error" Elevation="0">
+                    Det gick inte att hitta några registrerade mäklarbyråer
+                </MudAlert>
+            }
+            else
+            {
+                <MudSelect T="int" Label="Choose agency" @bind-Value="registerModel.AgencyId"
+                           Required="true" ItemTextFunc="GetObjectName" ItemValueFunc="GetObjectId">
+                    @foreach (var agency in agencies)
+                    {
+                        <MudSelectItem Value="@agency.Id">@agency.Name</MudSelectItem>
+                    }
+                </MudSelect>
+            }
+
+
             <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" OnClick="@HandleSubmit" Class="ml-auto mt-3">Register</MudButton>
         </MudForm>
     </MudPaper>
@@ -30,17 +50,29 @@
 @code {
     private bool success = false;
     private MudForm form;
-    //UserDto registerModel = new UserDto();
+
     RegisterDto registerModel = new RegisterDto();
     private string message;
 
     private IEnumerable<AgencySummaryDto> agencies;
+    private AgencySummaryDto activeAgency;
 
-    /*
-    protected override async Task OnInitialized()
+
+    protected override async Task OnInitializedAsync()
     {
         agencies = await client.AllAsync();
-    }*/
+
+        if(agencies.Any())
+        {
+            activeAgency = agencies.First();
+            registerModel.AgencyId = activeAgency.Id;
+        }
+    }
+
+    private string GetObjectName(int id) =>
+        agencies.FirstOrDefault(o => o.Id == id)?.Name ?? $"Id: {id}";
+
+    private int GetObjectId(int id) => id;
 
     private async Task HandleSubmit()
     {
@@ -51,7 +83,7 @@
             try
             {
                 await client.RegisterAsync(registerModel);
-
+                             
                 snackbar.Add("Lyckad registrering", Severity.Success);
                 navManager.NavigateTo("/");
             }
@@ -63,7 +95,6 @@
         else
         {
             snackbar.Add("Meltdown is imminent");
-
         }
     }
 }
