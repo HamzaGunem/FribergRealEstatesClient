@@ -1,13 +1,40 @@
 ﻿@*Auth Hamza*@
 @page "/My-agency"
 @inject IRealtorService realtorService
+@inject IAgencyService agencyService
 
 <div class="container-large">
 
     @if (realtor != null)
     {
+    //Om
         <h3 style="margin: 1rem auto; text-align:center; justify-content: center">Om</h3>
         <AgencyProfile Id="@realtor.Realtor.AgencyId.Value"></AgencyProfile>
+
+        //Status
+        <h3 style="margin: 1rem auto; text-align:center; justify-content: center">Status</h3>
+        <div style="display: flex; justify-content: center; align-items: center">
+            <MudPaper Class="pa-16 ma-2" Elevation="3" Style="max-width: 350px;">
+                <MudText Align="Align.Center"><b>Total adverts: @totalAdverts</b></MudText>
+                <div style="display: flex; justify-content: center;">
+                    <MudProgressCircular Color="Color.Warning" Rounded="true" Size="Size.Large" StrokeWidth="4" Value="100" />
+                </div>
+            </MudPaper>
+            <MudPaper Class="pa-16 ma-2" Elevation="3" Style="max-width: 350px;">
+                <MudText Align="Align.Center"><b>Sold adverts: @totalSoldAdverts</b></MudText>
+                <div style="display: flex; justify-content: center;">
+                    <MudProgressCircular Color="Color.Success" Rounded="true" Size="Size.Large" StrokeWidth="4" Value="@(totalSoldAdverts * 100 / totalAdverts)" />
+                </div>
+            </MudPaper>
+            <MudPaper Class="pa-16 ma-2" Elevation="3" Style="max-width: 350px;">
+                <MudText Align="Align.Center"><b>Active adverts: @totalActiveAdverts</b></MudText>
+                <div style="display: flex; justify-content: center;">
+                    <MudProgressCircular Color="Color.Error" Rounded="true" Size="Size.Large" StrokeWidth="4" Value="@(totalActiveAdverts * 100 / totalAdverts)" />
+                </div>
+            </MudPaper>
+        </div>
+
+        //Mäklare
         <div class="mt-2">
             <h3 style="margin: 1rem auto; text-align:center; justify-content: center">Mäklare</h3>
             <RealtorProfileSmall Id="@realtor.Realtor.AgencyId.Value"></RealtorProfileSmall>
@@ -17,11 +44,28 @@
 
 @code {
     private RealtorFullProfileDto realtor;
+    private AgencyWithSimpleRealtorsDto agency;
+    private int totalAdverts;
+    private int totalSoldAdverts;
+    private int totalActiveAdverts;
     protected override async Task OnInitializedAsync()
     {
         try
         {
             realtor = await realtorService.GetMyProfileAsync();
+            agency = await agencyService.GetAgencyProfile(realtor.Realtor.AgencyId.Value);
+            foreach(var realtorItem in agency.Realtors)
+            {
+                foreach (var advert in realtorItem.ActiveAdverts)
+                {
+                    if (advert.Sold)
+                        totalSoldAdverts += 1;
+                    else
+                        totalActiveAdverts += 1;
+                }
+            }
+            totalAdverts = totalActiveAdverts + totalSoldAdverts;
+
         }
         catch (Exception ex)
         {

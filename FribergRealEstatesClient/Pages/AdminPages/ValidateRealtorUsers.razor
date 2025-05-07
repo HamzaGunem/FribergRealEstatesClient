@@ -1,0 +1,193 @@
+﻿@* Made by Robert*@
+@page "/validate-realtorusers"
+@inject IRealtorService realtorService
+
+<div class="container">
+    <MudItem>
+        <MudPaper Style="border: 1px solid black; background-color: ghostwhite" MinHeight="150px" Class="p-1 ma-6">
+            <MudText Typo="Typo.h3" Class="px-5 m-0 mb-4" Style="text-align:center; background-color:#273845; color: white;">Validering</MudText>
+
+            @if (realtors != null)
+            {
+                <MudItem>
+                    <MudText Color="Color.Success" Class="ms-2">
+                        <MudIcon Icon="@Icons.Material.Filled.CheckCircle" /> Bekräftade:<b>&nbsp; @confirmed</b>
+                    </MudText>
+                    <MudText Color="Color.Error" Class="ms-2">
+                        <MudIcon Icon="@Icons.Material.Filled.Cancel" /> Obekräftade:<b>&nbsp; @unconfirmed</b>
+                    </MudText>
+                </MudItem>
+            }
+            else
+            {
+                <MudProgressCircular Indeterminate="true" Color="Color.Primary" />
+            }
+        </MudPaper>
+    </MudItem>
+</div>
+
+<div class="container">
+    <MudDropContainer T="DropItem" Items="_items" ItemsSelector="@((item,dropzone) => item.Identifier == dropzone)" ItemDropped="ItemUpdated" Class="d-flex flex-wrap flex-grow-1">
+        <ChildContent>
+            <MudDropZone T="DropItem" Identifier="Zone1" Class="rounded mud-background-gray pa-4 ma-2 ms-8 flex-grow-1 zone1">
+                <MudText Typo="Typo.h5" Class="mb-4 title text-center">Bekräftade</MudText>
+            </MudDropZone>
+            <MudIcon Class="compare-icon" Icon="@Icons.Material.Filled.CompareArrows"></MudIcon>
+            <MudDropZone T="DropItem" Identifier="Zone2" Class="rounded mud-background-gray pa-4 ma-2 me-8 flex-grow-1 zone2">
+                <MudText Typo="Typo.h5" Class="mb-4 title text-center">Obekräftade</MudText>
+            </MudDropZone>
+        </ChildContent>
+        <ItemRenderer>
+            <MudPaper Elevation="25" Class="pa-0 my-3">
+                <MudExpansionPanels>
+                    <MudExpansionPanel Text="@($"{context.FirstName} {context.LastName}")" Style="text-align:center; background-color: white;" MaxHeight="300" Expanded="false">
+                        <MudList T="string" Style="background-color: white;">
+                            <MudListItem Icon="@Icons.Material.Filled.Email" IconColor="Color.Warning"><b>Email: </b>@context.Email</MudListItem>
+                            <MudDivider />
+                            <MudListItem Icon="@Icons.Material.Filled.PhoneAndroid" IconColor="Color.Primary"><b>Telefon: </b>@context.PhoneNumber</MudListItem>
+                            <MudDivider />
+                            @if (context.EmailConfirmed == true)
+                            {
+                                <MudListItem Icon="@Icons.Material.Filled.Check" IconColor="Color.Success"><b>Bekräftad email: </b>Ja</MudListItem>
+                            }
+                            else
+                            {
+                                <MudListItem Icon="@Icons.Material.Filled.Clear" IconColor="Color.Error"><b>Bekräftad email: </b>Nej</MudListItem>
+                            }
+                            <MudDivider />
+                        </MudList>
+                    </MudExpansionPanel>
+                </MudExpansionPanels>
+            </MudPaper>
+        </ItemRenderer>
+    </MudDropContainer>
+</div>
+
+@* Styling *@
+<style>
+    .realtor-container {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .mud-expand-panel-header {
+        color: white;        
+    }
+
+    .title {
+        color: white;
+        background-color: #273845;
+        padding: 10px;
+        border: 2px solid black;
+    }
+
+    .mud-paper {
+        background-color: grey;
+    }
+
+    .mud-expand-panel-text {
+        font-size: 1.5em;
+        color: black;
+    }
+
+    .mud-divider {
+        border-color: black;
+    }
+
+    .compare-icon {
+        margin-top: 25px;
+        font-size: 48px;        
+    }
+
+    .mud-expand-panel-icon{
+        color: black;
+    }
+    
+</style>
+
+@code {
+    private List<AdminRealtorUserDto> realtors = new();
+    private List<DropItem> _items = new();
+    private int unconfirmed;
+    private int confirmed;
+
+    protected override async Task OnInitializedAsync()
+    {
+        realtors = (await realtorService.GetAllRealtors()).ToList();
+
+        if (realtors != null)
+        {
+            foreach (var item in realtors)
+            {
+                _items.Add(
+                    new DropItem()
+                        {
+                            FirstName = item.FirstName,
+                            LastName = item.LastName,
+                            PhoneNumber = item.PhoneNumber,
+                            Email = item.Email,
+                            EmailConfirmed = item.EmailConfirmed,
+                            ApiUserId = item.ApiUserId,
+                            Identifier = item.EmailConfirmed ? "Zone1" : "Zone2"
+                        }
+                );
+            }
+            Count();
+        }
+    }
+
+    private void Count()
+    {
+        confirmed = 0;
+        unconfirmed = 0;
+
+        if (_items != null)
+        {
+            foreach (var item in _items)
+            {
+                if (item.EmailConfirmed == true)
+                {
+                    confirmed++;
+                }
+                else
+                {
+                    unconfirmed++;
+                }
+            }
+        }
+    }
+
+    private async Task ItemUpdated(MudItemDropInfo<DropItem> dropItem)
+    {
+        dropItem.Item.Identifier = dropItem.DropzoneIdentifier;
+
+        dropItem.Item.EmailConfirmed = dropItem.DropzoneIdentifier == "Zone1";
+
+        var updateDto = new AdminRealtorUserDto
+            {
+                ApiUserId = dropItem.Item.ApiUserId,
+                EmailConfirmed = dropItem.Item.EmailConfirmed,
+                FirstName = dropItem.Item.FirstName,
+                LastName = dropItem.Item.LastName,
+                PhoneNumber = dropItem.Item.PhoneNumber,
+                Email = dropItem.Item.Email
+            };
+
+        await realtorService.UpdateRealtorUserAsync(updateDto);
+
+        Count();
+    }
+
+    public class DropItem
+    {
+        public int Id { get; set; }
+        public string FirstName { get; init; }
+        public string LastName { get; init; }
+        public string PhoneNumber { get; init; }
+        public string Email { get; init; }
+        public bool EmailConfirmed { get; set; }
+        public string ApiUserId { get; set; }
+        public string Identifier { get; set; }
+    }
+}

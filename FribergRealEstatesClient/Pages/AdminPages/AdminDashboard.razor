@@ -1,0 +1,57 @@
+﻿@* Made by Robert *@
+@page "/admindashboard"
+@inject NavigationManager navManager
+
+<div class="container">
+    <MudItem>
+        <MudPaper style="background-color: #273845;" MinHeight="150px" Class="pa-6 ma-2">
+            <MudText Typo="Typo.h3" Class="p-4" Style="text-align:center; background-color: white;">ADMIN DASHBOARD</MudText>
+        </MudPaper>
+    </MudItem>
+
+    <MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.False">
+        <MudGrid>
+
+            <AdminResidenceMenuCard />
+
+            <AdminRealtorMenuCard />
+
+            <AdminAgencyMenuCard />
+
+            <AdminAdvertMenuCard />
+
+        </MudGrid>
+    </MudContainer>
+</div>
+
+@* styling *@
+<style>
+    .mud-expand-panel-header {
+        color: white;
+        background-color: #273845;
+    }
+
+    .mud-expand-panel-content {
+        background-color: whitesmoke;
+    }
+
+    .mud-divider {
+        border-color: black;
+    }
+
+    .mud-list-item-icon {
+        min-width: 35px;
+    }
+
+    .mud-icon-root.mud-svg-icon {
+    }
+
+    .mud-link:visited,
+    .mud-link:active {
+        color: black !important;
+    }
+</style>
+
+@code {
+    
+}
