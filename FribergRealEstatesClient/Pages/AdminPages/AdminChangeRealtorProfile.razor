@@ -6,40 +6,49 @@
 @if (adminRealtors != null)
 {
     <div class="container">
-        <MudGrid>
-            <MudItem xs="12" sm="7">
-                <MudPaper Class="pa-4">
-                    <MudForm Spacing="spacing">
-                        <MudTextField T="string" Label="Förnamn" />
-                        <MudTextField T="string" Label="Efternamn" />
-                        <MudTextField T="string" Label="Email" />
-                        <MudTextField T="string" Label="Password" HelperText="Choose a strong password" InputType="InputType.Password" />
-                        <MudTextField T="string" Label="Password" HelperText="Repeat the password" InputType="InputType.Password" />
-                        <MudSelect @bind-Value="_selectedAgency" Label="Välj en mäklarbyrå" FullWidth="_fullWidth" FitContent="_fitContent" Variant="Variant.Outlined" Clearable>
-                            @if (agencies != null)
-                            {
-                                @foreach (var item in agencies)
-                                {
-                                    <MudSelectItem Value="@item.Name">@item.Name</MudSelectItem>
-                                }
-                            }
-                        </MudSelect>
-                        <div class="d-flex">
-                            <MudRadioGroup T="string">
-                                <MudRadio Value="@("Realtor")">Realtor</MudRadio>
-                                <MudRadio Value="@("Admin")">Admin</MudRadio>
-                            </MudRadioGroup>
-                        </div>
-                    </MudForm>
-                </MudPaper>
-            </MudItem>
-        </MudGrid>
+        <MudSelect @bind-Value:event="onchange" ValueChanged="@((string val) => OnRealtorChanged(val))" @bind-Value="_selectedRealtor" Label="Välj en mäklare" FullWidth="_fullWidth" FitContent="_fitContent" Variant="Variant.Outlined" Clearable>
+            @foreach (var item in adminRealtors)
+            {
+                <MudSelectItem Value="@item.Id.ToString()">@item.FirstName @item.LastName</MudSelectItem>
+            }
+        </MudSelect>
     </div>
-
-
-    @code {
-    int spacing;
 }
+
+@if (adminRealtors != null)
+{
+    // change selected realtor
+    <div class="container">
+        <EditForm Model="realtorProfileDto" OnValidSubmit="UpdateRealtor">
+            <DataAnnotationsValidator />
+            <MudGrid>
+                <MudItem xs="12" sm="7">
+                    <MudPaper Class="pa-4">
+                        <MudForm Spacing="4">
+                            <MudTextField @bind-Value="realtorProfileDto.FirstName" For="@(() => realtorProfileDto.FirstName)" Label="Förnamn" />
+                            <MudTextField @bind-Value="realtorProfileDto.LastName" For="@(() => realtorProfileDto.LastName)" Label="Efternamn" />
+                            <MudTextField @bind-Value="realtorProfileDto.Email" For="@(() => realtorProfileDto.Email)" InputType="InputType.Email" Label="E-post" />
+                            <MudTextField @bind-Value="realtorProfileDto.PhoneNumber" For="@(() => realtorProfileDto.PhoneNumber)" Label="Telefon" />
+                            <MudTextField @bind-Value="realtorProfileDto.PictureUrl" For="@(() => realtorProfileDto.PictureUrl)" Label="Profilbild-länk" />
+
+                            <MudSelect @bind-Value="_selectedAgency" Label="Välj en mäklarbyrå" Placeholder="" FullWidth="_fullWidth" FitContent="_fitContent" Variant="Variant.Outlined" Clearable>
+                                @if (agencies != null)
+                                {
+                                    @foreach (var item in agencies)
+                                    {
+                                        <MudSelectItem Value="@item.Name">@item.Name</MudSelectItem>
+                                    }
+                                }
+                            </MudSelect>
+                        </MudForm>
+                        <MudCardActions>
+                            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="m-lg-auto">Uppdatera</MudButton>
+                        </MudCardActions>
+                    </MudPaper>
+                </MudItem>
+            </MudGrid>
+        </EditForm>
+    </div>
 }
 else
 {
@@ -50,10 +59,12 @@ else
     private bool _fullWidth;
     private bool _fitContent;
     private string _selectedAgency;
+    private string _selectedRealtor;
+    private bool succes;
 
-    // private UpdateRealtorProfileDto updateRealtorProfileDto;
     private List<AdminRealtorUserDto> adminRealtors = new();
     private List<AgencySummaryDto> agencies = new();
+    private UpdateRealtorProfileDto realtorProfileDto = new();
 
     protected override async Task OnInitializedAsync()
     {
@@ -61,6 +72,38 @@ else
         agencies = (await agencyService.GetAllAgenciesAsync()).ToList();
     }
 
+    private async Task OnRealtorChanged(string selectedRealtor)
+    {
+        var realtor = adminRealtors.FirstOrDefault(r => r.Id.ToString() == selectedRealtor);
 
+        if (realtor != null)
+        {
+            realtorProfileDto.FirstName = realtor.FirstName;
+            realtorProfileDto.LastName = realtor.LastName;
+            realtorProfileDto.Email = realtor.Email;
+            realtorProfileDto.PhoneNumber = realtor.PhoneNumber;
+            realtorProfileDto.PictureUrl = realtor.PictureUrl;
 
+            if (realtor.AgencyId != null)
+            {
+                realtorProfileDto.AgencyId = realtor.AgencyId.Value;
+            }
+
+            _selectedRealtor = new string($"{realtor.FirstName} {realtor.LastName}");            
+        }
+
+        var agency = agencies.FirstOrDefault(i => i.Id == realtor.AgencyId);
+        if(agency != null)
+        {
+            _selectedAgency = agency.Name;
+        }
+
+        StateHasChanged();
+    }
+
+    private void UpdateRealtor(EditContext context)
+    {
+        Console.WriteLine(realtorProfileDto.FirstName);
+        StateHasChanged();
+    }
 }
