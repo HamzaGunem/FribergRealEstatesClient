@@ -1,0 +1,28 @@
+﻿@* Made by Robert *@
+@page "/admin-changerealtor"
+@inject IRealtorService realtorService
+
+@if (adminRealtors != null)
+{
+    @foreach (var item in adminRealtors)
+    {
+        <p>@item.FirstName</p>
+        <p>@item.LastName</p>
+        <p>@item.Email</p>
+        <p>@item.AgencyId</p>
+    }
+}
+else
+{
+    <p>Loading...</p>
+}
+
+@code {
+    private UpdateRealtorProfileDto updateRealtorProfileDto;
+    private List<AdminRealtorUserDto> adminRealtors = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        adminRealtors = (await realtorService.GetAllRealtors()).ToList();
+    }
+}
