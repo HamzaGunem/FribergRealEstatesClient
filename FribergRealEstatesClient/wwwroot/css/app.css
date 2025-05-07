@@ -179,3 +179,20 @@ code {
     color: red; /* Change this to your desired color */
     background-color: coral;
 }
+
+@media (max-width: 990px) {
+    .compare-icon {
+        display: block;
+        transform: rotate(90deg);
+        margin: 1rem auto;
+        order: 1;
+    }
+    .zone1 {
+        order: 0;
+        width: 100%;
+    }
+    .zone2 {
+        order: 2;
+        width: 100%;
+    }
+}
