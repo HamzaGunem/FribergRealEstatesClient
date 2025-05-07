@@ -64,6 +64,7 @@ namespace FribergRealEstatesClient.Services
         }
 
         // Auth: Robert
+        // Kräver Superadmin role
         public async Task<IEnumerable<AdminRealtorUserDto>> GetAllRealtors()
         {
             await GetBearerToken();
