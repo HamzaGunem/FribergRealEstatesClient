@@ -34,12 +34,12 @@
     RegisterDto registerModel = new RegisterDto();
     private string message;
 
-    private IEnumerable<AgencyWithSimpleRealtorsDto> agencies;
+    private IEnumerable<AgencySummaryDto> agencies;
 
     /*
     protected override async Task OnInitialized()
     {
-        agencies = await client.
+        agencies = await client.AllAsync();
     }*/
 
     private async Task HandleSubmit()
