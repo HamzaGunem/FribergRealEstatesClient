@@ -34,14 +34,14 @@
 							<tr>
 								<td class="Agency-logo">
 									<div @onclick="@(() => NavigateToAgency(agency.Id))"
-										 style="cursor: pointer; transition: transform 0.3s ease-in-out;"
-										 onmouseover="this.style.transform='scale(1.05)'"
-										 onmouseout="this.style.transform='scale(1)'">
+									style="cursor: pointer; transition: transform 0.3s ease-in-out;"
+									onmouseover="this.style.transform='scale(1.05)'"
+									onmouseout="this.style.transform='scale(1)'">
 
 										<GenericImageBox 
-											ImageUrl="@agency.LogoUrl"
-											AltText="bild på mäklarbyrå"
-											SetStyling="object-fit: cover; width: 300px; height: 100%;">
+										ImageUrl="@agency.LogoUrl"
+										AltText="bild på mäklarbyrå"
+										SetStyling="object-fit: cover; width: 300px; height: 100%;">
 										</GenericImageBox>
 									</div>
 								</td>
@@ -52,7 +52,7 @@
 										@agency.Address.Street, 
 										@agency.Address.PostalCode,
 										@agency.Address.City
-										</MudText>
+									</MudText>
 									<GenericTextBox TextInput=@agency.Description></GenericTextBox>
 
 									<div class="Agency-realtor-list" style="display: flex; overflow: auto;">
@@ -61,13 +61,13 @@
 											@foreach (var realtor in agency.Realtors)
 											{
 												<div @onclick="@(() => NavigateToRealtor(realtor.Id))"
-													 style="cursor: pointer; transition: transform 0.3s ease-in-out;"
-													 onmouseover="this.style.transform='scale(1.05)'"
-													 onmouseout="this.style.transform='scale(1)'">
+												style="cursor: pointer; transition: transform 0.3s ease-in-out;"
+												onmouseover="this.style.transform='scale(1.05)'"
+												onmouseout="this.style.transform='scale(1)'">
 													<GenericImageBox 
-														ImageUrl="@realtor.PictureUrl"
-														AltText="bild på mäklare"
-														SetStyling="width: 100px; height: 100%; object-fit: cover;">
+													ImageUrl="@realtor.PictureUrl"
+													AltText="bild på mäklare"
+													SetStyling="width: 100px; height: 100%; object-fit: cover;">
 													</GenericImageBox>
 													<div class="mud-theme-primary" style="width: 100%; color: white; text-align: center; font-weight: bold; padding: 4px 0;">
 														@realtor.FirstName
@@ -91,7 +91,7 @@
 </div>
 
 @code {
-	private List<AgencyWithSimpleRealtorsDto> _getAgencies = new();
+	private List<AgencyWithSimpleRealtorsDto>? _getAgencies = new();
 	private List<SimpleRealtorDto> _getRealtors = new();
 
 	private string _searchTerm = string.Empty;
@@ -112,12 +112,17 @@
 		_searchTerm = term;
 		if(!string.IsNullOrWhiteSpace(_searchTerm))
 		{
-			_getAgencies = await agencyService.GetAllAgenciesInCommun(_searchTerm);
+			try
+			{
+				_getAgencies = await agencyService.GetAllAgenciesInCommun(_searchTerm);
+			}
+			finally
+			{
+				_searching = false;
+				_searchPerformed = true;
+				StateHasChanged();
+			}
 		}
-
-		_searching = false;
-		_searchPerformed = true;
-		StateHasChanged();
 	}
 
 	private void NavigateToAgency(int id)

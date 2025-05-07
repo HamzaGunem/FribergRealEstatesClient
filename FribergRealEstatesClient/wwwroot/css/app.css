@@ -179,3 +179,28 @@ code {
     color: red; /* Change this to your desired color */
     background-color: coral;
 }
+
+@media (max-width: 990px) {
+    .compare-icon {
+        display: block;
+        transform: rotate(90deg);
+        margin: 1rem auto;
+        margin-top: 20px;
+        order: 1;
+    }
+    .zone1 {
+        order: 0;
+        width: 100%;
+    }
+    .zone2 {
+        order: 2;
+        width: 100%;
+    }
+}
+}
+
+/*Jonathan*/
+.residence-btn.mud-button-root:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(255, 222, 111, 0.5);
+}
