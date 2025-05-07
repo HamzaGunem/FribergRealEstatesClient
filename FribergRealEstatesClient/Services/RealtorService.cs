@@ -72,6 +72,7 @@ namespace FribergRealEstatesClient.Services
         }
 
         // Auth: Robert
+        // Kräver Superadmin role
         public async Task UpdateRealtorUserAsync(AdminRealtorUserDto realtorUserDto)
         {
             try
@@ -83,6 +84,21 @@ namespace FribergRealEstatesClient.Services
             {
                 Console.WriteLine($"Fel vid uppdatering av RealtorUser: {ex.Message}");
             }           
+        }
+
+        // Auth: Robert
+        // Kräver Authorize
+        public async Task UpdateRealtorProfileAsync(UpdateRealtorProfileDto realtorProfileDto)
+        {
+            try
+            {
+                await GetBearerToken();
+                await _client.ProfilePUTAsync(realtorProfileDto.Id, realtorProfileDto);
+            }
+            catch (ApiException ex)
+            {
+                Console.WriteLine($"Fel vid uppdatering av RealtorUser: {ex.Message}");
+            }
         }
     }
 }

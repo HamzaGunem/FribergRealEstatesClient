@@ -78,6 +78,7 @@ else
 
         if (realtor != null)
         {
+            realtorProfileDto.Id = realtor.Id;
             realtorProfileDto.FirstName = realtor.FirstName;
             realtorProfileDto.LastName = realtor.LastName;
             realtorProfileDto.Email = realtor.Email;
@@ -101,9 +102,9 @@ else
         StateHasChanged();
     }
 
-    private void UpdateRealtor(EditContext context)
+    private async Task UpdateRealtor(EditContext context)
     {
-        Console.WriteLine(realtorProfileDto.FirstName);
+        await realtorService.UpdateRealtorProfileAsync(realtorProfileDto);
         StateHasChanged();
     }
 }
