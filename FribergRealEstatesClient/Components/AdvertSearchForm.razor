@@ -16,9 +16,9 @@
                 {
                     <MudItem xs="12" sm="6" Class="d-flex justify-center">
                         <MudButton Class="@($"residence-btn {(_selectedTypes.Contains(type) ? "selected" : "")}")"
-                                   Variant="Variant.Filled"
-                                   OnClick="@(() => ToggleType(type))"
-                                   Style="min-height: 50px; min-width: 150px; text-transform: none;">
+                        Variant="Variant.Filled"
+                        OnClick="@(() => ToggleType(type))"
+                        Style="min-height: 50px; min-width: 150px; text-transform: none;">
                             @type.ToString()
                         </MudButton>
                     </MudItem>
@@ -71,24 +71,40 @@
                              Min="0"
                              Style="background-color: white; color: black; border-radius: 15px; height: 55px; padding: 10px" />
         </MudItem>
+        <MudItem xs="6" Class="mb-4">
+            <MudSelect T="string" @bind-Value="Filter.OrderBy" Label="Sortera efter" Style="background-color: white; color: black; border-radius: 15px;">
+                <MudSelectItem T="string" Value="@null">Inget</MudSelectItem>
+                <MudSelectItem T="string" Value="@("price")">Pris</MudSelectItem>
+                <MudSelectItem Value="@("rooms")">Antal rum</MudSelectItem>
+            </MudSelect>
+        </MudItem>
+
+        <MudItem xs="6" Class="mb-4">
+            <MudCheckBox T="bool?" @bind-Value="Filter.OrderDescending"
+            Label="Sortera fallande"
+            Disabled ="@string.IsNullOrEmpty(Filter.OrderBy)"
+            Class="order-descending-checkbox" />
+        </MudItem>
     </MudGrid>
 
     <div class="mt-4 text-center">
         <MudButton Variant="Variant.Filled"
-                   FullWidth="true"
-                   OnClick="@OnApplyFilter"
-                   Style="background-color: #FFDE6F; color: black; min-height: 50px; border-radius: 15px">
+        FullWidth="true"
+        OnClick="@OnApplyFilter"
+        Style="background-color: #FFDE6F; color: black; min-height: 50px; border-radius: 15px">
             Sök
         </MudButton>
     </div>
 </MudPaper>
 
 @code {
+
     [Parameter] public AdvertFilterDto Filter { get; set; } = new();
     [Parameter] public EventCallback<IEnumerable<ResidenceType>> OnResidenceTypesChanged { get; set; }
     [Parameter] public EventCallback OnApplyFilter { get; set; }
 
     private HashSet<ResidenceType> _selectedTypes = new();
+
 
     protected override void OnParametersSet()
     {
@@ -106,6 +122,7 @@
         OnResidenceTypesChanged.InvokeAsync(_selectedTypes);
     }
 }
+
 <style>
     /* Force override MudBlazor's styles */
     button.residence-btn.mud-button-root.mud-button-filled {
@@ -120,4 +137,12 @@
         color: black !important;
     }
 
+    /* Checkbox styling */
+    .order-descending-checkbox .mud-checkbox {
+        color: #ffde6f !important;
+    }
+
+    .order-descending-checkbox .mud-checkbox-checked {
+        color: #ffde6f !important;
+    }
 </style>
