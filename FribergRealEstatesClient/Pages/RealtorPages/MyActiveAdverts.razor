@@ -1,0 +1,50 @@
+﻿@*Auth Hamza*@
+@page "/my-active-advert"
+@inject NavigationManager navManager
+@inject RealtorStateContainer realtorState
+
+@if (realtor != null)
+{
+
+    <MudContainer MaxWidth="MaxWidth.Medium" Class="mx-auto mt-4">
+
+        @foreach (var item in realtor.ActiveAdverts)
+        {
+            <MudPaper Elevation="3" Class="pa-4 mb-4">
+                <MudExpansionPanels>
+                    <MudExpansionPanel Class="no-scroll" Text="@item.Residence.Address.Street" Style="text-align:center;" Expanded="false">
+                        <MudList T="string" Style="background-color: white;">
+                            <RealtorActiveAdvert Advert="@item"></RealtorActiveAdvert>
+                            <MudListItem Icon="@Icons.Material.Filled.Create"
+                                         IconColor="Color.Success">
+                                <MudText Color="Color.Default" Class="custom-link" @onclick="() =>EditAdvert(item.Id)">
+                                    Ändra
+                                </MudText>
+                            </MudListItem>
+                            <MudDivider />
+                        </MudList>
+                    </MudExpansionPanel>
+                </MudExpansionPanels>
+            </MudPaper>
+        }
+    </MudContainer>
+
+
+}
+else
+{
+    <p>Loading........</p>
+}
+@code {
+    public RealtorFullProfileDto realtor { get; set; }
+
+    protected override void OnInitialized()
+    {
+        realtor = realtorState.CurrentRealtor;
+    }
+
+    public void EditAdvert(int id)
+    {
+        navManager.NavigateTo($"/edit-advert/{id}");
+    }
+}

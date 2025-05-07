@@ -1,0 +1,45 @@
+﻿@*Auth Hamza*@
+@inject NavigationManager navManager
+@inject RealtorStateContainer realtorState
+
+<MudItem xs="12" sm="6" md="6">
+    <MudPaper Elevation="3" Class="pa-4">
+        <MudExpansionPanels>
+            <MudExpansionPanel Text="Annonser" Style="text-align:center;" MaxHeight="300" Expanded="false">
+                <MudList T="string" Style="background-color: white;">
+                    <MudListItem Icon="@Icons.Material.Filled.Create"
+                    IconColor="Color.Success">
+                        <MudText Color="Color.Default" Class="custom-link" @onclick="CreateAdvert">
+                            Skapa
+                        </MudText>
+                    </MudListItem>
+                    <MudDivider />
+                    <MudListItem Icon="@Icons.Material.Rounded.OtherHouses"
+                    IconColor="Color.Error">
+                        <MudText Color="Color.Default" Class="custom-link" @onclick="MyAdverts">
+                            Mina annonser
+                        </MudText>
+                    </MudListItem>
+                </MudList>
+            </MudExpansionPanel>
+        </MudExpansionPanels>
+    </MudPaper>
+</MudItem>
+@code {
+    [Parameter]
+    public RealtorFullProfileDto realtor { get; set; }
+
+    protected override void OnInitialized()
+    {
+        realtorState.SetRealtor(realtor);
+    }
+    public void CreateAdvert()
+    {
+        navManager.NavigateTo("/create-advert");
+    }
+    public void MyAdverts()
+    {
+        navManager.NavigateTo("/my-active-advert");
+    }
+
+}
