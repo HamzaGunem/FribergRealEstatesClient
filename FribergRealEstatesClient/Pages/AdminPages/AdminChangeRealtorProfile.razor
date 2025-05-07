@@ -1,16 +1,45 @@
 ﻿@* Made by Robert *@
 @page "/admin-changerealtor"
 @inject IRealtorService realtorService
+@inject IAgencyService agencyService
 
 @if (adminRealtors != null)
 {
-    @foreach (var item in adminRealtors)
-    {
-        <p>@item.FirstName</p>
-        <p>@item.LastName</p>
-        <p>@item.Email</p>
-        <p>@item.AgencyId</p>
-    }
+    <div class="container">
+        <MudGrid>
+            <MudItem xs="12" sm="7">
+                <MudPaper Class="pa-4">
+                    <MudForm Spacing="spacing">
+                        <MudTextField T="string" Label="Förnamn" />
+                        <MudTextField T="string" Label="Efternamn" />
+                        <MudTextField T="string" Label="Email" />
+                        <MudTextField T="string" Label="Password" HelperText="Choose a strong password" InputType="InputType.Password" />
+                        <MudTextField T="string" Label="Password" HelperText="Repeat the password" InputType="InputType.Password" />
+                        <MudSelect @bind-Value="_selectedAgency" Label="Välj en mäklarbyrå" FullWidth="_fullWidth" FitContent="_fitContent" Variant="Variant.Outlined" Clearable>
+                            @if (agencies != null)
+                            {
+                                @foreach (var item in agencies)
+                                {
+                                    <MudSelectItem Value="@item.Name">@item.Name</MudSelectItem>
+                                }
+                            }
+                        </MudSelect>
+                        <div class="d-flex">
+                            <MudRadioGroup T="string">
+                                <MudRadio Value="@("Realtor")">Realtor</MudRadio>
+                                <MudRadio Value="@("Admin")">Admin</MudRadio>
+                            </MudRadioGroup>
+                        </div>
+                    </MudForm>
+                </MudPaper>
+            </MudItem>
+        </MudGrid>
+    </div>
+
+
+    @code {
+    int spacing;
+}
 }
 else
 {
@@ -18,11 +47,20 @@ else
 }
 
 @code {
-    private UpdateRealtorProfileDto updateRealtorProfileDto;
+    private bool _fullWidth;
+    private bool _fitContent;
+    private string _selectedAgency;
+
+    // private UpdateRealtorProfileDto updateRealtorProfileDto;
     private List<AdminRealtorUserDto> adminRealtors = new();
+    private List<AgencySummaryDto> agencies = new();
 
     protected override async Task OnInitializedAsync()
     {
         adminRealtors = (await realtorService.GetAllRealtors()).ToList();
+        agencies = (await agencyService.GetAllAgenciesAsync()).ToList();
     }
+
+
+
 }

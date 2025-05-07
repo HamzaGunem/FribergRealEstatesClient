@@ -8,5 +8,6 @@ namespace FribergRealEstatesClient.Services
         Task<AgencyWithSimpleRealtorsDto> GetAgencyProfile(int id);
 
         Task<List<AgencyWithSimpleRealtorsDto>> GetAllAgenciesInCommun(string name);
+        Task<IEnumerable<AgencySummaryDto>> GetAllAgenciesAsync();
     }
 }

@@ -68,7 +68,7 @@ namespace FribergRealEstatesClient.Services
         public async Task<IEnumerable<AdminRealtorUserDto>> GetAllRealtors()
         {
             await GetBearerToken();
-            return await _client.ValidaterealtorAsync();
+            return await _client.AllrealtorsAsync();
         }
 
         // Auth: Robert
