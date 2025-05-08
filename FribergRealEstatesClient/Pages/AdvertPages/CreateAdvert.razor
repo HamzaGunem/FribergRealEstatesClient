@@ -14,7 +14,6 @@
 }
 
 @code {
-    private AdvertCreateDto advertCreateDto;
     private IEnumerable<ResidenceDto> availableResidences;
     public RealtorFullProfileDto realtor { get; set; }
 
@@ -23,14 +22,11 @@
         try
         {
             realtor = realtorState.CurrentRealtor;
-            advertCreateDto = new AdvertCreateDto();
             availableResidences = await client.AvailableAsync();
 
             if (realtor != null)
             {
-                advertCreateDto.RealtorId = realtor.Realtor.Id;
-                advertCreateDto.Created = DateTime.Now;
-                advertCreateDto.Updated = DateTime.Now;
+     
             }
         }
         catch (Exception ex)
