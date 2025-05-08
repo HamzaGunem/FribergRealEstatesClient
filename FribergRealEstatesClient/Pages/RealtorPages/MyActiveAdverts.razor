@@ -35,6 +35,27 @@ else
 {
     <p>Loading........</p>
 }
+
+@* styling *@
+<style>
+    .mud-expand-panel-header {
+        color: white;
+        background-color: #273845;
+    }
+    .mud-expand-panel-content {
+        background-color: whitesmoke;
+    }
+
+    .mud-list-item-icon {
+        min-width: 35px;
+    }
+
+
+    .mud-link:visited,
+    .mud-link:active {
+        color: black !important;
+    }
+</style>
 @code {
     public RealtorFullProfileDto realtor { get; set; }
 
