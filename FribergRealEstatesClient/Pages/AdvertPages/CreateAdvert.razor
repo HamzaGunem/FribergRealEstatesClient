@@ -1,6 +1,42 @@
 ﻿@*Auth Hamza*@
 @page "/create-advert"
+@inject IClient client
+@inject ISnackbar Snackbar
+@inject NavigationManager Navigation
+@inject RealtorStateContainer realtorState
+
+@if(realtor != null)
+{
+    foreach (var res in availableResidences)
+    {
+        <h2>@res.BiArea</h2>
+    }
+}
 
 @code {
     private AdvertCreateDto advertCreateDto;
+    private IEnumerable<ResidenceDto> availableResidences;
+    public RealtorFullProfileDto realtor { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            realtor = realtorState.CurrentRealtor;
+            advertCreateDto = new AdvertCreateDto();
+            availableResidences = await client.AvailableAsync();
+
+            if (realtor != null)
+            {
+                advertCreateDto.RealtorId = realtor.Realtor.Id;
+                advertCreateDto.Created = DateTime.Now;
+                advertCreateDto.Updated = DateTime.Now;
+            }
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Initialization error: {ex.Message}", Severity.Error);
+        }
+    }
+ 
 }
