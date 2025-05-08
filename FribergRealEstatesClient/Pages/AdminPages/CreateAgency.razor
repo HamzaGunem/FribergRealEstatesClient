@@ -22,7 +22,11 @@
                         <MudTextField @bind-Value="dto.Address.City" Label="Stad" Placeholder="Stad" />
                     </MudItem>
                     <MudItem xs="12">
-                        <MudTextField @bind-Value="dto.Address.CommunId" Label="Kommun" Placeholder="Kommun" />
+                        <MudSelect @bind-Value="dto.Address.CommunId" Label="Kommun" Placeholder="Kommun" />
+                        @foreach (var commun in communs)
+                        {
+                            <MudSelectItem Value="@commun.Id">@commun.Name</MudSelectItem>
+                        }
                     </MudItem>
                     <MudItem xs="12">
                         <MudTextField @bind-Value="dto.Description" Label="Beskrivning" Placeholder="Beskrivning" />
@@ -43,9 +47,17 @@
 </div>
 @code {
     private AgencyCreateDto dto = new AgencyCreateDto();
-
+    private List<CommunDto> communs = new List<CommunDto>();
     private MudForm _form;
 
+    public override async Task OnInitializedAsync()
+    {
+        var result = await agencyService.GetAllCommuns();
+        if (result != null)
+        {
+            communs = result.ToList();
+        }
+    }
     private async Task Create()
     {
         await _form.Validate();
