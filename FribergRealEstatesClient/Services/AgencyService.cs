@@ -28,5 +28,11 @@ namespace FribergRealEstatesClient.Services
             var agencies = await _client.AllAsync();
             return agencies;
         }
+        //Added by Oscar
+        public async Task<AgencyDto> CreateAgency(AgencyCreateDto agency)
+        {
+           return await _client.CreatePOSTAsync(agency);
+            
+        }
     }
 }

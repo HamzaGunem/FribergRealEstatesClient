@@ -1,0 +1,61 @@
+﻿@* Auth: Oscar *@
+@page "/create-agency"
+@inject IAgencyService agencyService
+@inject NavigationManager navManager
+
+<div class="container">
+    <MudItem>
+        <MudPaper>
+            <MudText Typo="Typo.h3" Class="p-4" Style="text-align:center; background-color: white;">Skapa mäklarbyrå</MudText>
+            <MudGrid>
+                <MudForm>
+                    <MudItem xs="12">
+                        <MudTextField @bind-Value="dto.Name" Label="Byrånamn" Placeholder="Byrånamn" />
+                    </MudItem>
+                    <MudItem xs="12">
+                        <MudTextField @bind-Value="dto.Address.Street" Label="Gatuadress" Placeholder="Gatuadress" />
+                    </MudItem>
+                    <MudItem xs="12">
+                        <MudTextField @bind-Value="dto.Address.PostalCode" Label="Postnummer" Placeholder="Postnummer" />
+                    </MudItem>
+                    <MudItem xs="12">
+                        <MudTextField @bind-Value="dto.Address.City" Label="Stad" Placeholder="Stad" />
+                    </MudItem>
+                    <MudItem xs="12">
+                        <MudTextField @bind-Value="dto.Address.CommunId" Label="Kommun" Placeholder="Kommun" />
+                    </MudItem>
+                    <MudItem xs="12">
+                        <MudTextField @bind-Value="dto.Description" Label="Beskrivning" Placeholder="Beskrivning" />
+                    </MudItem>
+                    <MudItem>
+                        <MudTextField @bind-Value="dto.LogoUrl" Label="Logotyp" Placeholder="Logotyp" />
+                    </MudItem>
+
+                </MudForm>
+                <MudItem xs="12">
+                    <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="Create">Skapa</MudButton>
+                </MudItem>
+
+
+            </MudGrid>
+        </MudPaper>
+    </MudItem>
+</div>
+@code {
+    private AgencyCreateDto dto = new AgencyCreateDto();
+
+    private MudForm _form;
+
+    private async Task Create()
+    {
+        await _form.Validate();
+        if (!_form.IsValid)
+        {
+            return;
+        }
+
+        await agencyService.CreateAgency(dto);
+
+        navManager.NavigateTo("/admindashboard");
+    }
+}

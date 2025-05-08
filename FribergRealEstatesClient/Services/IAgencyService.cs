@@ -9,5 +9,8 @@ namespace FribergRealEstatesClient.Services
 
         Task<List<AgencyWithSimpleRealtorsDto>> GetAllAgenciesInCommun(string name);
         Task<IEnumerable<AgencySummaryDto>> GetAllAgenciesAsync();
+
+        //Added by Oscar
+        Task<AgencyDto> CreateAgency(AgencyCreateDto agency);
     }
 }
