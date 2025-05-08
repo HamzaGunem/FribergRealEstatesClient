@@ -2,6 +2,7 @@
 @page "/admin-changerealtor"
 @inject IRealtorService realtorService
 @inject IAgencyService agencyService
+@inject ISnackbar snackbar
 
 <div class="container">
     @if (adminRealtors != null)
@@ -37,7 +38,7 @@
                                 }
                                 else
                                 {
-                                    <MudImage src="@realtorProfileDto.PictureUrl" Alt="Profilbild" Elevation="25" Class="rounded-lg" />
+                                    <MudImage src="@realtorProfileDto.PictureUrl" Width="128" Height="128" Alt="Profilbild" Elevation="25" Class="rounded-lg" />
                                 }
                             </MudItem>
                             <MudForm Spacing="3" Class="mb-2">
@@ -47,7 +48,7 @@
                                 <MudTextField @bind-Value="realtorProfileDto.PhoneNumber" For="@(() => realtorProfileDto.PhoneNumber)" Label="Telefon" />
                                 <MudTextField @bind-Value="realtorProfileDto.PictureUrl" For="@(() => realtorProfileDto.PictureUrl)" Label="Profilbild-länk" />
 
-                                <MudSelect @bind-Value="_selectedAgency" Label="Välj en mäklarbyrå" Placeholder="" FullWidth="_fullWidth" FitContent="_fitContent" Variant="Variant.Outlined" Clearable>
+                                <MudSelect @bind-Value:event="onchange" ValueChanged="@((string val) => OnAgencyChanged(val))"  @bind-Value="_selectedAgency" Label="Välj en mäklarbyrå" Placeholder="" FullWidth="_fullWidth" FitContent="_fitContent" Variant="Variant.Outlined" Clearable>
                                     @if (agencies != null)
                                     {
                                         @foreach (var item in agencies)
@@ -78,6 +79,7 @@
     private bool _fitContent;
     private string _selectedAgency;
     private string _selectedRealtor;
+    private int tempAgencyId;
 
     private List<AdminRealtorUserDto> adminRealtors = new();
     private List<AgencySummaryDto> agencies = new();
@@ -93,6 +95,18 @@
     private async Task LoadRealtors()
     {
         adminRealtors = (await realtorService.GetAllRealtors()).ToList();
+        StateHasChanged();
+    }
+    private async Task OnAgencyChanged(string selectedAgency)
+    {
+        tempAgencyId = Convert.ToInt32(selectedAgency);
+        realtorProfileDto.AgencyId = tempAgencyId;
+
+        var agency = agencies.FirstOrDefault(i => i.Id == tempAgencyId);
+
+        _selectedAgency = agency.Name;
+
+        StateHasChanged();
     }
 
     private async Task OnRealtorChanged(string selectedRealtor)
@@ -107,39 +121,38 @@
             realtorProfileDto.Email = realtor.Email;
             realtorProfileDto.PhoneNumber = realtor.PhoneNumber;
             realtorProfileDto.PictureUrl = realtor.PictureUrl;
-
-            if (realtor.AgencyId != null)
-            {
-                realtorProfileDto.AgencyId = realtor.AgencyId.Value;
-            }
+            realtorProfileDto.AgencyId = realtor.AgencyId.Value;
 
             _selectedRealtor = new string($"{realtor.FirstName} {realtor.LastName}");
-        }
 
-        var agency = agencies.FirstOrDefault(i => i.Id == realtor.AgencyId);
+            var agency = agencies.FirstOrDefault(i => i.Id == realtor.AgencyId);
 
-        if (agency != null)
-        {
-            _selectedAgency = agency.Name;
-        }
+            if (agency != null)
+            {                
+                _selectedAgency = agency.Name;                
+            }
+        }        
 
         StateHasChanged();
     }
 
     private async Task UpdateRealtor(EditContext context)
     {
-        Console.WriteLine(_selectedAgency);
-
-        if (!string.IsNullOrEmpty(_selectedAgency))
+        try
         {
-            realtorProfileDto.AgencyId = Convert.ToInt32(_selectedAgency);
+            await realtorService.UpdateRealtorProfileAsync(realtorProfileDto);
+            await LoadRealtors();
+
+            _selectedRealtor = new string($"{realtorProfileDto.FirstName} {realtorProfileDto.LastName}");
+
+            snackbar.Add($"{realtorProfileDto.FirstName} {realtorProfileDto.LastName} har uppdaterats", Severity.Success);
+
+            StateHasChanged();
         }
-
-        await realtorService.UpdateRealtorProfileAsync(realtorProfileDto);
-        await LoadRealtors();
-
-        _selectedRealtor = new string($"{realtorProfileDto.FirstName} {realtorProfileDto.LastName}");
-
-        StateHasChanged();
+        catch (Exception ex)
+        {
+            
+            throw;
+        }        
     }
 }
