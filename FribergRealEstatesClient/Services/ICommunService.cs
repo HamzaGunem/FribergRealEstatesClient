@@ -1,9 +1,10 @@
-﻿using System.Runtime.CompilerServices;
+﻿using FribergRealEstatesClient.Services.Base;
+using System.Runtime.CompilerServices;
 
 namespace FribergRealEstatesClient.Services
 {
     public interface ICommunService
     {
-        Task<List<CommmunDto>> GetAllCommunsAsync();
+        Task<List<CommunDto>> GetAllCommunsAsync();
     }
 }

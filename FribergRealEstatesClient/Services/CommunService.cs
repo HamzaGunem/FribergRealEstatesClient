@@ -12,9 +12,11 @@ namespace FribergRealEstatesClient.Services
             this.client = client;
         }
 
-        public async Task<List<CommmunDto>> GetAllCommunsAsync()
+        public async Task<List<CommunDto>> GetAllCommunsAsync()
         {
-           return client.C
+           var communs = await client.CommunAsync();
+           return communs.ToList();
+            
         }
     }
 }

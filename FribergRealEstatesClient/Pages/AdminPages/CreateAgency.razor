@@ -1,73 +1,88 @@
 ﻿@* Auth: Oscar *@
 @page "/create-agency"
 @inject IAgencyService agencyService
+@inject ICommunService communService
 @inject NavigationManager navManager
-
+@inject ISnackbar snackbar
 <div class="container">
     <MudItem>
         <MudPaper>
             <MudText Typo="Typo.h3" Class="p-4" Style="text-align:center; background-color: white;">Skapa mäklarbyrå</MudText>
             <MudGrid>
-                <MudForm>
+                <MudForm @ref="_form">
                     <MudItem xs="12">
-                        <MudTextField @bind-Value="dto.Name" Label="Byrånamn" Placeholder="Byrånamn" />
-                    </MudItem>
-                    <MudItem xs="12">
-                        <MudTextField @bind-Value="dto.Address.Street" Label="Gatuadress" Placeholder="Gatuadress" />
+                        <MudTextField @bind-Value="agencyDto.Name" Label="Byrånamn" Placeholder="Byrånamn" />
                     </MudItem>
                     <MudItem xs="12">
-                        <MudTextField @bind-Value="dto.Address.PostalCode" Label="Postnummer" Placeholder="Postnummer" />
+                        <MudTextField @bind-Value="addressDto.Street" Label="Gatuadress" Placeholder="Gatuadress" />
                     </MudItem>
                     <MudItem xs="12">
-                        <MudTextField @bind-Value="dto.Address.City" Label="Stad" Placeholder="Stad" />
+                        <MudTextField @bind-Value="addressDto.PostalCode" Label="Postnummer" Placeholder="Postnummer" />
                     </MudItem>
                     <MudItem xs="12">
-                        <MudSelect @bind-Value="dto.Address.CommunId" Label="Kommun" Placeholder="Kommun" />
-                        @foreach (var commun in communs)
-                        {
-                            <MudSelectItem Value="@commun.Id">@commun.Name</MudSelectItem>
-                        }
+                        <MudTextField @bind-Value="addressDto.City" Label="Stad" Placeholder="Stad" />
                     </MudItem>
                     <MudItem xs="12">
-                        <MudTextField @bind-Value="dto.Description" Label="Beskrivning" Placeholder="Beskrivning" />
+                        <MudSelect T="int" @bind-Value="addressDto.CommunId" Label="Kommun" Placeholder="Kommun">
+                            @foreach (var commun in communs)
+                            {
+                                <MudSelectItem Value="@commun.Id">@commun.Name</MudSelectItem>
+                            }
+                        </MudSelect>
                     </MudItem>
-                    <MudItem>
-                        <MudTextField @bind-Value="dto.LogoUrl" Label="Logotyp" Placeholder="Logotyp" />
+                    <MudItem xs="12">
+                        <MudTextField @bind-Value="agencyDto.Description" Label="Beskrivning" Placeholder="Beskrivning" />
                     </MudItem>
-
+                    <MudItem xs="12">
+                        <MudTextField @bind-Value="agencyDto.LogoUrl" Label="Logotyp" Placeholder="Logotyp" />
+                    </MudItem>
+                    <MudItem xs="12">
+                        <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="Create">Skapa</MudButton>
+                    </MudItem>
                 </MudForm>
-                <MudItem xs="12">
-                    <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="Create">Skapa</MudButton>
-                </MudItem>
-
-
             </MudGrid>
         </MudPaper>
     </MudItem>
 </div>
+
 @code {
-    private AgencyCreateDto dto = new AgencyCreateDto();
+    private AgencyCreateDto agencyDto = new AgencyCreateDto();
+    private AddressCreateDto addressDto = new AddressCreateDto();
     private List<CommunDto> communs = new List<CommunDto>();
     private MudForm _form;
 
-    public override async Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
-        var result = await agencyService.GetAllCommuns();
-        if (result != null)
-        {
-            communs = result.ToList();
-        }
+
+        communs = await communService.GetAllCommunsAsync();
+
     }
     private async Task Create()
     {
         await _form.Validate();
         if (!_form.IsValid)
         {
+            snackbar.Add("Formuläret är inte giltigt", Severity.Error);
             return;
         }
+        agencyDto.Address = addressDto;
+        try
+        {
+            await agencyService.CreateAgency(agencyDto);
+            snackbar.Add("Mäklarbyrån skapad", Severity.Success);
+            navManager.NavigateTo("/admindashboard");
 
-        await agencyService.CreateAgency(dto);
-
-        navManager.NavigateTo("/admindashboard");
+        }
+        catch (ApiException ex) when (ex.StatusCode == 201)
+        {
+            snackbar.Add("Mäklarbyrån skapad", Severity.Success);
+            navManager.NavigateTo("/admindashboard");
+        }
+        catch (Exception ex)
+        {
+            snackbar.Add($"Ett fel inträffade: {ex.Message}", Severity.Error);
+        
+        }
     }
 }
+
