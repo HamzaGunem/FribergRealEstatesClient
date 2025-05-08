@@ -1,0 +1,80 @@
+﻿@* Auth: Oscar  *@
+@inject ISnackbar snackbar
+<MudPaper Class="display-6 w-100">
+    <MudText Typo="Typo.h3" Class="p-4 mb-2" Style="text-align:center; background-color: white; width: 100%;">Skapa mäklarbyrå</MudText>
+    <MudGrid Justify="Justify.Center">
+        <MudForm @ref="_form" Class="w-50 mx-auto" Style="max-width: 800px">
+            <MudItem Class="mb-2" xs="12" sm="12">
+                <MudTextField FullWidth="true" @bind-Value="AgencyDto.Name" Variant="Variant.Filled" Label="Byrånamn" Placeholder="Byrånamn" />
+            </MudItem>
+            <MudItem Class="mb-2" xs="12" sm="12">
+                <MudTextField FullWidth="true" @bind-Value="AddressDto.Street" Variant="Variant.Filled" Label="Gatuadress" Placeholder="Gatuadress" />
+            </MudItem>
+            <MudItem Class="mb-2" xs="12" sm="12">
+                <MudTextField FullWidth="true" @bind-Value="AddressDto.PostalCode" Variant="Variant.Filled" Label="Postnummer" Placeholder="Postnummer" />
+            </MudItem>
+            <MudItem Class="mb-2" xs="12" sm="12">
+                <MudTextField FullWidth="true" @bind-Value="AddressDto.City" Variant="Variant.Filled" Label="Stad" Placeholder="Stad" />
+            </MudItem>
+            <MudItem Class="mb-2" xs="12" sm="12">
+                <MudSelect T="CommunDto"
+                           @bind-Value="SelectedCommun"
+                           Variant="Variant.Filled"
+                           Label="Kommun"
+                           Placeholder="Välj"
+                           ToStringFunc="@( c => c?.Name)"
+                           FullWidth="true"
+                           Required="true"
+                           RequiredError="Du måste välja en kommun">
+
+                    @foreach (var commun in Communes)
+                    {
+                        <MudSelectItem Value="@commun">@commun.Name</MudSelectItem>
+                    }
+                </MudSelect>
+            </MudItem>
+            <MudItem Class="mb-2" xs="12" sm="12">
+                <MudTextField FullWidth="true"
+                              @bind-Value="AgencyDto.Description"
+                              Variant="Variant.Filled"
+                              Label="Beskrivning"
+                              Placeholder="Beskrivning"
+                              Lines="4"
+                              MaxLines="8" />
+            </MudItem>
+            <MudItem Class="mb-2" xs="12" sm="12">
+                <MudTextField FullWidth="true" @bind-Value="AgencyDto.LogoUrl" Variant="Variant.Filled" Label="Logotyp" Placeholder="Logotyp" />
+            </MudItem>
+            <MudItem Class="mb-2" xs="12" sm="12">
+                <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="@Create">Skapa</MudButton>
+            </MudItem>
+        </MudForm>
+    </MudGrid>
+</MudPaper>
+
+@code {
+    [Parameter] public AgencyCreateDto AgencyDto { get; set; }
+    [Parameter] public AddressCreateDto AddressDto { get; set; }
+    [Parameter] public List<CommunDto> Communes { get; set; }
+    [Parameter] public EventCallback OnCreate { get; set; }
+
+    private MudForm _form;
+    private CommunDto SelectedCommun
+    {
+        get => Communes.FirstOrDefault(c => c.Id == AddressDto.CommunId);
+        set => AddressDto.CommunId = value?.Id ?? 0;
+    }
+
+    private async Task Create()
+    {
+        await _form.Validate();
+        if (!_form.IsValid)
+        {
+            snackbar.Add("Formuläret är inte giltigt", Severity.Error);
+            return;
+        }
+
+        await OnCreate.InvokeAsync();
+    }
+}
+
