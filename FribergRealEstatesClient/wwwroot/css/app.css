@@ -142,19 +142,20 @@ code {
     color: #273845;
 }
 
-@media (min-width: 551px) {
+
+/* Robert */
+@media (min-width: 551px)
+{
+    .advert-carousel
+    {
+        width: 500px;
+    }
+}
+/* Robert */
+@media (max-width: 550px) {
     .advert-carousel {
-        /* Robert */
-        @media (min-width: 551px) {
-            .advert-carousel {
-                width: 500px;
-            }
-        }
-        /* Robert */
-        @media (max-width: 550px) {
-            .advert-carousel {
-                width: 350px;
-            }
+        width: 350px;
+    }
 
             .carousel-custom {
                 width: 350px !important;
