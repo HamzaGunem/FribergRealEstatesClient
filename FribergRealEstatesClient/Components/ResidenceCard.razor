@@ -1,0 +1,144 @@
+﻿@*Auth Hamza*@
+
+<!-- Layout för större skärmar -->
+<div class="only-above-1440">
+    <MudCard Class="responsive-card" Style="height: 330px; display: flex; flex-direction: row; overflow: hidden; border: 1px solid gray;">
+        <MudCardMedia Image="@Residence.ImageUrls.FirstOrDefault()" Style="width: 400px; height: 100%; object-fit: cover;" />
+
+        <div style="flex: 1; display: flex; flex-direction: column; padding: 16px; height: 100%;">
+            <div class="mb-1">
+                <MudText Typo="Typo.h6">@Residence.Address.Street</MudText>
+            </div>
+            <div class="mb-2">
+
+                <MudText Typo="Typo.body2" Style="color: gray">
+                    <MudIcon Icon="fas fa-home" Color="Color.Primary" />
+                    &nbsp @Residence.Address.City, @Residence.Address.CommunName kommun
+                </MudText>
+            </div>
+            <div class="row">
+                <div style="display: flex; flex-direction: row; justify-content: space-between; height: 100%; width: 80%">
+                    <MudText Typo="Typo.body1">
+                        <b>
+                            @Residence.Area m²@if (Residence.BiArea != null && Residence.BiArea > 0)
+                            {
+                                <span>+ @Residence.BiArea m²</span>
+                            }
+                        </b>
+                    </MudText>
+                    <MudText Typo="Typo.body1"><b>@Residence.Rooms rum</b></MudText>
+                    <MudText Typo="Typo.body1">
+                        <b>
+                            @if (Residence.Floors != null && Residence.Floors > 1)
+                            {
+                                <span>vån @Residence.FloorRows</span>
+                            }
+                        </b>
+                    </MudText>
+
+                </div>
+            </div>
+            <div>
+                <div class="mb-2" style="display: flex; flex-direction: row; justify-content: space-between; height: 100%; width: 40%">
+                    <MudText Typo="Typo.body2" Style="color: gray">@Residence.MonthlyFee.ToString() kr/mån</MudText>
+                    <MudText Typo="Typo.body2" Style="color: gray">@Residence.OperatingCost.ToString() kr/m²</MudText>
+                </div>
+            </div>
+
+            <div class="mb-2" style="flex: 1; display: flex; align-items: center;">
+                <MudText Typo="Typo.subtitle2" Class="description-truncate">
+                    @Residence.Description
+                </MudText>
+            </div>
+            <div class="m-0">
+                @if (Residence.Facilities != null && Residence.Facilities.Count > 0)
+                {
+                    foreach (var item in Residence.Facilities)
+                    {
+                        <MudChip T="string" Variant="Variant.Outlined">@item</MudChip>
+                    }
+                }
+            </div>
+            <hr />
+        </div>
+    </MudCard>
+</div>
+
+<!-- Layout för små skärmar -->
+<div class="only-below-1440">
+    <MudCard Class="responsive-card" Style="overflow: hidden; border: 1px solid gray;">
+        <MudCardMedia Image="@Residence.ImageUrls.FirstOrDefault()"
+                      Style="object-fit: cover; Height:300px;" />
+
+        <MudCardContent>
+            <div>
+                <MudText Typo="Typo.h6">@Residence.Address.Street</MudText>
+            </div>
+            <div class="mb-2 mt-2">
+
+                <MudText Typo="Typo.body2" Style="color: gray">
+                    <MudIcon Icon="fas fa-home" Color="Color.Primary" />
+                    &nbsp @Residence.Address.City, @Residence.Address.CommunName kommun
+                </MudText>
+            </div>
+            <div class="row">
+                <div style="display: flex; flex-direction: row; justify-content: space-between; height: 100%; width: 80%">
+                    <MudText Typo="Typo.body1">
+                        <b>
+                            @Residence.Area m²@if (Residence.BiArea != null && Residence.BiArea > 0)
+                            {
+                                <span>+ @Residence.BiArea m²</span>
+                            }
+                        </b>
+                    </MudText>
+                    <MudText Typo="Typo.body1"><b>@Residence.Rooms rum</b></MudText>
+                    <MudText Typo="Typo.body1">
+                        <b>
+                            @if (Residence.Floors != null && Residence.Floors > 1)
+                            {
+                                <span>vån @Residence.FloorRows</span>
+                            }
+                        </b>
+                    </MudText>
+
+                </div>
+            </div>
+            <div>
+                <div class="mb-2" style="display: flex; flex-direction: row; justify-content: space-between; height: 100%; width: 40%">
+                    <MudText Typo="Typo.body2" Style="color: gray">@Residence.MonthlyFee.ToString() kr/mån</MudText>
+                    <MudText Typo="Typo.body2" Style="color: gray">@Residence.OperatingCost.ToString() kr/m²</MudText>
+                </div>
+            </div>
+
+            <div class="mb-1" style="flex: 1; display: flex; align-items: center;">
+                <MudText Typo="Typo.subtitle2" Class="description-truncate">
+                    @Residence.Description
+                </MudText>
+            </div>
+            <div>
+                @if (Residence.Facilities != null && Residence.Facilities.Count > 0)
+                {
+                    foreach (var item in Residence.Facilities)
+                    {
+                        <MudChip T="string" Variant="Variant.Outlined">@item</MudChip>
+                    }
+                }
+            </div>
+            <hr />
+        </MudCardContent>
+    </MudCard>
+</div>
+
+<style>
+    .description-truncate {
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        text-overflow: ellipsis;
+    }
+</style>
+
+@code {
+    [Parameter] public ResidenceDto Residence { get; set; }
+}
