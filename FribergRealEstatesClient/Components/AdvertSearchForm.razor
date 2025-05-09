@@ -1,13 +1,16 @@
-﻿<MudPaper Class="p-4" Elevation="3" Style="background-color: #273845; width: 400px; margin-right: 0px; border-radius: 15px;">
-    <MudText Typo="Typo.h5" Class="mb-4" Style="color: #ae9d65; font-weight: bold; text-align: center;">SÖK BOSTÄDER</MudText>
+﻿<MudPaper Class="p-4" 
+    Elevation="3"
+          Style="background-color: #273845; width: 400px; margin-right: 0px; border-radius: 15px; box-shadow: 0 4px 10px #000000">
+    <MudText Typo="Typo.h5" Class="mb-4" Style="color: #ae9d65; font-weight: bold; text-align: center; text-shadow: 0 4px 10px #000000; text: linear-gradient(135deg, #ae9d65, #cfc08a); text-fill-color: transparent">SÖK BOSTÄDER</MudText>
 
     <MudGrid>
         <MudItem xs="12" Class="mb-4">
             <MudTextField @bind-Value="Filter.Address"
                           Placeholder="Skriv område eller adress"
-                          Variant="Variant.Outlined"
                           Clearable="true"
-                          Style="background-color: white; color: black; border-radius: 15px;" />
+                          Underline="false"
+                          Class="residence-searchfield"
+                          Style="min-height: 50px; width: 100%;; text-transform: none; background-color: white; color: black; border-radius: 15px; padding: 10px;  box-shadow: 0 4px 10px #000000" />
         </MudItem>
 
         <MudItem xs="12" Class="mb-4">
@@ -15,11 +18,11 @@
                 @foreach (var type in Enum.GetValues<ResidenceType>())
                 {
                     <MudItem xs="12" sm="6" Class="d-flex justify-center">
-                        <MudButton Class="@($"residence-btn {(_selectedTypes.Contains(type) ? "selected" : "")}")"
-                        Variant="Variant.Filled"
-                        OnClick="@(() => ToggleType(type))"
-                        Style="min-height: 50px; min-width: 150px; text-transform: none;">
-                            @type.ToString()
+                        <MudButton Class=@($"filter-button residence-btn {(_selectedTypes.Contains(type) ? "selected" : "")}")
+                            Variant="Variant.Filled"
+                            OnClick="@(() => ToggleType(type))"
+                            Style="min-height: 50px; min-width: 150px; text-transform: none; box-shadow: 0 4px 10px #000000 ">
+                            @_residenceLabels[type]
                         </MudButton>
                     </MudItem>
                 }
@@ -31,7 +34,9 @@
                              Placeholder="Min antal rum"
                              Variant="Variant.Text"
                              Min="1"
-                             Style="background-color: white; color: black; border-radius: 15px; height: 55px; padding: 10px" />
+                             Class="residence-optionsfield"
+                             Style="background-color: white; color: black; border-radius: 15px; height: 55px; padding: 10px; border-radius: 15px; box-shadow: 0 4px 10px #000000"
+                             Underline= "false"/>
         </MudItem>
 
         <MudItem xs="6" Class="mb-4">
@@ -39,7 +44,9 @@
                              Placeholder="Max antal rum"
                              Variant="Variant.Text"
                              Min="1"
-                             Style="background-color: white; color: black; border-radius: 15px; height: 55px; padding: 10px" />
+                             Class="residence-optionsfield"
+                             Style="background-color: white; color: black; border-radius: 15px; height: 55px; padding: 10px; box-shadow: 0 4px 10px #000000"
+                             Underline="false" />
         </MudItem>
 
         <MudItem xs="6" Class="mb-4">
@@ -47,7 +54,9 @@
                              Placeholder="Min pris (SEK)"
                              Variant="Variant.Text"
                              Min="0"
-                             Style="background-color: white; color: black; border-radius: 15px; height: 55px; padding: 10px" />
+                             Class="residence-optionsfield"
+                             Style="background-color: white; color: black; border-radius: 15px; height: 55px; padding: 10px; box-shadow: 0 4px 10px #000000"
+                             Underline="false" />
         </MudItem>
 
         <MudItem xs="6" Class="mb-4">
@@ -55,24 +64,35 @@
                              Placeholder="Max pris (SEK)"
                              Variant="Variant.Text"
                              Min="0"
-                             Style="background-color: white; color: black; border-radius: 15px; height: 55px; padding: 10px" />
+                             Class="residence-optionsfield"
+                             Style="background-color: white; color: black; border-radius: 15px; height: 55px; padding: 10px; box-shadow: 0 4px 10px #000000"
+                             Underline="false" />
         </MudItem>
 
         <MudItem xs="6" Class="mb-4">
             <MudNumericField @bind-Value="Filter.MinArea"
                              Placeholder="Min area (m²)"
                              Min="0"
-                             Style="background-color: white; color: black; border-radius: 15px; height: 55px; padding: 10px" />
+                             Class="residence-optionsfield"
+                             Style="background-color: white; color: black; border-radius: 15px; height: 55px; padding: 10px; box-shadow: 0 4px 10px #000000"
+                             Underline="false" />
         </MudItem>
 
         <MudItem xs="6" Class="mb-4">
             <MudNumericField @bind-Value="Filter.MaxArea"
                              Placeholder="Max area (m²)"
                              Min="0"
-                             Style="background-color: white; color: black; border-radius: 15px; height: 55px; padding: 10px" />
+                             Class="residence-optionsfield"
+                             Style="background-color: white; color: black; border-radius: 15px; height: 55px; padding: 10px; box-shadow: 0 4px 10px #000000"
+                             Underline="false" />
         </MudItem>
         <MudItem xs="6" Class="mb-4">
-            <MudSelect T="string" @bind-Value="Filter.OrderBy" Label="Sortera efter" Style="background-color: white; color: black; border-radius: 15px;">
+            <MudSelect T="string" @bind-Value="Filter.OrderBy" 
+                Placeholder="Sortera efter"
+                Variant="Variant.Text"
+                Class="residence-optionsfield"
+                Style="background-color: white; color: black; border-radius: 15px; ; padding: 10px; box-shadow: 0 4px 10px #000000"
+                Underline="false">
                 <MudSelectItem T="string" Value="@null">Inget</MudSelectItem>
                 <MudSelectItem T="string" Value="@("price")">Pris</MudSelectItem>
                 <MudSelectItem Value="@("rooms")">Antal rum</MudSelectItem>
@@ -80,10 +100,11 @@
         </MudItem>
 
         <MudItem xs="6" Class="mb-4">
-            <MudCheckBox T="bool?" @bind-Value="Filter.OrderDescending"
-            Label="Sortera fallande"
-            Disabled ="@string.IsNullOrEmpty(Filter.OrderBy)"
-            Class="order-descending-checkbox" />
+            <MudCheckBox T="bool?"
+                         @bind-Value="Filter.OrderDescending"
+                         Label="Sortera fallande"
+                         Disabled="@string.IsNullOrEmpty(Filter.OrderBy)"
+                         Class="order-descending-checkbox"/>
         </MudItem>
     </MudGrid>
 
@@ -91,8 +112,9 @@
         <MudButton Variant="Variant.Filled"
         FullWidth="true"
         OnClick="@OnApplyFilter"
-        Style="background-color: #FFDE6F; color: black; min-height: 50px; border-radius: 15px">
-            Sök
+        Class="search-button"
+                   Style="background-color: #ae9d65; color: white; min-height: 50px; border-radius: 15px; font-size: 16px;">
+              Sök
         </MudButton>
     </div>
 </MudPaper>
@@ -121,6 +143,13 @@
         Filter.ResidenceTypes = _selectedTypes.ToList();
         OnResidenceTypesChanged.InvokeAsync(_selectedTypes);
     }
+    private readonly Dictionary<ResidenceType, string> _residenceLabels = new()
+{
+    { ResidenceType.Apartment, "Lägenhet" },
+    { ResidenceType.House, "Villa" },
+    { ResidenceType.RowHouse, "Radhus" },
+    { ResidenceType.VacationHouse, "Semesterhus" }
+};
 }
 
 <style>
@@ -138,11 +167,11 @@
     }
 
     /* Checkbox styling */
-    .order-descending-checkbox .mud-checkbox {
+    /* .order-descending-checkbox .mud-checkbox {
         color: #ffde6f !important;
     }
 
     .order-descending-checkbox .mud-checkbox-checked {
         color: #ffde6f !important;
-    }
+    } */
 </style>

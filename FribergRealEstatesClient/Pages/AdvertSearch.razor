@@ -5,51 +5,56 @@
 @using Newtonsoft.Json
 
 <PageTitle>Sök Bostäder</PageTitle>
-<div class="container-large">
-    <MudMainContent Class="p-4">
-        <div style="display: flex; align-items: flex-start;">
 
-            @* Searchform *@
-            @if (_searchPanelOpen)
-            {
-                <AdvertSearchForm Filter="_filter"
-                OnApplyFilter="OnApplyFilter"
-                OnResidenceTypesChanged="OnResidenceTypesChanged" />
-            }
+<MudMainContent Class="p-4" style="display: flex; align-items: flex-start; justify-content: center;">
+        <MudGrid Spacing="6" Style="display: flex; justify-content:center">
+            <MudItem xs="12" sm="12" md="4">
+                <MudItem Style="display: flex; justify-content:center;">
+                @* Searchform *@
+                @if (_searchPanelOpen)
+                {
+                    <AdvertSearchForm Filter="_filter"
+                                      OnApplyFilter="OnApplyFilter"
+                                      OnResidenceTypesChanged="OnResidenceTypesChanged" />
+                }
 
-            @* Hamburgermenu *@
-            <MudIconButton Icon="@Icons.Material.Filled.Menu"
-            Color="Color.Primary"
-            Size="Size.Large"
-            OnClick="@ToggleSearchPanel" />
 
-            @* Adverts *@
-            <div class="advert-list-container">
-                @if (_isLoading)
-                {
-                    <MudProgressCircular Indeterminate="true" Color="Color.Primary" />
-                }
-                else if (_result == null)
-                {
-                    <MudText>Ange sökkriterier och klicka på Sök</MudText>
-                }
-                else if (!_result.Any())
-                {
-                    <MudAlert Severity="Severity.Info">Inga bostäder hittades med valda sökkriterier</MudAlert>
-                }
-                else
-                {
-                    @foreach (var advert in _result)
+                @* Hamburgermenu *@
+                <MudIconButton style="align-items: flex-start" Icon="@Icons.Material.Filled.Menu"
+                               Color="Color.Primary"
+                               Size="Size.Large"
+                               OnClick="@ToggleSearchPanel" />
+                </MudItem>
+            </MudItem>
+            <MudItem xs="12" sm="12" md="6">
+                @* Adverts *@
+                <div class="advert-list-container">
+                    @if (_isLoading)
                     {
-                        // change Robert: added button
-                        //<div type="button" @onclick="() => GoToAdvert(advert.Id)"><AdvertCard Advert="advert" /></div>
-                        <div type="button" @onclick="() => GoToAdvert(advert.Id)"><RealtorActiveAdvert Advert="advert" /></div>
+                        <MudProgressCircular Indeterminate="true" Color="Color.Primary" />
                     }
-                }
-            </div>
-        </div>
-    </MudMainContent>
-</div>
+                    else if (_result == null)
+                    {
+                        <MudText>Ange sökkriterier och klicka på Sök</MudText>
+                    }
+                    else if (!_result.Any())
+                    {
+                        <MudAlert Severity="Severity.Info">Inga bostäder hittades med valda sökkriterier</MudAlert>
+                    }
+                    else
+                    {
+                        @foreach (var advert in _result)
+                        {
+                            // change Robert: added button
+                            //<div type="button" @onclick="() => GoToAdvert(advert.Id)"><AdvertCard Advert="advert" /></div>
+                            <div type="button" @onclick="() => GoToAdvert(advert.Id)"><RealtorActiveAdvert Advert="advert" /></div>
+                        }
+                    }
+                </div>
+            </MudItem>
+        </MudGrid>
+</MudMainContent>
+
 
 
 @code {
@@ -64,7 +69,7 @@
     }
 
     private void OnResidenceTypesChanged(IEnumerable<ResidenceType> values)
-    {        
+    {
         _filter.ResidenceTypes = values.ToList();
     }
 
