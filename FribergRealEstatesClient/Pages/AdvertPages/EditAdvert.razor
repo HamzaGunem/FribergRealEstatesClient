@@ -19,7 +19,8 @@
                     <MudItem xs="12" md="6">
                         <MudNumericField @bind-Value="advertDto.CurrentPrice"
                                          Label="Current Price"
-                                         Variant="Variant.Outlined"
+                                         HideSpinButtons ="true"
+                                         Variant="Variant.Filled"
                                          Required="true"
                                          Min="0">
                         </MudNumericField>
@@ -27,7 +28,7 @@
 
                     @*Datetime update*@
                     <MudItem xs="12">
-                        <MudText Typo="Typo.body2">Last Updated: @advertDto.Updated.ToString("g")</MudText>
+                        <MudText Typo="Typo.body2">Senast uppdaterad : @advertDto.Updated.ToString("g")</MudText>
                     </MudItem>
 
                     @*Bool*@
@@ -42,14 +43,14 @@
                         <MudButton Variant="Variant.Filled"
                                    Color="Color.Primary"
                                    ButtonType="ButtonType.Submit">
-                            Save
+                            Spara
                         </MudButton>
 
                         <MudButton Variant="Variant.Text"
                                    Color="Color.Default"
                                    Class="ml-2"
                                    OnClick="Cancel">
-                            Cancel
+                            Avbryt
                         </MudButton>
                     </MudItem>
 

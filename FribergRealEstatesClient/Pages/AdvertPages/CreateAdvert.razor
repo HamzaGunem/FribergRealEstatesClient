@@ -3,30 +3,90 @@
 @inject IClient client
 @inject ISnackbar Snackbar
 @inject NavigationManager Navigation
-@inject RealtorStateContainer realtorState
+@inject IRealtorService realtorService
+@inject IAdvertService advertService
 
-@if(realtor != null)
+@if (realtor != null)
 {
-    foreach (var res in availableResidences)
+    if (availableResidences != null)
     {
-        <h2>@res.BiArea</h2>
+        <MudContainer MaxWidth="MaxWidth.Medium" Class="mx-auto mt-4">
+
+            @foreach (var item in availableResidences)
+            {
+                <EditForm Model="advertCreateDto" OnValidSubmit="@(async () => HandleSubmit(item.Id))">
+                    <DataAnnotationsValidator />
+                    <MudPaper Elevation="3" Class="pa-4 mb-4">
+                        <MudExpansionPanels>
+                            <MudExpansionPanel Class="no-scroll" Text="@item.Address.Street" Style="text-align:center;" Expanded="false">
+                                <MudList T="string" Style="background-color: white;">
+                                    <ResidenceCard Residence="@item"></ResidenceCard>
+
+                                    <MudItem xs="12" md="6">
+                                        <MudNumericField @bind-Value="Price"
+                                        Label="Price"
+                                        HideSpinButtons="true"
+                                        Variant="Variant.Filled"
+                                        Required="true"
+                                        Min="0">
+                                        </MudNumericField>
+                                    </MudItem>
+
+                                    <MudListItem Icon="@Icons.Material.Filled.Create"
+                                    IconColor="Color.Success">
+                                        <MudButton Variant="Variant.Filled"
+                                        Color="Color.Primary"
+                                        ButtonType="ButtonType.Submit">
+                                            Skapa annons
+                                        </MudButton>
+                                    </MudListItem>
+                                    <MudDivider />
+                                </MudList>
+                            </MudExpansionPanel>
+                        </MudExpansionPanels>
+                    </MudPaper>
+                </EditForm>
+            }
+        </MudContainer>
     }
 }
 
+@* styling *@
+<style>
+    .mud-expand-panel-header {
+    color: white;
+    background-color: #273845;
+    }
+
+    .mud-expand-panel-content {
+    background-color: whitesmoke;
+    }
+
+    .mud-divider {
+    border-color: black;
+    }
+
+    .mud-link:visited,
+    .mud-link:active {
+    color: black !important;
+    }
+</style>
+
 @code {
-    private IEnumerable<ResidenceDto> availableResidences;
+    private ICollection<ResidenceDto> availableResidences;
+    private AdvertCreateDto advertCreateDto = new ();
+    private double Price = 0;
     public RealtorFullProfileDto realtor { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            realtor = realtorState.CurrentRealtor;
-            availableResidences = await client.AvailableAsync();
-
+            realtor = await realtorService.GetMyProfileAsync();
             if (realtor != null)
             {
-     
+                availableResidences = await client.AvailableAsync();
+
             }
         }
         catch (Exception ex)
@@ -34,5 +94,37 @@
             Snackbar.Add($"Initialization error: {ex.Message}", Severity.Error);
         }
     }
- 
+
+    public async Task HandleSubmit(int residenceId)
+    {
+        try
+        {
+            advertCreateDto = new AdvertCreateDto
+            {
+                Created = DateTime.UtcNow,
+                Updated = DateTime.UtcNow,
+                Sold = false,
+                CurrentPrice = Price,
+                RealtorId = realtor.Realtor.Id,
+                ResidenceId = residenceId
+            };
+            await advertService.CreateAdvert(advertCreateDto);
+
+            var createdResidence = availableResidences.FirstOrDefault(r => r.Id == residenceId);
+            if (createdResidence != null)
+            {
+                availableResidences.Remove(createdResidence);
+                StateHasChanged();
+            }
+            Snackbar.Add("Annons skapad!", Severity.Success);
+            Navigation.NavigateTo("/my-active-advert");
+           
+
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Error creating advert: {ex.Message}", Severity.Error);
+        }
+    }
 }
+
