@@ -117,6 +117,7 @@ code {
     text-align: start;
 }
 
+/* Robert */
 @media (min-width: 551px)
 {
     .advert-carousel
@@ -124,6 +125,7 @@ code {
         width: 500px;
     }
 }
+/* Robert */
 @media (max-width: 550px) {
     .advert-carousel {
         width: 350px;
@@ -133,7 +135,7 @@ code {
         width: 350px !important;
     }
 }
-
+/* Robert */
 @media (min-width: 901px) {
     .container-large {
         width: 75%;
@@ -148,14 +150,14 @@ code {
         height: 400px !important;
     }
 }
-
+/* Robert */
 @media (max-width: 900px) {
     .container-large {
         width: 100% !important;
         padding: 0 1rem;
     }
 }
-
+/* Robert */
 @media (max-width: 1600px) {
     .only-below-1440 {
         display: block !important;
@@ -165,7 +167,7 @@ code {
         display: none !important;
     }
 }
-
+/* Robert */
 @media (min-width: 1601px) {
     .only-below-1440 {
         display: none !important;
@@ -179,7 +181,7 @@ code {
     color: red; /* Change this to your desired color */
     background-color: coral;
 }
-
+/* Robert */
 @media (max-width: 990px) {
     .compare-icon {
         display: block;
