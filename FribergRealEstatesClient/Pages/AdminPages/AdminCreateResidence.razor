@@ -1,0 +1,273 @@
+﻿@*Made by Samuel*@
+
+@page "/admin-createResidence"
+@inject IResidenceService residenceService
+@inject NavigationManager navManager
+
+<MudPaper Class="pa-4" Elevation="3">
+    <EditForm Model="@residenceModel" OnValidSubmit="HandleValidSubmit">
+        <DataAnnotationsValidator/>
+        <MudStack Spacing="3">
+
+            <!-- 🏠 Sektion 1: Bostadstyp & Adress -->
+            <MudStack>
+                <MudPaper Style="background-color:#273845; color: white;">
+                    <MudText Typo="Typo.h6">Bostadstyp & Adress</MudText>
+                </MudPaper>
+                <MudGrid>
+                    <MudItem xs="12" sm="6">
+                        <MudSelect T="string" Label="Typ av bostad" @bind-Value="residenceModel.Type">
+                            @foreach(var value in ResidenceTypes)
+                            {
+                                <MudSelectItem Value="@value">@value.ToString()</MudSelectItem>
+                            }
+                        </MudSelect>
+
+                    </MudItem>
+
+                    <MudItem xs="12" sm="6">
+                        <MudTextField @bind-Value="residenceModel.Street" Label="Gatuadress" />
+                    </MudItem>
+                    <MudItem xs="6" sm="3">
+                        <MudTextField @bind-Value="residenceModel.PostalCode" Label="Postnummer" />
+                    </MudItem>
+                    <MudItem xs="6" sm="3">
+                        <MudTextField @bind-Value="residenceModel.City" Label="Stad" />
+                    </MudItem>
+                    <MudItem xs="12" sm="6">
+                        @*<MudNumericField T="int" @bind-Value="residenceModel.CommunId" Label="Kommun ID" />*@
+                        <MudSelect T="int" Label="Välj Kommun" @bind-Value="residenceModel.CommunId">
+                            @foreach (var value in ResidenceTypes)
+                            {
+                                <MudSelectItem Value="@value">@value.ToString()</MudSelectItem>
+                            }
+                        </MudSelect>
+                    </MudItem>
+
+                </MudGrid>
+            </MudStack>
+
+            <!-- 📏 Sektion 2: Storlek & Planlösning -->
+
+            <MudDivider />
+            <MudStack>
+                <MudPaper Style="background-color:#273845; color: white;">
+                    <MudText Typo="Typo.h6">Storlek & Planlösning</MudText>
+                </MudPaper>        @*
+                <MudGrid>
+                    <MudItem xs="6" sm="3">
+                        <MudNumericField T="int" @bind-Value="residenceModel.Area" Label="Boarea (kvm)" />
+                    </MudItem>
+                    <MudItem xs="6" sm="3">
+                        <MudNumericField T="int?" @bind-Value="residenceModel.BiArea" Label="Biarea (kvm)" />
+                    </MudItem>
+                    <MudItem xs="6" sm="3">
+                        <MudNumericField T="int" @bind-Value="residenceModel.Rooms" Label="Antal rum" />
+                    </MudItem>
+                    <MudItem xs="6" sm="3">
+                        <MudNumericField T="int?" @bind-Value="residenceModel.Floors" Label="Antal våningar" />
+                    </MudItem>
+                    <MudItem xs="6" sm="3">
+                        <MudNumericField T="int" @bind-Value="residenceModel.FloorRows" Label="Våningsplan" />
+                    </MudItem>
+                    <MudItem xs="6" sm="3">
+                        <MudNumericField T="int" @bind-Value="residenceModel.BuildYear" Label="Byggår" />
+                    </MudItem>
+                </MudGrid> *@
+            </MudStack>
+
+            <!-- 💰 Sektion 3: Ekonomi -->
+            <MudDivider />
+
+            <MudStack>
+                <MudPaper Style="background-color:#273845; color: white;">
+                    <MudText Typo="Typo.h6">Ekonomi</MudText>
+                </MudPaper>
+                @*
+                <MudGrid>
+                    <MudItem xs="6" sm="4">
+                        <MudNumericField T="double?" @bind-Value="residenceModel.MonthlyFee" Label="Månadsavgift (kr)" />
+                    </MudItem>
+                    <MudItem xs="6" sm="4">
+                        <MudNumericField T="double" @bind-Value="residenceModel.OperatingCost" Label="Driftkostnad (kr)" />
+                    </MudItem>
+                    <MudItem xs="6" sm="4">
+                        <MudNumericField T="int?" @bind-Value="residenceModel.ParkingSlotNumber" Label="P-platsnummer" />
+                    </MudItem>
+                </MudGrid> *@
+            </MudStack>
+
+            <!-- 📝 Sektion 4: Beskrivning, Bilder & Faciliteter -->
+            <MudDivider />
+            <MudStack>
+                <MudPaper Style="background-color:#273845; color: white;">
+                    <MudText Typo="Typo.h6">Beskrivning & Övrigt</MudText>
+                </MudPaper>
+                <MudTextField @bind-Value="residenceModel.Description" Label="Beskrivning" Lines="4" TextArea="true" />
+
+                <!-- Bild-URL -->
+                <MudText Typo="Typo.subtitle2">Bilder</MudText>
+                <MudTextField @bind-Value="imageUrlInput" Label="Lägg till bild-URL" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Add" OnAdornmentClick="AddImageUrl" />
+                @*
+                <MudChipSet>
+                    @foreach (var url in residenceModel.ImageUrls ?? Array.Empty<string>())
+                    {
+                        <MudChip Closeable="true" OnClose="HandleChipClose">@url</MudChip>
+                    }
+                </MudChipSet>
+                *@
+                <!-- Faciliteter -->
+                <MudText Typo="Typo.subtitle2">Faciliteter</MudText>
+                @*
+                <MudCheckBox T="bool" @bind-Checked="@hasFacilities[0]" Label="Elevator" />
+                <MudCheckBox T="bool" @bind-Checked="@hasFacilities[1]" Label="Balcony" />
+                <MudCheckBox T="bool" @bind-Checked="@hasFacilities[2]" Label="Terrace" />
+                <MudCheckBox T="bool" @bind-Checked="@hasFacilities[3]" Label="Parking lot" />
+                <MudCheckBox T="bool" @bind-Checked="@hasFacilities[4]" Label="Recent construction" />
+                <MudCheckBox T="bool" @bind-Checked="@hasFacilities[0]" Label="Pool" />*@
+            </MudStack>
+
+            <!-- Submit-knapp -->
+            <MudDivider />
+            <MudStack>
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="m-lg-auto">Spara</MudButton>
+                @*<MudButton Variant="Variant.Filled" Color="Color.Primary" Type="Submit">Spara</MudButton>*@
+            </MudStack>
+        </MudStack>
+    </EditForm>
+</MudPaper>
+
+@code {
+    private MudForm form;
+    private ResidenceModel residenceModel = new();
+    private string imageUrlInput;
+    private List<string> errorMessages;
+    private List<CommunDto> communs = new();
+    // Exempel för checkboxar (konvertera till Facility-lista om du har enum/objekt)
+    // Elevator, Balcony, Terrace, ParkingLot, NewProduction, Pool
+    private bool[] hasFacilities = { false, false, false, false, false, false };
+
+    public async Task HandleValidSubmit()
+    {
+        Console.WriteLine("HandleValidSubmit triggered");
+
+
+        // Här kan du omvandla checkboxar till Facilities-lista
+        residenceModel.Facilities = SetFacilities();
+
+        var newDto = MapToDto(residenceModel);
+
+        await Task.CompletedTask;
+    }
+
+    private void AddImageUrl()
+    {
+        if (!string.IsNullOrWhiteSpace(imageUrlInput))
+        {
+            var urls = residenceModel.ImageUrls?.ToList() ?? new List<string>();
+            urls.Add(imageUrlInput.Trim());
+            residenceModel.ImageUrls = urls.ToArray();
+            imageUrlInput = string.Empty;
+        }
+    }
+
+    private void RemoveImageUrl(string url)
+    {
+        var urls = residenceModel.ImageUrls?.ToList() ?? new List<string>();
+        urls.Remove(url);
+        residenceModel.ImageUrls = urls.ToArray();
+    }
+
+    // Convert "bool"-value facilities to Enum equivalents
+    private List<Facilities> SetFacilities()
+    {
+        var list = new List<Facilities>();
+        if (hasFacilities[0]) list.Add(Facilities.Elevator);
+        if (hasFacilities[1]) list.Add(Facilities.Balcony);
+        if (hasFacilities[2]) list.Add(Facilities.Terrace);
+        if (hasFacilities[3]) list.Add(Facilities.ParkingLot);
+        if (hasFacilities[4]) list.Add(Facilities.NewProduction);
+        if (hasFacilities[5]) list.Add(Facilities.Pool);
+
+        return list;
+    }
+
+    // Convert "string" value ResidenceType to Enum equivalent
+    private ResidenceType SetResidenceType()
+    {
+        var newType = new ResidenceType();
+        if (residenceModel.Type == "Lägenhet") newType = ResidenceType.Apartment;
+        if (residenceModel.Type == "Villa") newType = ResidenceType.House;
+        if (residenceModel.Type == "Radhus") newType = ResidenceType.RowHouse;
+        if (residenceModel.Type == "Fritidshus") newType = ResidenceType.VacationHouse;
+
+        return newType;
+    }
+
+    // transfer values over to a DTO
+    private CreateResidenceDto MapToDto(ResidenceModel model)
+    {
+        var dto = new CreateResidenceDto()
+            {
+                Type = SetResidenceType(),
+                Street = model.Street,
+                PostalCode = model.PostalCode,
+                City = model.City,
+                CommunId = model.CommunId,
+                Description = model.Description,
+                Area = model.Area,
+                BiArea = model.BiArea,
+                Rooms = model.Rooms,
+                Floors = model.Floors,
+                FloorRows = model.FloorRows,
+                MonthlyFee = model.MonthlyFee,
+                OperatingCost = model.OperatingCost,
+                BuildYear = model.BuildYear,
+                ImageUrls = model.ImageUrls,
+                ParkingSlotNumber = model.ParkingSlotNumber,
+                Facilities = ConvertFacilitiesToString()
+            };
+        return dto;
+    }
+
+    
+
+    // Add choosen facilities 
+    private List<string> ConvertFacilitiesToString()
+    {
+        var facilities = new List<string>();
+        foreach(var val in residenceModel.Facilities)
+        {
+            facilities.Add(Enum.GetName(val));
+        }
+        return facilities;
+
+    }
+
+    public class ResidenceModel
+    {
+        public string Type { get; set; }
+        public string Street { get; set; }
+        public string PostalCode { get; set; }
+        public string City { get; set; }
+        public int CommunId { get; set; }
+        public string Description { get; set; }
+        public int Area { get; set; }
+        public int? BiArea { get; set; }
+        public int Rooms { get; set; }
+        public int? Floors { get; set; }
+        public int FloorRows { get; set; }
+        public double? MonthlyFee { get; set; }
+        public double OperatingCost { get; set; }
+        public int BuildYear { get; set; }
+        public string[]? ImageUrls { get; set; }
+        public int? ParkingSlotNumber { get; set; }
+        public List<Facilities>? Facilities { get; set; }
+    }
+
+    
+    //public enum ResidenceType { Lägenhet, Villa, Radhus, Fritidshus }
+    public string[] ResidenceTypes = new string[] { "Lägenhet", "Villa", "Radhus", "Fritidshus" };
+    public enum Facilities { Elevator, Balcony, Terrace, ParkingLot, NewProduction ,Pool }
+}
+
