@@ -21,7 +21,7 @@ a, .btn-link {
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 .content {
@@ -117,19 +117,43 @@ code {
     text-align: start;
 }
 
-@media (min-width: 551px)
-{
-    .advert-carousel
-    {
+/*Jonathan*/
+#color-main-blue {
+    color: #273845
+}
+
+#color-main-gold {
+    color: #ae9d65;
+}
+
+.color-main-gray {
+    color: #afafb0;
+}
+
+.color-text-white {
+    color: #ffffff;
+}
+
+.color-text-gray {
+    color: #afafb0;
+}
+
+.color-text-blue {
+    color: #273845;
+}
+
+@media (min-width: 551px) {
+    .advert-carousel {
         width: 500px;
     }
 }
+
 @media (max-width: 550px) {
     .advert-carousel {
         width: 350px;
     }
-    .carousel-custom
-    {
+
+    .carousel-custom {
         width: 350px !important;
     }
 }
@@ -139,10 +163,12 @@ code {
         width: 75%;
         margin: 0 auto;
     }
+
     .advert-carousel {
         width: 800px;
         height: 400px;
     }
+
     .carousel-custom {
         width: 800px !important;
         height: 400px !important;
@@ -175,6 +201,7 @@ code {
         display: block !important;
     }
 }
+
 .exppanel-text .mud-expansion-panel-header .mud-typography {
     color: red; /* Change this to your desired color */
     background-color: coral;
@@ -188,19 +215,115 @@ code {
         margin-top: 20px;
         order: 1;
     }
+
     .zone1 {
         order: 0;
         width: 100%;
     }
+
     .zone2 {
         order: 2;
         width: 100%;
     }
 }
+
+/*neråt härifrån = Jonathan*/
+
+.residence-searchfield {
+    display: inline-block;
+    transition: all 0.3s ease-in-out;
+    width: 100%;
+    max-width: 360px;
 }
 
-/*Jonathan*/
-.residence-btn.mud-button-root:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 10px rgba(255, 222, 111, 0.5);
+    .residence-searchfield:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3) !important;
+    }
+
+    .residence-searchfield .mud-input-slot input:focus {
+        outline: none !important;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5) !important;
+    }
+
+.filter-button {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease-in-out;
+    background: linear-gradient(135deg, #ae9d65, #cfc08a);
+    color: white;
+}
+
+    .filter-button:hover {
+        transform: translateY(-2px) scale(1.05);
+        box-shadow: 0 10px 20px rgba(174, 157, 101, 0.6);
+        background: linear-gradient(135deg, #cfc08a, #ae9d65);
+        color: #fff;
+    }
+    .filter-button.selected {
+        background: #5c4d2d;
+        color: #fff;
+        border: 2px solid #d5c58b;
+        box-shadow: 0 6px 12px rgba(213, 197, 139, 0.6);
+        transform: scale(1.02);
+    }
+
+.residence-optionsfield {
+    display: inline-block;
+    transition: all 0.3s ease-in-out;
+}
+
+    .residence-optionsfield:hover {
+        transform: scale(1.08);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3) !important;
+    }
+
+    .residence-optionsfield .mud-input-slot input:focus {
+        outline: none !important;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5) !important;
+    }
+
+.search-button {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease-in-out;
+    background: linear-gradient(135deg, #ae9d65, #cfc08a);
+    color: white;
+}
+
+    .search-button:hover {
+        transform: translateY(-2px) scale(1.03);
+        box-shadow: 0 10px 20px rgba(174, 157, 101, 0.6);
+        background: linear-gradient(135deg, #cfc08a, #ae9d65);
+        color: #fff;
+    }
+
+.order-descending-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.order-descending-checkbox .mud-checkbox-label {
+    font-size: 1rem;
+    font-weight: 600;
+    background: linear-gradient(135deg, #ae9d65, #cfc08a);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+    transition: all 0.3s ease;
+    padding-left: 0.5rem;
+}
+
+.order-descending-checkbox .mud-icon-root {
+    color: #ae9d65;
+    transition: color 0.3s, transform 0.3s;
+}
+
+.order-descending-checkbox:hover .mud-icon-root {
+    color: #cfc08a;
+    transform: scale(1.1);
+}
+
+.order-descending-checkbox.mud-checked .mud-icon-root {
+    color: #cfc08a;
 }
