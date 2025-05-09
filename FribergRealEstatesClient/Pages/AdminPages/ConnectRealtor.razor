@@ -1,0 +1,108 @@
+﻿
+@* Auth: Oscar *@
+@page "/connect-realtor"
+@inject IRealtorService realtorService
+@inject NavigationManager navManager
+@inject ISnackbar snackbar
+@inject IAgencyService agencyService
+
+<PageTitle>Koppla mäklare till byrå</PageTitle>
+@if (realtors == null)
+{
+    <MudProgressCircular Indeterminate="true" Color="Color.Primary" />
+}
+else
+{
+    <div class="container">
+        <MudText Typo="Typo.h3" Class="px-5 m-0 mb-4" Style="text-align:center; background-color:#273845; color: white;">Ändra mäklarbyrå</MudText>
+        <MudList T="string" Class="mx-auto">
+            @foreach (var realtor in realtors)
+            {
+                <MudListItem Class="py-1">
+                    <MudPaper Elevation="2" Class="p-4" Style="width: 100%; border-radius: 12px;">
+                        <div style="display: flex; justify-content: center; align-items: center; align-content: center; width: 100%">
+                            <div style="display: grid; grid-template-columns: 60px 180px 160px 150px 250px 40px; align-items: center; gap: 1rem; max-width: 900px; width: 100%;">
+                                <MudAvatar>
+                                    <MudImage Src="@realtor.PictureUrl" Alt="Profilbild"> </MudImage>
+                                </MudAvatar>
+                                <MudText Typo="Typo.h6">@realtor.FirstName @realtor.LastName</MudText>
+                                <MudText Typo="Typo.body2">@realtor.Email</MudText>
+                                <MudText Typo="Typo.body2">@realtor.PhoneNumber</MudText>
+
+                                <MudSelect T="int?" @bind-Value="realtor.AgencyId" Label="Kopplad byrå">
+                                    @foreach (var agency in agencies)
+                                    {
+                                        <MudSelectItem Value="(int?)agency.Id">@agency.Name</MudSelectItem>
+                                    }
+
+                                </MudSelect>
+
+                                <MudIconButton Icon="@Icons.Material.Filled.Save"
+                                               Color="Color.Primary"
+                                               OnClick="@(() => SaveAgencyAsync(realtor.Id))"
+                                               Disabled="!originalAgencyIds.ContainsKey(realtor.Id) || originalAgencyIds[realtor.Id] == realtor.AgencyId"
+                                               Size="Size.Small"
+                                               aria-label="Spara" />
+                            </div>
+                        </div>
+                    </MudPaper>
+                </MudListItem>
+            }
+        </MudList>
+    </div>
+}
+
+@code {
+
+    private List<AgencySummaryDto> agencies = new();
+    private List<AdminRealtorUserDto> realtors = new();
+    private Dictionary<int, int?> originalAgencyIds = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        agencies = (await agencyService.GetAllAgenciesAsync()).ToList();
+        realtors = (await realtorService.GetAllRealtors()).ToList();
+
+        foreach (var r in realtors)
+        {
+            originalAgencyIds[r.Id] = r.AgencyId;
+        }
+    }
+
+    private async Task SaveAgencyAsync(int realtorId)
+    {
+        var realtor = realtors.FirstOrDefault(r => r.Id == realtorId);
+
+        if (realtor == null || realtor.AgencyId is null or 0)
+        {
+            snackbar.Add("Du måste välja en byrå innan du kan spara.", Severity.Warning);
+            return;
+        }
+        try
+        {
+            var dto = new UpdateRealtorProfileDto
+                {
+                    Id = realtor.Id,
+                    FirstName = realtor.FirstName,
+                    LastName = realtor.LastName,
+                    Email = realtor.Email,
+                    PhoneNumber = realtor.PhoneNumber,
+                    PictureUrl = realtor.PictureUrl,
+                    AgencyId = realtor.AgencyId.Value
+                };
+
+            await realtorService.UpdateRealtorProfileAsync(dto);
+
+            realtors = (await realtorService.GetAllRealtors()).ToList();
+
+            originalAgencyIds[realtor.Id] = realtor.AgencyId;
+
+            snackbar.Add("Mäklarens byrå uppdaterades.", Severity.Success);
+        }
+        catch (Exception ex)
+        {
+            snackbar.Add($"Fel vid uppdatering, {ex.Message}", Severity.Error);
+        }
+    }
+
+}

@@ -1,9 +1,8 @@
 ﻿@* Auth: Oscar  *@
 @inject ISnackbar snackbar
-<MudPaper Class="display-6 w-100">
-    <MudText Typo="Typo.h3" Class="p-4 mb-2" Style="text-align:center; background-color: white; width: 100%;">Skapa mäklarbyrå</MudText>
-    <MudGrid Justify="Justify.Center">
-        <MudForm @ref="_form" Class="w-50 mx-auto" Style="max-width: 800px">
+<MudPaper Class="w-100 pa-4 mx-auto pa-4" MaxWidth="800px">
+    <MudGrid Class="mx-auto" Style="width: 100%">
+        <MudForm @ref="_form" Class="w-100 mx-auto" Style="width: 100%; margin-top: 24px !important">
             <MudItem Class="mb-2" xs="12" sm="12">
                 <MudTextField FullWidth="true" @bind-Value="AgencyDto.Name" Variant="Variant.Filled" Label="Byrånamn" Placeholder="Byrånamn" />
             </MudItem>

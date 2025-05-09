@@ -1,4 +1,5 @@
 @* Made by Robert *@
+@* Additions by Oscar *@
 @inject NavigationManager navManager
 
 <MudItem xs="12" sm="6" md="6">
@@ -8,7 +9,7 @@
                 <MudList T="string" Style="background-color: white;">
                     <MudDivider />
                     <MudListItem Icon="@Icons.Material.Filled.Create"
-                    IconColor="Color.Success">
+                                 IconColor="Color.Success">
                         <MudText Color="Color.Default" Class="custom-link" @onclick="CreateNewAgency">
                             Skapa
                         </MudText>
@@ -16,7 +17,10 @@
                     <MudDivider />
                     <MudListItem Icon="@Icons.Material.Filled.ChangeCircle" IconColor="Color.Primary">Ändra</MudListItem>
                     <MudDivider />
-                    <MudListItem Icon="@Icons.Material.Filled.AssignmentInd" IconColor="Color.Warning">Koppla mäklare till byrå</MudListItem>
+                    <MudListItem Icon="@Icons.Material.Filled.AssignmentInd"
+                                 IconColor="Color.Warning">
+                        <MudText Color="Color.Default" Class="custom-link" @onclick="ConnectRealtor">Koppla mäklare till byrå</MudText>
+                    </MudListItem>
                     <MudDivider />
                     <MudListItem Icon="@Icons.Material.Filled.RemoveCircleOutline" IconColor="Color.Error">Ta bort</MudListItem>
                 </MudList>
@@ -25,10 +29,15 @@
     </MudPaper>
 </MudItem>
 
-@code{
+@code {
 
     public void CreateNewAgency()
     {
         navManager.NavigateTo("/create-agency");
+    }
+    //Added by Oscar
+    public void ConnectRealtor()
+    {
+        navManager.NavigateTo("/connect-realtor");
     }
 }
