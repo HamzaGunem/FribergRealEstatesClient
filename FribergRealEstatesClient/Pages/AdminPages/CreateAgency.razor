@@ -1,0 +1,56 @@
+﻿@* Auth: Oscar *@
+@page "/create-agency"
+@inject IAgencyService agencyService
+@inject ICommunService communService
+@inject NavigationManager navManager
+@inject ISnackbar snackbar
+
+<PageTitle>Skapa mäklarbyrå</PageTitle>
+<div class="container-large">
+    <MudMainContent class="p-4">
+        <div style="display: flex; align-items: flex-start;">
+            <CreateAgencyForm AgencyDto="agencyDto" AddressDto="addressDto" Communes="communs" OnCreate="Create" />
+        </div>
+    </MudMainContent>
+</div>
+
+@code {
+    private AgencyCreateDto agencyDto = new AgencyCreateDto();
+    private AddressCreateDto addressDto = new AddressCreateDto();
+    private List<CommunDto> communs = new List<CommunDto>();
+  
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        communs = await communService.GetAllCommunsAsync();
+
+    }
+    private async Task Create()
+    {
+        
+        agencyDto.Address = addressDto;
+        try
+        {
+            await agencyService.CreateAgency(agencyDto);
+            ShowSuccessAndNavigate();
+
+        }
+        catch (ApiException ex) when (ex.StatusCode == 201)
+        {
+            ShowSuccessAndNavigate();
+        }
+        catch (Exception ex)
+        {
+            snackbar.Add($"Ett fel inträffade: {ex.Message}", Severity.Error);
+
+        }
+    }
+
+    private void ShowSuccessAndNavigate()
+    {
+        snackbar.Add("Mäklarbyrån skapad", Severity.Success);
+        navManager.NavigateTo("/admindashboard");
+    }
+}
+
