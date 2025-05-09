@@ -12,26 +12,13 @@
         <AgencyProfile Id="@realtor.Realtor.AgencyId.Value"></AgencyProfile>
 
         //Status
-        <h3 style="margin: 1rem auto; text-align:center; justify-content: center">Status</h3>
-        <div style="display: flex; justify-content: center; align-items: center">
-            <MudPaper Class="pa-16 ma-2" Elevation="3" Style="max-width: 350px;">
-                <MudText Align="Align.Center"><b>Total adverts: @totalAdverts</b></MudText>
-                <div style="display: flex; justify-content: center;">
-                    <MudProgressCircular Color="Color.Warning" Rounded="true" Size="Size.Large" StrokeWidth="4" Value="100" />
-                </div>
-            </MudPaper>
-            <MudPaper Class="pa-16 ma-2" Elevation="3" Style="max-width: 350px;">
-                <MudText Align="Align.Center"><b>Sold adverts: @totalSoldAdverts</b></MudText>
-                <div style="display: flex; justify-content: center;">
-                    <MudProgressCircular Color="Color.Success" Rounded="true" Size="Size.Large" StrokeWidth="4" Value="@(totalSoldAdverts * 100 / totalAdverts)" />
-                </div>
-            </MudPaper>
-            <MudPaper Class="pa-16 ma-2" Elevation="3" Style="max-width: 350px;">
-                <MudText Align="Align.Center"><b>Active adverts: @totalActiveAdverts</b></MudText>
-                <div style="display: flex; justify-content: center;">
-                    <MudProgressCircular Color="Color.Error" Rounded="true" Size="Size.Large" StrokeWidth="4" Value="@(totalActiveAdverts * 100 / totalAdverts)" />
-                </div>
-            </MudPaper>
+        <div style="display: flex; justify-content: center; align-items: center; gap: 20px;">
+            <MudChart ChartType="ChartType.Donut" Width="300px" Height="300px" InputData="@chartData" InputLabels="@chartLabels">
+                <CustomGraphics>
+                    <text class="donut-inner-text" x="50%" y="35%" dominant-baseline="middle" text-anchor="middle" fill="black" font-family="Helvetica" font-size="20">Total</text>
+                    <text class="donut-inner-text" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="black" font-family="Helvetica" font-size="50">@totalSoldAndActive</text>
+                </CustomGraphics>
+            </MudChart>
         </div>
 
         //Mäklare
@@ -45,26 +32,39 @@
 @code {
     private RealtorFullProfileDto realtor;
     private AgencyWithSimpleRealtorsDto agency;
-    private int totalAdverts;
-    private int totalSoldAdverts;
-    private int totalActiveAdverts;
+    private double[] chartData;
+    private string[] chartLabels;
+    private int totalSoldAndActive;
+    private int totalSold;
+    private int totalActive;
     protected override async Task OnInitializedAsync()
     {
         try
         {
             realtor = await realtorService.GetMyProfileAsync();
             agency = await agencyService.GetAgencyProfile(realtor.Realtor.AgencyId.Value);
-            foreach(var realtorItem in agency.Realtors)
+            foreach (var realtorItem in agency.Realtors)
             {
                 foreach (var advert in realtorItem.ActiveAdverts)
                 {
                     if (advert.Sold)
-                        totalSoldAdverts += 1;
+                        totalSold += 1;
                     else
-                        totalActiveAdverts += 1;
+                        totalActive += 1;
                 }
             }
-            totalAdverts = totalActiveAdverts + totalSoldAdverts;
+            totalSoldAndActive = totalActive + totalSold;
+            chartData = new double[]
+            {
+                totalActive,
+                totalSold
+            };
+
+            chartLabels = new string[]
+            {
+                $"Active Adverts",
+                $"Sold Adverts",
+            };
 
         }
         catch (Exception ex)
