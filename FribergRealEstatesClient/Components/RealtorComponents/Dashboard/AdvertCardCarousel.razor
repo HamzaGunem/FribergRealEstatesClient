@@ -1,0 +1,21 @@
+﻿@*Auth Hamza*@
+
+<MudCard class="responsive-card">
+    <MudCardMedia Image="@Advert.Residence.ImageUrls.FirstOrDefault()" Height="200" />
+    <MudCardContent>
+        <MudText Typo="Typo.h5" Class="mb-2"><b>@Advert.Residence.Address.City</b></MudText>
+        <MudText Typo="Typo.body2" Class="mb-1">
+            <b>@Advert.Residence?.Area m²@(Advert.Residence?.BiArea > 0 ? $" + {Advert.Residence.BiArea} m²" : "")</b>
+        </MudText>
+        <MudText Typo="Typo.body2"><b>@Advert.CurrentPrice.ToString("N0") kr</b></MudText>
+    </MudCardContent>
+    <MudCardActions>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary">Visa Mer</MudButton>
+    </MudCardActions>
+</MudCard>
+
+
+@code {
+    [Parameter]
+    public AdvertDto Advert { get; set; }
+}

@@ -77,7 +77,7 @@
             await client.EditAsync(id, advertUpdatedDto);
 
             Snackbar.Add("Advert updated successfully!", Severity.Success);
-            Navigation.NavigateTo($"/my-active-advert");
+            Navigation.NavigateTo("/my-active-adverts");
         }
         catch (Exception ex)
         {
@@ -111,7 +111,7 @@
     }
     private void Cancel()
     {
-        Navigation.NavigateTo("/my-active-advert");
+        Navigation.NavigateTo("/my-active-adverts");
     }
 }
 
