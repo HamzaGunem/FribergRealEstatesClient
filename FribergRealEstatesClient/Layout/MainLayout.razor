@@ -25,9 +25,9 @@
 
             <AuthorizeView>
                 <Authorized>
-                    <MudNavLink Href="/" Match="NavLinkMatch.All">Sök bostad</MudNavLink>
-                    <MudNavLink Href="/agency/search">Sök mäklarebyrå</MudNavLink>
-                    <MudNavLink Href="/realtor/search">Sök mäklare</MudNavLink>
+                    <MudNavLink Href="/" Match="NavLinkMatch.All" Class="no-wrap">Sök bostad</MudNavLink>
+                    <MudNavLink Href="/agency/search" Class="no-wrap">Sök mäklarebyrå</MudNavLink>
+                    <MudNavLink Href="/realtor/search" Class="no-wrap">Sök mäklare</MudNavLink>
                     <MudMenu Hover="true" OffsetY="true" Direction="Direction.Start">
                         <ActivatorContent>
                             <MudButton Variant="Variant.Text" Color="Color.Inherit" EndIcon="@Icons.Material.Filled.ArrowDropDown" Class="px-2" Style="text-transform:none">
@@ -41,7 +41,9 @@
                             <MudDivider />
                         </ChildContent>
                     </MudMenu>
-                    <Logout></Logout>
+                    <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="HandleLogout" Style="flex-grow: 0;">
+                        Logout
+                    </MudButton>
                 </Authorized>
                 <NotAuthorized>
                      <MudNavLink Href="/advert-search" Class="no-wrap custom-navlink" ActiveClass="active-link">Sök bostad</MudNavLink>
@@ -80,6 +82,8 @@
     private bool _drawerOpen = false;
 
     [Inject] private NavigationManager navigationManager { get; set; }
+    [Inject] private IAuthenticationService authenticationService { get; set; }
+
 
     void ToggleDrawer() => _drawerOpen = !_drawerOpen;
 
@@ -93,6 +97,13 @@
     private void NavigateToRegister()
     {
         navigationManager.NavigateTo("/register");
+    }
+
+    //Viktor
+    private async Task HandleLogout()
+    {
+        await authenticationService.Logout();
+        navigationManager.NavigateTo("/");
     }
 
     //Jonathan
