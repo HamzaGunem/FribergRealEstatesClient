@@ -190,14 +190,9 @@
         // Create and transfer data to new Dto
         var newDto = MapToDto(_residenceModel);
 
-        await form.Validate();
-        if (!form.IsValid)
-        {
-            snackbar.Add("Vänligen fyll i alla fält markerade med '*'", Severity.Warning);
-            return;
-        }
         try
         {
+            //await Task.CompletedTask;
             await residenceService.CreateResidence(newDto);
             snackbar.Add("Nytt försäljningsobjekt skapat", Severity.Success);
             navManager.NavigateTo("/admindashboard");
