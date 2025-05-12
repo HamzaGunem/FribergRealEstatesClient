@@ -12,5 +12,9 @@ namespace FribergRealEstatesClient.Services
 
         //Added by Oscar
         Task<AgencyDto> CreateAgency(AgencyCreateDto agency);
+        //Added by Oscar
+        Task<List<AgencyEditDto>> GetAllForEdit();
+        //Added by Oscar
+        Task<AgencyDto> EditAgency(AgencyEditDto agency);
     }
 }

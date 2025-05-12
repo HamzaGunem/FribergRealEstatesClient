@@ -170,10 +170,8 @@ code {
 
 
 /* Robert */
-@media (min-width: 551px)
-{
-    .advert-carousel
-    {
+@media (min-width: 551px) {
+    .advert-carousel {
         width: 500px;
     }
 }
@@ -232,8 +230,9 @@ code {
     }
 }
 
-.exppanel-text .mud-expansion-panel-header .mud-typography {
-    color: red; /* Change this to your desired color */
+
+.exppanel-text.mud-expansion-panel-header.mud-typography {
+    color: red;
     background-color: coral;
 }
 /* Robert */
@@ -289,6 +288,7 @@ code {
         background: linear-gradient(135deg, #cfc08a, #ae9d65);
         color: #fff;
     }
+
     .filter-button.selected {
         background: #5c4d2d;
         color: #fff;
@@ -330,18 +330,7 @@ code {
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-.order-descending-checkbox .mud-checkbox-label {
-    font-size: 1rem;
-    font-weight: 600;
-    background: linear-gradient(135deg, #ae9d65, #cfc08a);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    color: transparent;
-    transition: all 0.3s ease;
-    padding-left: 0.5rem;
+    color: #ae9d65;
 }
 
 .order-descending-checkbox .mud-icon-root {

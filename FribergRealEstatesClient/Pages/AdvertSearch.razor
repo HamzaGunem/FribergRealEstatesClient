@@ -7,26 +7,41 @@
 <PageTitle>Sök Bostäder</PageTitle>
 
 <MudMainContent Class="p-4" style="display: flex; align-items: flex-start; justify-content: center;">
-        <MudGrid Spacing="6" Style="display: flex; justify-content:center">
+    <MudGrid Spacing="6" Style="display: flex; justify-content:center">
+        @if (_searchPanelOpen)
+        {
             <MudItem xs="12" sm="12" md="4">
                 <MudItem Style="display: flex; justify-content:center;">
-                @* Searchform *@
-                @if (_searchPanelOpen)
-                {
+                    @* Searchform *@
+
                     <AdvertSearchForm Filter="_filter"
-                                      OnApplyFilter="OnApplyFilter"
-                                      OnResidenceTypesChanged="OnResidenceTypesChanged" />
-                }
+                    OnApplyFilter="OnApplyFilter"
+                    OnResidenceTypesChanged="OnResidenceTypesChanged" />
 
 
-                @* Hamburgermenu *@
-                <MudIconButton style="align-items: flex-start" Icon="@Icons.Material.Filled.Menu"
+
+                    @* Hamburgermenu *@
+                    <div>
+                        <MudIconButton style="align-items: flex-start; width: auto; height: auto" Icon="@Icons.Material.Filled.Menu"
+                        Color="Color.Primary"
+                        Size="Size.Large"
+                        OnClick="@ToggleSearchPanel" />
+                    </div>
+                </MudItem>
+            </MudItem>
+        }
+        else
+        {
+            <MudItem xs="12" sm="12" md="1">
+            <div>
+                <MudIconButton style="align-items: flex-start; width: auto; height: auto" Icon="@Icons.Material.Filled.Menu"
                                Color="Color.Primary"
                                Size="Size.Large"
                                OnClick="@ToggleSearchPanel" />
-                </MudItem>
+            </div>
             </MudItem>
-            <MudItem xs="12" sm="12" md="6">
+        }
+        <MudItem xs="12" sm="12" md="@(_searchPanelOpen ? 6 : 11)">
                 @* Adverts *@
                 <div class="advert-list-container">
                     @if (_isLoading)

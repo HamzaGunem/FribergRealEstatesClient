@@ -1,5 +1,6 @@
 ﻿using Blazored.LocalStorage;
 using FribergRealEstatesClient.Services.Base;
+using static System.Net.WebRequestMethods;
 
 namespace FribergRealEstatesClient.Services
 {
@@ -33,6 +34,16 @@ namespace FribergRealEstatesClient.Services
         {
            return await _client.CreatePOST2Async(agency);
             
+        }
+        public async Task<List<AgencyEditDto>> GetAllForEdit()
+        {
+            var agencies = await _client.All2Async();
+            return agencies.ToList();
+
+        }
+        public async Task<AgencyDto> EditAgency(AgencyEditDto agency)
+        {
+            return await _client.AgencyAsync(agency.Id, agency);
         }
     }
 }
