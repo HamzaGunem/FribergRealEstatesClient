@@ -190,22 +190,17 @@
         // Create and transfer data to new Dto
         var newDto = MapToDto(_residenceModel);
 
-        // debug
-        Console.WriteLine("validated");
-        //Debug(newDto);
-
         try
         {
-            //await Task.CompletedTask;
             await residenceService.CreateResidence(newDto);
             snackbar.Add("Nytt försäljningsobjekt skapat", Severity.Success);
+            navManager.NavigateTo("/admindashboard");
         }
         catch(Exception ex)
         {
             snackbar.Add("Kunde inte skapa försäljningsobjekt", Severity.Warning);
             throw;
         }
-
     }// End
 
 
@@ -249,6 +244,17 @@
         return newType;
     }// End
 
+    // Convert choosen facilities to string types.
+    private List<string> ConvertFacilitiesToString()
+    {
+        var facilities = new List<string>();
+        foreach (var val in _residenceModel.Facilities)
+        {
+            facilities.Add(Enum.GetName(val));
+        }
+        return facilities;
+    }// End
+
     // transfer values over to a DTO
     private CreateResidenceDto MapToDto(ResidenceModel model)
     {
@@ -276,17 +282,6 @@
         return dto;
     }// End
 
-    // Convert choosen facilities to string types. 
-    private List<string> ConvertFacilitiesToString()
-    {
-        var facilities = new List<string>();
-        foreach(var val in _residenceModel.Facilities)
-        {
-            facilities.Add(Enum.GetName(val));
-        }
-        return facilities;
-    }// End
-
     public class ResidenceModel
     {
         public string Type { get; set; }
@@ -307,28 +302,5 @@
         public int? ParkingSlotNumber { get; set; }
         public List<Facilities>? Facilities { get; set; }
     }// End
-
-
-    public void Debug(CreateResidenceDto dto)
-    {
-        Console.WriteLine($"BostadsTyp: {dto.Type}");
-        Console.WriteLine($"Gata: {dto.Street}");
-        Console.WriteLine($"Postkod: {dto.PostalCode}");
-        Console.WriteLine($"Stad: {dto.City}");
-        Console.WriteLine($"Kommun-ID: {dto.CommunId}");
-        Console.WriteLine($"Beskrivning: {dto.Description}");
-        Console.WriteLine($"Bo-Yta: {dto.Area}");
-        Console.WriteLine($"Bi-Yta: {dto.BiArea}");
-        Console.WriteLine($"Rum: {dto.Rooms}");
-        Console.WriteLine($"Våningar: {dto.Floors}");
-        Console.WriteLine($"Våning: {dto.FloorRows}");
-        Console.WriteLine($"Kostnad/mån: {dto.MonthlyFee}");
-        Console.WriteLine($"Driftskostnad: {dto.OperatingCost}");
-        Console.WriteLine($"Byggår: {dto.BuildYear}");
-        Console.WriteLine($"Bilder/ antal: {dto.ImageUrls.Count}");
-        Console.WriteLine($"Park-nr: {dto.ParkingSlotNumber}");
-        foreach(var facility in dto.Facilities)
-            Console.WriteLine($"Facility: {facility}");
-    }
 }
 
