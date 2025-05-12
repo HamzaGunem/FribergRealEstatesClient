@@ -45,5 +45,11 @@ namespace FribergRealEstatesClient.Services
             var result = await _client.FilterAsync(filter);
             return result.ToList();
         }
+        public async Task CreateAdvert(AdvertCreateDto dto)
+        {
+            await GetBearerToken();
+            await _client.CreatePOSTAsync(dto);
+        }
+
     }
 }

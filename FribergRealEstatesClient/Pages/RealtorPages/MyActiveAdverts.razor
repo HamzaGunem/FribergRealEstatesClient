@@ -1,11 +1,10 @@
 ﻿@*Auth Hamza*@
-@page "/my-active-advert"
+@page "/my-active-adverts"
 @inject NavigationManager navManager
-@inject RealtorStateContainer realtorState
+@inject IRealtorService realtorService
 
 @if (realtor != null)
 {
-
     <MudContainer MaxWidth="MaxWidth.Medium" Class="mx-auto mt-4">
 
         @foreach (var item in realtor.ActiveAdverts)
@@ -16,7 +15,7 @@
                         <MudList T="string" Style="background-color: white;">
                             <RealtorActiveAdvert Advert="@item"></RealtorActiveAdvert>
                             <MudListItem Icon="@Icons.Material.Filled.Create"
-                                         IconColor="Color.Success">
+                            IconColor="Color.Success">
                                 <MudText Color="Color.Default" Class="custom-link" @onclick="() =>EditAdvert(item.Id)">
                                     Ändra
                                 </MudText>
@@ -29,7 +28,6 @@
         }
     </MudContainer>
 
-
 }
 else
 {
@@ -39,29 +37,30 @@ else
 @* styling *@
 <style>
     .mud-expand-panel-header {
-        color: white;
-        background-color: #273845;
+    color: white;
+    background-color: #273845;
     }
+
     .mud-expand-panel-content {
-        background-color: whitesmoke;
+    background-color: whitesmoke;
     }
 
     .mud-list-item-icon {
-        min-width: 35px;
+    min-width: 35px;
     }
 
 
     .mud-link:visited,
     .mud-link:active {
-        color: black !important;
+    color: black !important;
     }
 </style>
 @code {
     public RealtorFullProfileDto realtor { get; set; }
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        realtor = realtorState.CurrentRealtor;
+        realtor = await realtorService.GetMyProfileAsync();
     }
 
     public void EditAdvert(int id)

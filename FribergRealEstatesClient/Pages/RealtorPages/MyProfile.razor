@@ -3,31 +3,19 @@
 @inject IRealtorService realtorService
 
 <div class="container-large">
-
     @if (realtor != null)
     {
         <RealtorProfileCard realtorDto="@realtor.Realtor"></RealtorProfileCard>
 
-        <div style="display: flex; justify-content: center; align-items: center">
-            <MudPaper Class="pa-16 ma-2" Elevation="3" Style="max-width: 350px;">
-                <MudText Align="Align.Center"><b>Total adverts: @totalAdverts</b></MudText>
-                <div style="display: flex; justify-content: center;">
-                    <MudProgressCircular Color="Color.Warning" Rounded="true" Size="Size.Large" StrokeWidth="4" Value="100" />
-                </div>
-            </MudPaper>
-            <MudPaper Class="pa-16 ma-2" Elevation="3" Style="max-width: 350px;">
-                <MudText Align="Align.Center"><b>Sold adverts: @realtor.SoldAdverts.Count()</b></MudText>
-                <div style="display: flex; justify-content: center;">
-                    <MudProgressCircular Color="Color.Success" Rounded="true" Size="Size.Large" StrokeWidth="4" Value="@(realtor.SoldAdverts.Count() * 100 / totalAdverts)" />
-                </div>
-            </MudPaper>
-            <MudPaper Class="pa-16 ma-2" Elevation="3" Style="max-width: 350px;">
-                <MudText Align="Align.Center"><b>Active adverts: @realtor.ActiveAdverts.Count()</b></MudText>
-                <div style="display: flex; justify-content: center;">
-                    <MudProgressCircular Color="Color.Error" Rounded="true" Size="Size.Large" StrokeWidth="4" Value="@(realtor.ActiveAdverts.Count() * 100 / totalAdverts)" />
-                </div>
-            </MudPaper>
+        <div style="display: flex; justify-content: center; align-items: center; gap: 20px;">
+            <MudChart ChartType="ChartType.Donut" Width="300px" Height="300px" InputData="@chartData" InputLabels="@chartLabels">
+                <CustomGraphics>
+                    <text class="donut-inner-text" x="50%" y="35%" dominant-baseline="middle" text-anchor="middle" fill="black" font-family="Helvetica" font-size="20">Total</text>
+                    <text class="donut-inner-text" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="black" font-family="Helvetica" font-size="50">@totalSoldAndActive</text>
+                </CustomGraphics>
+            </MudChart>
         </div>
+
         foreach (var item in realtor.ActiveAdverts)
         {
             <RealtorActiveAdvert Advert="@item"></RealtorActiveAdvert>
@@ -40,22 +28,42 @@
             </div>
         }
     }
-
 </div>
 
 @code {
     private RealtorFullProfileDto realtor;
-    private int totalAdverts;
+    private double[] chartData;
+    private string[] chartLabels;
+    private int totalSoldAndActive;
+
     protected override async Task OnInitializedAsync()
     {
         try
         {
             realtor = await realtorService.GetMyProfileAsync();
-            totalAdverts = realtor.ActiveAdverts.Count() + realtor.SoldAdverts.Count();
+
+            int totalAdverts = realtor.ActiveAdverts.Count() + realtor.SoldAdverts.Count();
+            int activeAdverts = realtor.ActiveAdverts.Count();
+            int soldAdverts = realtor.SoldAdverts.Count();
+
+            totalSoldAndActive = activeAdverts + soldAdverts;
+
+            chartData = new double[]
+            {
+                activeAdverts,
+                soldAdverts,
+            };
+
+            // Set chart labels
+            chartLabels = new string[]
+            {
+                $"Active Adverts: {activeAdverts}",
+                $"Sold Adverts: {soldAdverts}",
+            };
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Fel vid hämtning av profil: {ex.Message}");
+            Console.WriteLine($"Error fetching profile: {ex.Message}");
         }
     }
 }

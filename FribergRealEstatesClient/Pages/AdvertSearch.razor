@@ -5,51 +5,71 @@
 @using Newtonsoft.Json
 
 <PageTitle>Sök Bostäder</PageTitle>
-<div class="container-large">
-    <MudMainContent Class="p-4">
-        <div style="display: flex; align-items: flex-start;">
 
-            @* Searchform *@
-            @if (_searchPanelOpen)
-            {
-                <AdvertSearchForm Filter="_filter"
-                OnApplyFilter="OnApplyFilter"
-                OnResidenceTypesChanged="OnResidenceTypesChanged" />
-            }
+<MudMainContent Class="p-4" style="display: flex; align-items: flex-start; justify-content: center;">
+    <MudGrid Spacing="6" Style="display: flex; justify-content:center">
+        @if (_searchPanelOpen)
+        {
+            <MudItem xs="12" sm="12" md="4">
+                <MudItem Style="display: flex; justify-content:center;">
+                    @* Searchform *@
 
-            @* Hamburgermenu *@
-            <MudIconButton Icon="@Icons.Material.Filled.Menu"
-            Color="Color.Primary"
-            Size="Size.Large"
-            OnClick="@ToggleSearchPanel" />
+                    <AdvertSearchForm Filter="_filter"
+                    OnApplyFilter="OnApplyFilter"
+                    OnResidenceTypesChanged="OnResidenceTypesChanged" />
 
-            @* Adverts *@
-            <div class="advert-list-container">
-                @if (_isLoading)
-                {
-                    <MudProgressCircular Indeterminate="true" Color="Color.Primary" />
-                }
-                else if (_result == null)
-                {
-                    <MudText>Ange sökkriterier och klicka på Sök</MudText>
-                }
-                else if (!_result.Any())
-                {
-                    <MudAlert Severity="Severity.Info">Inga bostäder hittades med valda sökkriterier</MudAlert>
-                }
-                else
-                {
-                    @foreach (var advert in _result)
-                    {
-                        // change Robert: added button
-                        //<div type="button" @onclick="() => GoToAdvert(advert.Id)"><AdvertCard Advert="advert" /></div>
-                        <div type="button" @onclick="() => GoToAdvert(advert.Id)"><RealtorActiveAdvert Advert="advert" /></div>
-                    }
-                }
+
+
+                    @* Hamburgermenu *@
+                    <div>
+                        <MudIconButton style="align-items: flex-start; width: auto; height: auto" Icon="@Icons.Material.Filled.Menu"
+                        Color="Color.Primary"
+                        Size="Size.Large"
+                        OnClick="@ToggleSearchPanel" />
+                    </div>
+                </MudItem>
+            </MudItem>
+        }
+        else
+        {
+            <MudItem xs="12" sm="12" md="1">
+            <div>
+                <MudIconButton style="align-items: flex-start; width: auto; height: auto" Icon="@Icons.Material.Filled.Menu"
+                               Color="Color.Primary"
+                               Size="Size.Large"
+                               OnClick="@ToggleSearchPanel" />
             </div>
-        </div>
-    </MudMainContent>
-</div>
+            </MudItem>
+        }
+        <MudItem xs="12" sm="12" md="@(_searchPanelOpen ? 6 : 11)">
+                @* Adverts *@
+                <div class="advert-list-container">
+                    @if (_isLoading)
+                    {
+                        <MudProgressCircular Indeterminate="true" Color="Color.Primary" />
+                    }
+                    else if (_result == null)
+                    {
+                        <MudText>Ange sökkriterier och klicka på Sök</MudText>
+                    }
+                    else if (!_result.Any())
+                    {
+                        <MudAlert Severity="Severity.Info">Inga bostäder hittades med valda sökkriterier</MudAlert>
+                    }
+                    else
+                    {
+                        @foreach (var advert in _result)
+                        {
+                            // change Robert: added button
+                            //<div type="button" @onclick="() => GoToAdvert(advert.Id)"><AdvertCard Advert="advert" /></div>
+                            <div type="button" @onclick="() => GoToAdvert(advert.Id)"><RealtorActiveAdvert Advert="advert" /></div>
+                        }
+                    }
+                </div>
+            </MudItem>
+        </MudGrid>
+</MudMainContent>
+
 
 
 @code {
@@ -64,7 +84,7 @@
     }
 
     private void OnResidenceTypesChanged(IEnumerable<ResidenceType> values)
-    {        
+    {
         _filter.ResidenceTypes = values.ToList();
     }
 
