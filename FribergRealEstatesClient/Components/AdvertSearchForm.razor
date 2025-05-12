@@ -100,11 +100,15 @@
         </MudItem>
 
         <MudItem xs="6" Class="mb-4">
-            <MudCheckBox T="bool?"
-                         @bind-Value="Filter.OrderDescending"
-                         Label="Sortera fallande"
-                         Disabled="@string.IsNullOrEmpty(Filter.OrderBy)"
-                         Class="order-descending-checkbox"/>
+            <div style="display: flex; flex-wrap: wrap; align-items: center;">
+                <MudCheckBox T="bool?"
+                             @bind-Value="Filter.OrderDescending"
+                             Disabled="@string.IsNullOrEmpty(Filter.OrderBy)"
+                             Class="order-descending-checkbox" />
+                <div style="color: #ae9d65; margin-left: 8px; max-width: 80px; word-break: break-word;">
+                    Sortera fallande
+                </div>
+            </div>
         </MudItem>
     </MudGrid>
 
