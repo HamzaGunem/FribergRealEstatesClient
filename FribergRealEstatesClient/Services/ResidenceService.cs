@@ -19,6 +19,7 @@ namespace FribergRealEstatesClient.Services
         {
             try
             {
+                await GetBearerToken();
                 await _client.ResidencePOSTAsync(dto);
             }
             catch(Exception ex)
