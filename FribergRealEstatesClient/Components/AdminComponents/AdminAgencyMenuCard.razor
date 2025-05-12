@@ -15,7 +15,11 @@
                         </MudText>
                     </MudListItem>
                     <MudDivider />
-                    <MudListItem Icon="@Icons.Material.Filled.ChangeCircle" IconColor="Color.Primary">Ändra</MudListItem>
+                    <MudListItem Icon="@Icons.Material.Filled.ChangeCircle" IconColor="Color.Primary">
+                        <MudText Color="Color.Default" Class="custom-link" @onclick="EditAgency">
+                            Ändra
+                        </MudText>
+                    </MudListItem>
                     <MudDivider />
                     <MudListItem Icon="@Icons.Material.Filled.AssignmentInd"
                                  IconColor="Color.Warning">
@@ -39,5 +43,10 @@
     public void ConnectRealtor()
     {
         navManager.NavigateTo("/connect-realtor");
+    }
+
+    public void EditAgency()
+    {
+        navManager.NavigateTo("/edit-agency");
     }
 }
