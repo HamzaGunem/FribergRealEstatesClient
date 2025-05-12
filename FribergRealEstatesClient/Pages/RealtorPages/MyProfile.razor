@@ -64,44 +64,6 @@
     }
 </div>
 
-
-<style>
-    .stats-overview {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1rem;
-        justify-content: space-between;
-    }
-
-        .stats-overview > * {
-            flex: 1 1 200px;
-            min-width: 200px;
-        }
-
-    .stat-card {
-        padding: 1.5rem;
-        border-radius: 12px;
-        background: linear-gradient(135deg, var(--mud-palette-primary) 0%, var(--mud-palette-primary-darken) 100%);
-        color: white;
-        transition: transform 0.2s ease;
-    }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-        }
-
-    .stat-content {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-    }
-
-    .stat-icon {
-        font-size: 2rem;
-        color: white;
-    }
-
-</style>
 @code {
     private RealtorFullProfileDto realtor;
     private double[] chartData;
