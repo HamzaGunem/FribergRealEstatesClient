@@ -6,8 +6,10 @@
 @inject ISnackbar snackbar
 
 <PageTitle>Skapa mäklarbyrå</PageTitle>
-<div class="container-large">
+<div class="container">
     <MudMainContent class="p-4">
+        <MudText Typo="Typo.h3" Class="px-5 m-0 mb-4" Style="text-align:center; background-color:#273845; color: white;">Skapa mäklarbyrå</MudText>
+
         <div style="display: flex; align-items: flex-start;">
             <CreateAgencyForm AgencyDto="agencyDto" AddressDto="addressDto" Communes="communs" OnCreate="Create" />
         </div>
