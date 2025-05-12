@@ -3,7 +3,15 @@
 <!-- Layout för större skärmar -->
 <div class="only-above-1440">
     <MudCard Class="responsive-card" Style="height: 330px; display: flex; flex-direction: row; overflow: hidden; border: 1px solid gray;">
-        <MudCardMedia Image="@Advert.Residence.ImageUrls.FirstOrDefault()" Style="width: 400px; height: 100%; object-fit: cover;" />
+
+        @*Hamza: rendera sold bild på orginala bilden om den är sold*@
+        <div style="position: relative; width: 400px; height: 100%;">
+            <MudCardMedia Image="@Advert.Residence.ImageUrls.FirstOrDefault()" Style="width: 100%; height: 100%; object-fit: cover;" />
+            @if (Advert.Sold)
+            {
+                <img src="/images/sold-stamp.png" alt="Sold" style="position: absolute; top: 10px; left: 10px; width: 100px; z-index: 10;" />
+            }
+        </div>
 
         <div style="flex: 1; display: flex; flex-direction: column; padding: 16px; height: 100%;">
             <div class="mb-1">

@@ -7,7 +7,7 @@
 
     @if (realtor != null)
     {
-        //Om
+    //Om
         <h3 style="margin: 1rem auto; text-align:center; justify-content: center">Om</h3>
         <AgencyProfile Id="@realtor.Realtor.AgencyId.Value"></AgencyProfile>
 
@@ -27,6 +27,37 @@
             <RealtorProfileSmall Id="@realtor.Realtor.AgencyId.Value"></RealtorProfileSmall>
         </div>
     }
+
+
+    <div class="stats-overview">
+        <MudPaper Elevation="8" Class="stat-card" @onclick="ShowActiveAdverts" style="cursor: pointer;">
+            <div class="stat-content">
+                <MudIcon Icon="@Icons.Material.Filled.HomeWork" Class="stat-icon" />
+                <div>
+                    <MudText Typo="Typo.body2">Aktiva Annonser</MudText>
+                    <MudText Typo="Typo.h5">@realtor.ActiveAdverts.Count</MudText>
+                </div>
+            </div>
+        </MudPaper>
+        <MudPaper Elevation="8" Class="stat-card" @onclick="ShowAllAdverts" style="cursor: pointer;">
+            <div class="stat-content">
+                <MudIcon Icon="@Icons.Material.Filled.HomeWork" Class="stat-icon" />
+                <div>
+                    <MudText Typo="Typo.body2">Alla Annonser</MudText>
+                    <MudText Typo="Typo.h5">@realtor.ActiveAdverts.Count</MudText>
+                </div>
+            </div>
+        </MudPaper>
+        <MudPaper Elevation="8" Class="stat-card" @onclick="ShowSoldAdverts" style="cursor: pointer;">
+            <div class="stat-content">
+                <MudIcon Icon="@Icons.Material.Filled.HomeWork" Class="stat-icon" />
+                <div>
+                    <MudText Typo="Typo.body2">Sålda Annonser</MudText>
+                    <MudText Typo="Typo.h5">@realtor.SoldAdverts.Count</MudText>
+                </div>
+            </div>
+        </MudPaper>
+    </div>
 </div>
 
 @code {
@@ -34,9 +65,13 @@
     private AgencyWithSimpleRealtorsDto agency;
     private double[] chartData;
     private string[] chartLabels;
+    private List<AdvertSummaryDto> adverts;
     private int totalSoldAndActive;
     private int totalSold;
     private int totalActive;
+
+    private bool ShowActive = true;
+    private bool ShowSold = false;
     protected override async Task OnInitializedAsync()
     {
         try
@@ -47,6 +82,7 @@
             {
                 foreach (var advert in realtorItem.ActiveAdverts)
                 {
+                    adverts.Add(advert);
                     if (advert.Sold)
                         totalSold += 1;
                     else
@@ -71,5 +107,21 @@
         {
             Console.WriteLine($"Fel vid hämtning av profil: {ex.Message}");
         }
+    }
+
+    private void ShowAllAdverts()
+    {
+        ShowSold = true;
+        ShowActive = true;
+    }
+    private void ShowActiveAdverts()
+    {
+        ShowActive = true;
+        ShowSold = false;
+    }
+    private void ShowSoldAdverts()
+    {
+        ShowActive = false;
+        ShowSold = true;
     }
 }

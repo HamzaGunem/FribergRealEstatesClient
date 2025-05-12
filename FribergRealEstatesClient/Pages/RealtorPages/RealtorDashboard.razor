@@ -5,22 +5,90 @@
 
 @if (realtor != null)
 {
-    <div class="container">
-        <h3 style="margin: 1rem auto; text-align:center; justify-content: center">Välkommen @realtor.Realtor.FirstName</h3>
-        <MudItem>
-            <MudPaper style="background-color: var(--bg-baseblue-color);" MinHeight="150px" Class="pa-6 ma-2">
-                <MudText Typo="Typo.h3" Class="p-4" Style="text-align:center; background-color: white;">REALTOR DASHBOARD</MudText>
-            </MudPaper>
-        </MudItem>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <div class="dashboard-header">
+            <div class="welcome-section">
+                <MudText Typo="Typo.h4" Class="welcome-text">Välkommen tillbaka</MudText>
+                <MudText Typo="Typo.h3" Class="welcome-name">@realtor.Realtor.FirstName @realtor.Realtor.LastName</MudText>
+            </div>
+            <div class="stats-overview">
+                <MudPaper Elevation="8" Class="stat-card">
+                    <div class="stat-content">
+                        <MudIcon Icon="@Icons.Material.Filled.HomeWork" Class="stat-icon" />
+                        <div>
+                            <MudText Typo="Typo.body2">Aktiva Annonser</MudText>
+                            <MudText Typo="Typo.h5">@realtor.ActiveAdverts.Count</MudText>
+                        </div>
+                    </div>
+                </MudPaper>
+                <MudPaper Elevation="8" Class="stat-card">
+                    <div class="stat-content">
+                        <MudIcon Icon="@Icons.Material.Filled.HomeWork" Class="stat-icon" />
+                        <div>
+                            <MudText Typo="Typo.body2">Sålda Annonser</MudText>
+                            <MudText Typo="Typo.h5">@realtor.SoldAdverts.Count</MudText>
+                        </div>
+                    </div>
+                </MudPaper>
+            </div>
+        </div>
 
-        <MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.False">
-            <MudGrid>
-                    <RealtorAdvertMenuCard realtor="realtor" />
-            </MudGrid>
-        </MudContainer>
+        <!-- Carousel -->
+        <div class="section-container">
+            <div class="section-header">
+                <MudText Typo="Typo.h5" Class="section-title">Aktiva Annonser</MudText>
+                <MudButton Variant="Variant.Text"
+                           Color="Color.Primary"
+                           EndIcon="@Icons.Material.Filled.ArrowForward"
+                           OnClick="@(() => navManager.NavigateTo("/my-active-adverts"))">
+                    Visa Alla
+                </MudButton>
+            </div>
+
+            <div style="display: flex; justify-content: center; width: 100%;">
+                <MudCarousel Class="carousel-custom" AutoCycle="true" TData="object">
+                    <ChildContent>
+                        @foreach (var advert in realtor.ActiveAdverts)
+                        {
+                            <MudCarouselItem>
+                                <div class="carousel-item-wrapper">
+                                    <AdvertCardCarousel Advert="@advert" />
+                                </div>
+                            </MudCarouselItem>
+                        }
+                    </ChildContent>
+                </MudCarousel>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="section-container">
+            <div class="section-header">
+                <MudText Typo="Typo.h5" Class="section-title">Åtgärder</MudText>
+            </div>
+
+            <div class="actions">
+                <MudCard Class="action-card" Style="cursor: pointer;" @onclick="NavigateToCreateAdvert" Elevation="8">
+                    <MudCardContent>
+                        <MudIcon Icon="@Icons.Material.Filled.AddHome" Class="action-icon" />
+                        <MudText Typo="Typo.body1">Skapa Ny Annons</MudText>
+                    </MudCardContent>
+                </MudCard>
+
+                <MudCard Class="action-card" Style="cursor: pointer;" @onclick="NavigateToEdit" Elevation="8">
+                    <MudCardContent>
+                        <MudIcon Icon="@Icons.Material.Filled.ListAlt" Class="action-icon" />
+                        <MudText Typo="Typo.body1">Hantera Annonser</MudText>
+                    </MudCardContent>
+                </MudCard>
+            </div>
+        </div>
+
     </div>
 }
-@* styling *@
+
+
 <style>
     .mud-expand-panel-header {
         color: white;
