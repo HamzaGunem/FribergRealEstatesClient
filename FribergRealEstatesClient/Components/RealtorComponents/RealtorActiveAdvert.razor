@@ -16,8 +16,13 @@
             }
         </div>
 
-        <div style="flex: 1; display: flex; flex-direction: column; padding: 16px; height: 100%; cursor: pointer;"
+        <div style="flex: 1; position:relative; display: flex; flex-direction: column; padding: 16px; height: 100%; cursor: pointer;"
              @onclick="() => NavigateToAdvert(Advert.Id)">
+            @if (Advert.Sold)
+            {
+                <img src="/images/sold-stamp.png" alt="Sold"
+                     style="position:absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 200px; z-index: 10; float:initial" />
+            }
             <div class="mb-1">
                 <MudText Typo="Typo.h6">@Advert.Residence.Address.Street</MudText>
             </div>
@@ -84,12 +89,17 @@
 
 <!-- Layout för små skärmar -->
 <div class="only-below-1440">
-    <MudCard Class="responsive-card" Style="overflow: hidden; border: 1px solid gray; cursor: pointer;">
+    <MudCard Class="responsive-card" Style="position:relative;overflow: hidden; border: 1px solid gray; cursor: pointer;">
         <div @onclick="() => NavigateToAdvert(Advert.Id)">
             <MudCardMedia Image="@Advert.Residence.ImageUrls.FirstOrDefault()"
                           Style="object-fit: cover; Height:300px;" />
         </div>
         <MudCardContent>
+            @if (Advert.Sold)
+            {
+                <img src="/images/sold-stamp.png" alt="Sold"
+                     style="position:absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 200px; z-index: 10; float:initial" />
+            }
             <div @onclick="() => NavigateToAdvert(Advert.Id)">
             <div>
                 <MudText Typo="Typo.h6">@Advert.Residence.Address.Street</MudText>
