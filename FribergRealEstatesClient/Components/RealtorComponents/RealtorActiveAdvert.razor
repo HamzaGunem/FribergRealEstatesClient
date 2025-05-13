@@ -1,26 +1,40 @@
 ﻿@* Created by Robert*@
+@inject NavigationManager navigationManager
 
 <!-- Layout för större skärmar -->
 <div class="only-above-1440">
     <MudCard Class="responsive-card" Style="height: 330px; display: flex; flex-direction: row; overflow: hidden; border: 1px solid gray;">
-        <MudCardMedia Image="@Advert.Residence.ImageUrls.FirstOrDefault()" Style="width: 400px; height: 100%; object-fit: cover;" />
 
-        <div style="flex: 1; display: flex; flex-direction: column; padding: 16px; height: 100%;">
+        @*Hamza: rendera sold bild på orginala bilden om den är sold*@
+        <div style="position: relative; width: 400px; height: 100%; cursor: pointer;" @onclick="() => NavigateToAdvert(Advert.Id)">
+            <MudCardMedia Image="@Advert.Residence.ImageUrls.FirstOrDefault()"
+                          Style="width: 100%; height: 100%; object-fit: cover;" />
+            @if (Advert.Sold)
+            {
+                <img src="/images/sold-stamp.png" alt="Sold"
+                     style="position: absolute; top: 10px; left: 10px; width: 100px; z-index: 10;" />
+            }
+        </div>
+
+        <div style="flex: 1; display: flex; flex-direction: column; padding: 16px; height: 100%; cursor: pointer;"
+             @onclick="() => NavigateToAdvert(Advert.Id)">
             <div class="mb-1">
                 <MudText Typo="Typo.h6">@Advert.Residence.Address.Street</MudText>
             </div>
             <div class="mb-2">
-
-                <MudText Typo="Typo.body2" Style="color: gray"><MudIcon Icon="fas fa-home" Color="Color.Primary" />
+                <MudText Typo="Typo.body2" Style="color: gray">
+                    <MudIcon Icon="fas fa-home" Color="Color.Primary" />
                     &nbsp @Advert.Residence.Address.City, @Advert.Residence.Address.CommunName kommun
                 </MudText>
             </div>
+
             <div class="row">
                 <div style="display: flex; flex-direction: row; justify-content: space-between; height: 100%; width: 80%">
                     <MudText Typo="Typo.body1"><b>@Advert.CurrentPrice.ToString() kr</b></MudText>
                     <MudText Typo="Typo.body1">
                         <b>
-                            @Advert.Residence.Area m²@if (Advert.Residence.BiArea != null && Advert.Residence.BiArea > 0)
+                            @Advert.Residence.Area m²
+                            @if (Advert.Residence.BiArea is > 0)
                             {
                                 <span>+ @Advert.Residence.BiArea m²</span>
                             }
@@ -29,20 +43,18 @@
                     <MudText Typo="Typo.body1"><b>@Advert.Residence.Rooms rum</b></MudText>
                     <MudText Typo="Typo.body1">
                         <b>
-                            @if (Advert.Residence.Floors != null && Advert.Residence.Floors > 1)
+                            @if (Advert.Residence.Floors > 1)
                             {
                                 <span>vån @Advert.Residence.FloorRows</span>
                             }
                         </b>
                     </MudText>
-
                 </div>
             </div>
-            <div>
-                <div class="mb-2" style="display: flex; flex-direction: row; justify-content: space-between; height: 100%; width: 40%">
-                    <MudText Typo="Typo.body2" Style="color: gray">@Advert.Residence.MonthlyFee.ToString() kr/mån</MudText>
-                    <MudText Typo="Typo.body2" Style="color: gray">@Advert.Residence.OperatingCost.ToString() kr/m²</MudText>
-                </div>
+
+            <div class="mb-2" style="display: flex; flex-direction: row; justify-content: space-between; width: 40%">
+                <MudText Typo="Typo.body2" Style="color: gray">@Advert.Residence.MonthlyFee kr/mån</MudText>
+                <MudText Typo="Typo.body2" Style="color: gray">@Advert.Residence.OperatingCost kr/m²</MudText>
             </div>
 
             <div class="mb-2" style="flex: 1; display: flex; align-items: center;">
@@ -50,18 +62,21 @@
                     @Advert.Residence.Description
                 </MudText>
             </div>
+
             <div class="m-0">
-                @if (Advert.Residence.Facilities != null && Advert.Residence.Facilities.Count > 0)
+                @if (Advert.Residence.Facilities?.Any() == true)
                 {
                     foreach (var item in Advert.Residence.Facilities)
                     {
                         <MudChip T="string" Variant="Variant.Outlined">@item</MudChip>
                     }
-                }                
+                }
             </div>
             <hr />
-            <div>
-                <MudText Typo="Typo.h6" Style="color: gray">@Advert.Realtor.AgencyName</MudText>
+            <div @onclick="() => NavigateToAgency(Advert.Realtor.AgencyId ?? 0)" @onclick:stopPropagation>
+                <MudText Class="agency-link" Typo="Typo.h6" Style="color: gray; text-decoration: none;">
+                    @Advert.Realtor.AgencyName
+                </MudText>
             </div>
         </div>
     </MudCard>
@@ -69,11 +84,13 @@
 
 <!-- Layout för små skärmar -->
 <div class="only-below-1440">
-    <MudCard Class="responsive-card" Style="overflow: hidden; border: 1px solid gray;">
-        <MudCardMedia Image="@Advert.Residence.ImageUrls.FirstOrDefault()"
-        Style="object-fit: cover; Height:300px;" />
-
+    <MudCard Class="responsive-card" Style="overflow: hidden; border: 1px solid gray; cursor: pointer;">
+        <div @onclick="() => NavigateToAdvert(Advert.Id)">
+            <MudCardMedia Image="@Advert.Residence.ImageUrls.FirstOrDefault()"
+                          Style="object-fit: cover; Height:300px;" />
+        </div>
         <MudCardContent>
+            <div @onclick="() => NavigateToAdvert(Advert.Id)">
             <div>
                 <MudText Typo="Typo.h6">@Advert.Residence.Address.Street</MudText>
             </div>
@@ -129,8 +146,11 @@
                 }
             </div>
             <hr />
-            <div class="p-0">
-                <MudText Typo="Typo.h6" Style="color: gray">@Advert.Realtor.AgencyName</MudText>
+            </div>
+            <div @onclick="() => NavigateToAgency(Advert.Realtor.AgencyId ?? 0)" @onclick:stopPropagation>
+                <MudText Class="agency-link" Typo="Typo.h6" Style="color: gray; text-decoration: none;">
+                    @Advert.Realtor.AgencyName
+                </MudText>
             </div>
         </MudCardContent>
     </MudCard>
@@ -138,14 +158,34 @@
 
 <style>
     .description-truncate {
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    text-overflow: ellipsis;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        text-overflow: ellipsis;
     }
+
+    .agency-link {
+        color: gray;
+        cursor: pointer;
+        transition: color 0.3s ease, transform 0.3s ease;
+    }
+
+        .agency-link:hover {
+            color: #007bff;
+            transform: scale(1.05);
+        }
 </style>
 
 @code {
-    [Parameter] public AdvertDto Advert { get; set; }    
+    [Parameter] public AdvertDto Advert { get; set; }
+
+    private void NavigateToAdvert(int advertId)
+    {
+        navigationManager.NavigateTo($"/advert/{advertId}");
+    }
+    private void NavigateToAgency(int agencyId)
+    {
+        navigationManager.NavigateTo($"/agency/{agencyId}");
+    }
 }

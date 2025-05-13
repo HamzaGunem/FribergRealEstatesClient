@@ -33,7 +33,7 @@
                         @onclick="@(() => NavigateToRealtor(realtorFullProfileDto.Realtor.Id))">
                         @if (advert != null && realtorFullProfileDto != null)
                         {
-                            <RealtorProfileCard realtorDto="@realtorFullProfileDto.Realtor" />
+                            <div type="button" @onclick="() => NavigateToRealtor(advert.Realtor.Id)"><RealtorProfileCard realtorDto="@realtorFullProfileDto.Realtor" /></div>
                         }
                         else
                         {
@@ -72,5 +72,10 @@
     private void NavigateToRealtor(int id)
     {
         navManager.NavigateTo($"/realtor/{id}");
+    }
+
+    private void NavigateToRealtor(int id)
+    {
+        navigationManager.NavigateTo($"/realtor/{id}");
     }
 }

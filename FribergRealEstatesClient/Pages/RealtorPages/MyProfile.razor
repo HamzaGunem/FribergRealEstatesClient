@@ -16,17 +16,51 @@
             </MudChart>
         </div>
 
-        foreach (var item in realtor.ActiveAdverts)
+        <div class="stats-overview">
+            <MudPaper Elevation="8" Class="stat-card" @onclick="ShowActiveAdverts" style="cursor: pointer;">
+                <div class="stat-content">
+                    <MudIcon Icon="@Icons.Material.Filled.HomeWork" Class="stat-icon" />
+                    <div>
+                        <MudText Typo="Typo.body2">Aktiva Annonser</MudText>
+                        <MudText Typo="Typo.h5">@realtor.ActiveAdverts.Count</MudText>
+                    </div>
+                </div>
+            </MudPaper>
+            <MudPaper Elevation="8" Class="stat-card" @onclick="ShowAllAdverts" style="cursor: pointer;">
+                <div class="stat-content">
+                    <MudIcon Icon="@Icons.Material.Filled.HomeWork" Class="stat-icon" />
+                    <div>
+                        <MudText Typo="Typo.body2">Alla Annonser</MudText>
+                        <MudText Typo="Typo.h5">@totalSoldAndActive</MudText>
+                    </div>
+                </div>
+            </MudPaper>
+            <MudPaper Elevation="8" Class="stat-card" @onclick="ShowSoldAdverts" style="cursor: pointer;">
+                <div class="stat-content">
+                    <MudIcon Icon="@Icons.Material.Filled.HomeWork" Class="stat-icon" />
+                    <div>
+                        <MudText Typo="Typo.body2">Sålda Annonser</MudText>
+                        <MudText Typo="Typo.h5">@realtor.SoldAdverts.Count</MudText>
+                    </div>
+                </div>
+            </MudPaper>
+        </div>
+        if (ShowActive)
         {
-            <RealtorActiveAdvert Advert="@item"></RealtorActiveAdvert>
-        }
-        foreach (var item in realtor.SoldAdverts)
-        {
-            <div style="color: red">
-                <h2 style="color:red">Sold</h2>
+            foreach (var item in realtor.ActiveAdverts)
+            {
                 <RealtorActiveAdvert Advert="@item"></RealtorActiveAdvert>
-            </div>
+            }
         }
+        if (ShowSold)
+        {
+            foreach (var item in realtor.SoldAdverts)
+            {
+
+                <RealtorActiveAdvert Advert="@item"></RealtorActiveAdvert>
+            }
+        }
+
     }
 </div>
 
@@ -35,6 +69,8 @@
     private double[] chartData;
     private string[] chartLabels;
     private int totalSoldAndActive;
+    private bool ShowActive = true;
+    private bool ShowSold = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -66,4 +102,21 @@
             Console.WriteLine($"Error fetching profile: {ex.Message}");
         }
     }
+
+    private void ShowAllAdverts()
+    {
+        ShowSold = true;
+        ShowActive = true;
+    }
+    private void ShowActiveAdverts()
+    {
+        ShowActive = true;
+        ShowSold = false;
+    }
+    private void ShowSoldAdverts()
+    {
+        ShowActive = false;
+        ShowSold = true;
+    }
+
 }
