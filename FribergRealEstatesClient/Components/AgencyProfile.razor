@@ -1,24 +1,18 @@
 ﻿@inject IAgencyService agencyService
 
 @*made by Samuel*@
-@if (isError)
-{
-	<MudAlert Severity="Severity.Error">
-		Kunde inte ladda profilinformation. Vänligen försök igen.
-	</MudAlert>
-}
-else if (profileDto != null)
+@if (profileDto != null)
 {
 	<div style="height: 200px;">
 		<MudCard Style="display: flex; flex-direction: row; height: 100%;">
-			
+
 			<div>
-				<GenericImageBox 
-				ImageUrl="@profileDto.LogoUrl"
+				<GenericImageBox ImageUrl="@profileDto.LogoUrl"
 				AltText="byrå logga"
 				SetStyling="object-fit: cover; width: 150px; height: 100%;">
-				</GenericImageBox>			
+				</GenericImageBox>
 			</div>
+
 
 			<div>
 				<MudCardContent>
@@ -35,7 +29,6 @@ else if (profileDto != null)
 			</div>
 		</MudCard>
 	</div>
-
 }
 else
 {
@@ -49,19 +42,14 @@ else
 
 	private AgencyWithSimpleRealtorsDto profileDto;
 
-	private bool isError = false;
-		
 	protected override async Task OnParametersSetAsync()
 	{
-		isError = false;
-
 		try
 		{
 			profileDto = await agencyService.GetAgencyProfile(Id);
 		}
 		catch (Exception ex)
 		{
-			isError = true;
 			Console.Error.WriteLine($"Fel vid hämtning av byrå profil med Id: {Id}: {ex.Message}");
 		}
 	}

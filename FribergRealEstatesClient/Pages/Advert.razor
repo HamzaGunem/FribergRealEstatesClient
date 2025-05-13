@@ -1,4 +1,4 @@
-﻿@*Made by Robert*@
+﻿@*Made by Robert.  Additions by Samuel*@
 
 @page "/advert/{id:int}"
 @inject IAdvertService advertService
@@ -26,7 +26,11 @@
 
                     <AdvertDetails advert="advert" />
 
-                    <div style="width: 100%; display:flex; justify-content: flex-start">
+                    <div style="width: 100%; display:flex; justify-content: flex-start
+                            cursor: pointer; transition: transform 0.3s ease-in-out;"
+                                        onmouseover="this.style.transform='scale(1.05)'"
+                                        onmouseout="this.style.transform='scale(1)'"
+                        @onclick="@(() => NavigateToRealtor(realtorFullProfileDto.Realtor.Id))">
                         @if (advert != null && realtorFullProfileDto != null)
                         {
                             <div type="button" @onclick="() => NavigateToRealtor(advert.Realtor.Id)"><RealtorProfileCard realtorDto="@realtorFullProfileDto.Realtor" /></div>

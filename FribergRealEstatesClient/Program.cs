@@ -52,6 +52,7 @@ namespace FribergRealEstatesClient
             builder.Services.AddScoped<IRealtorService, RealtorService>(); // Samuel
             builder.Services.AddScoped<IAgencyService, AgencyService>(); // Samuel
             builder.Services.AddScoped<IAdvertService, AdvertService>(); // Robert/Oscar
+            builder.Services.AddScoped<IResidenceService, ResidenceService>(); // Samuel
             builder.Services.AddScoped<ICommunService, CommunService>(); // Oscar
 
             await builder.Build().RunAsync();
