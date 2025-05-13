@@ -13,16 +13,13 @@
                         </MudText>
                     </MudListItem>
                     <MudDivider />
-                    <MudListItem Icon="@Icons.Material.Filled.Create"
-                    IconColor="Color.Success">Skapa</MudListItem>
-                    <MudDivider />
                     <MudListItem Icon="@Icons.Material.Filled.ChangeCircle" IconColor="Color.Primary">
                         <MudText Color="Color.Default" Class="custom-link" @onclick="ChangeRealtorUsers">                        
                             Ändra
                         </MudText>
                     </MudListItem>
                     <MudDivider />
-                    <MudListItem Icon="@Icons.Material.Filled.RemoveCircleOutline" IconColor="Color.Error">Ta bort</MudListItem>
+                    <MudListItem Icon="@Icons.Material.Filled.RemoveCircleOutline" Disabled="true" IconColor="Color.Error">Ta bort</MudListItem>
                 </MudList>
             </MudExpansionPanel>
         </MudExpansionPanels>

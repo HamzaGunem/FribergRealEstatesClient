@@ -72,8 +72,10 @@ a, .btn-link {
 .stat-content {
     display: flex;
     align-items: center;
+    text-align: center;
     gap: 1rem;
 }
+
 
 .stat-icon {
     font-size: 2rem;
