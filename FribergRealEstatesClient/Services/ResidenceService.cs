@@ -17,16 +17,8 @@ namespace FribergRealEstatesClient.Services
         // kräver SuperAdmin role
         public async Task CreateResidence(CreateResidenceDto dto)
         {
-            try
-            {
-                await GetBearerToken();
-                await _client.ResidencePOSTAsync(dto);
-            }
-            catch(Exception ex)
-            {
-                Console.Error.WriteLine($"Fel vid skapande av försäljningsobjekt: {ex.Message}");
-            }
-            
+            await GetBearerToken();
+            await _client.ResidencePOSTAsync(dto);
         }
     }
 }

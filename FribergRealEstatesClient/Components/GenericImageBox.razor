@@ -1,7 +1,8 @@
 ﻿
 
 <div>
-	@if(!string.IsNullOrWhiteSpace(ImageUrl))
+
+	@if (!string.IsNullOrWhiteSpace(ImageUrl))
 	{
 		<MudImage Src=@ImageUrl Alt=@AltText Style=@SetStyling />
 	}
@@ -15,5 +16,4 @@
 	[Parameter] public string ImageUrl { get; set; }
 	[Parameter] public string AltText { get; set; }
 	[Parameter] public string SetStyling { get; set; }
-
 }

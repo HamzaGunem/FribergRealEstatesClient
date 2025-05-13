@@ -197,10 +197,16 @@
             snackbar.Add("Nytt försäljningsobjekt skapat", Severity.Success);
             navManager.NavigateTo("/admindashboard");
         }
-        catch(Exception ex)
+        catch(ApiException ex)
         {
-            snackbar.Add("Kunde inte skapa försäljningsobjekt", Severity.Warning);
-            throw;
+            if(ex.StatusCode == 201)
+            {
+                navManager.NavigateTo("/admindashboard");
+            }
+            else
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }// End
 
