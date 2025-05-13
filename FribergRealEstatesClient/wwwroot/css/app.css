@@ -380,3 +380,29 @@ code {
 .order-descending-checkbox.mud-checked .mud-icon-root {
     color: #cfc08a;
 }
+
+.advert-list-container {
+    flex-grow: 1;
+    background-color: #D7D9DD;
+    padding: 16px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.agency-link:hover {
+    color: #1976d2;
+    text-decoration: underline;
+}
+
+.realtor-card-search {
+    border-radius: 8px !important;
+    background-color: white;
+    transition: all 0.3s ease-in-out;
+}
+
+    .realtor-card-search:hover {
+        transform: scale(1.08);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3) !important;
+    }

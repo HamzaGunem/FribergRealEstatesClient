@@ -12,7 +12,7 @@
         <AgencyProfile Id="@realtor.Realtor.AgencyId.Value"></AgencyProfile>
 
         //Status
-        <div style="display: flex; justify-content: center; align-items: center; gap: 20px;">
+        <div style="display: flex; justify-content: center; align-items: center; gap: 20px;" class="mt-2">
             <MudChart ChartType="ChartType.Donut" Width="300px" Height="300px" InputData="@chartData" InputLabels="@chartLabels">
                 <CustomGraphics>
                     <text class="donut-inner-text" x="50%" y="35%" dominant-baseline="middle" text-anchor="middle" fill="black" font-family="Helvetica" font-size="20">Total</text>
