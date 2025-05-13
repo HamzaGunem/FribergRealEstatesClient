@@ -3,7 +3,7 @@
 @page "/advert/{id:int}"
 @inject IAdvertService advertService
 @inject IClient client
-@inject NavigationManager navManager
+@inject NavigationManager navigationManager
 
 <div class="container" style="display: flex; justify-content:center; align-items:center">
     <div class="row">
@@ -67,11 +67,6 @@
         {
             realtorFullProfileDto = await client.FullProfileAsync(advert.Realtor.Id);
         }
-    }
-
-    private void NavigateToRealtor(int id)
-    {
-        navManager.NavigateTo($"/realtor/{id}");
     }
 
     private void NavigateToRealtor(int id)
