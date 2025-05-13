@@ -4,10 +4,10 @@
 @inject IRealtorService realtorService
 @inject NavigationManager navManager
 
-
 <PageTitle>Sök Mäklare</PageTitle>
-<MudMainContent style="display: flex; align-items: flex-start;">
-	<MudGrid Spacing="6" Style="display: flex;">
+
+<div class="mt-4 container-fluid">
+	<MudGrid>
 		<MudItem xs="12" sm="4" md="4">
 			<GenericSearchBox _searchTerm="@_searchTerm"
 							  _searchTitle="@_setSearchBoxTitle"
@@ -27,7 +27,7 @@
 				}
 				else if (!_getRealtors.Any())
 				{
-					<MudAlert Severity="Severity.Info">Inga mäklare hittades på denna ort</MudAlert>
+					<MudAlert Severity="Severity.Info">Inga mäklare hittades i @_searchTerm</MudAlert>
 				}
 				else
 				{
@@ -46,7 +46,7 @@
 			</div>
 		</MudItem>
 	</MudGrid>
-</MudMainContent>
+</div>
 @* <div class="m-4 container-large">
 	<MudGrid Spacing="6" Style="display: flex; justify-content:center">
 		<!-- Generic SearchBox -->
@@ -133,7 +133,7 @@
 	private string _searchTerm = string.Empty;
 
 	private string _errorMessage = "Inga mäklare hittades i ";
-	private string _setSearchBoxTitle = "Sök mäklare i stad/ commun";
+	private string _setSearchBoxTitle = "Sök mäklare i stad/kommun";
 
 	private bool _searching = false;
 	private bool _searchPerformed = false;
