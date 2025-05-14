@@ -1,4 +1,6 @@
-﻿@page "/change-assigned-realtor-advert"
+﻿@* Auth Robert *@
+
+@page "/change-assigned-realtor-advert"
 @inject IAdvertService advertService
 @inject IRealtorService realtorService
 @inject ISnackbar snackbar
@@ -97,12 +99,12 @@ else
     }
 
     .mud-list-item {
-        cursor: default !important; /* Ta bort hand-cursor */
+        cursor: default !important;
         user-select: none;
     }
 
         .mud-list-item:hover {
-            background-color: transparent !important; /* Ingen hover-effekt */
+            background-color: transparent !important;
             box-shadow: none;
         }
 </style>
