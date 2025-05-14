@@ -1,5 +1,6 @@
 ﻿
 @*Made by Samuel*@
+@*Updated and Styled by Jonathan *@
 @page "/agency/search"
 @inject IAgencyService agencyService
 @inject NavigationManager navManager
@@ -17,9 +18,14 @@
 		</MudItem>
 
 		<MudItem xs="12" sm="8">
+			<div class="advert-list-container">
 			@if (_searching)
 			{
 				<MudProgressCircular Indeterminate="true" Color="Color.Primary" />
+			}
+			else if (_getAgencies.Count == 0)
+			{
+				<MudText>Ange sökkriterier och klicka på Sök</MudText>
 			}
 			else if (_searchPerformed && !_getAgencies.Any())
 			{
@@ -29,7 +35,7 @@
 			{
 				@foreach (var agency in _getAgencies)
 				{
-					<MudSimpleTable Class="Agency-info-card p-2" Style="display: flex; overflow: auto; border: 2px solid darkgrey; border-radius: 10px;">
+					<MudSimpleTable Class="agency-info-card p-2" Style="display: flex; overflow: auto; border: 2px solid darkgrey; border-radius: 10px;">
 						<tbody>
 							<tr>
 								<td class="Agency-logo">
@@ -86,9 +92,24 @@
 					</MudSimpleTable>
 				}
 			}
+			</div>
 		</MudItem>
 	</MudGrid>
 </div>
+
+<style>
+	.agency-info-card{
+		border-radius: 8px !important;
+		background-color: white;
+		transition: all 0.3s ease-in-out;
+		cursor: pointer
+	}
+
+	.agency-info-card:hover {
+		transform: scale(1.02);
+		box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3) !important;
+	}
+</style>
 
 @code {
 	private List<AgencyWithSimpleRealtorsDto>? _getAgencies = new();
@@ -97,7 +118,7 @@
 	private string _searchTerm = string.Empty;
 	private bool _searching = false;
 	private bool _searchPerformed = false;
-	private string _setSearchBoxTitle = "Sök mäklarbyrå i stad/ kommun";
+	private string _setSearchBoxTitle = "Sök mäklarbyrå i stad/kommun";
 
 	private string _errorAgency = "Hittade inga byråer i";
 	private string _errorRealtors = "Inga registrerade mäklare";
