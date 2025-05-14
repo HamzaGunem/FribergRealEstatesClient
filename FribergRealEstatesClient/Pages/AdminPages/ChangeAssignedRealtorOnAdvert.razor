@@ -50,9 +50,12 @@ else
 }
 
 @code {
+    private List<AdvertDto> adverts = new();
+    private List<AdminRealtorUserDto> realtors = new();
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-               
+        realtors = (await realtorService.GetAllRealtors()).ToList();
+        adverts = await advertService.
     }
 }

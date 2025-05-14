@@ -83,12 +83,12 @@ namespace FribergRealEstatesClient.Services.Base
 
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<AdvertDto> AllActiveAdvertsAsync();
+        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<AdvertDto>> AllActiveAdvertsAsync();
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<AdvertDto> AllActiveAdvertsAsync(System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<AdvertDto>> AllActiveAdvertsAsync(System.Threading.CancellationToken cancellationToken);
 
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
@@ -871,7 +871,7 @@ namespace FribergRealEstatesClient.Services.Base
 
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<AdvertDto> AllActiveAdvertsAsync()
+        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<AdvertDto>> AllActiveAdvertsAsync()
         {
             return AllActiveAdvertsAsync(System.Threading.CancellationToken.None);
         }
@@ -879,7 +879,7 @@ namespace FribergRealEstatesClient.Services.Base
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<AdvertDto> AllActiveAdvertsAsync(System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<AdvertDto>> AllActiveAdvertsAsync(System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -920,7 +920,7 @@ namespace FribergRealEstatesClient.Services.Base
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<AdvertDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<AdvertDto>>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
@@ -3913,7 +3913,7 @@ namespace FribergRealEstatesClient.Services.Base
         public int? ParkingSlotNumber { get; set; }
 
         [Newtonsoft.Json.JsonProperty("facilities", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.ICollection<string> Facilities { get; set; }
+        public System.Collections.Generic.ICollection<int> Facilities { get; set; }
 
         private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
 
@@ -4208,7 +4208,7 @@ namespace FribergRealEstatesClient.Services.Base
         public System.Collections.Generic.ICollection<string> ImageUrls { get; set; }
 
         [Newtonsoft.Json.JsonProperty("facilities", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.ICollection<string> Facilities { get; set; }
+        public System.Collections.Generic.ICollection<int> Facilities { get; set; }
 
         [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public ResidenceType Type { get; set; }
@@ -4267,7 +4267,7 @@ namespace FribergRealEstatesClient.Services.Base
         public ResidenceType Type { get; set; }
 
         [Newtonsoft.Json.JsonProperty("facilities", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.ICollection<string> Facilities { get; set; }
+        public System.Collections.Generic.ICollection<int> Facilities { get; set; }
 
         [Newtonsoft.Json.JsonProperty("address", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public AddressSummaryDto Address { get; set; }
@@ -4402,7 +4402,7 @@ namespace FribergRealEstatesClient.Services.Base
         public bool IsAvailable { get; set; }
 
         [Newtonsoft.Json.JsonProperty("facilities", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.ICollection<string> Facilities { get; set; }
+        public System.Collections.Generic.ICollection<int> Facilities { get; set; }
 
         private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
 
