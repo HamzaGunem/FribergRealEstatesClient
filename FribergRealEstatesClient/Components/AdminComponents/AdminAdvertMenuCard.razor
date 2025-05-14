@@ -15,7 +15,11 @@
                     <MudDivider />
                     <MudListItem Icon="@Icons.Material.Filled.ChangeCircle" Disabled="true" IconColor="Color.Primary">Ändra annons</MudListItem>
                     <MudDivider />
-                    <MudListItem Icon="@Icons.Material.Filled.AssignmentInd" Disabled="true"  IconColor="Color.Warning">Ändra tilldelad Mäklare</MudListItem>
+                    <MudListItem Icon="@Icons.Material.Filled.AssignmentInd" Disabled="false" IconColor="Color.Warning">
+                        <MudText Color="Color.Default" Class="custom-link" @onclick="ChangeRealtorOnAdvert">
+                            Ändra tilldelad Mäklare
+                        </MudText> 
+                    </MudListItem>                    
                     <MudDivider />
                     <MudListItem Icon="@Icons.Material.Filled.RemoveCircleOutline" Disabled="true" IconColor="Color.Error">Ta bort</MudListItem>
                 </MudList>
@@ -24,9 +28,14 @@
     </MudPaper>
 </MudItem>
 
-@code{
+@code {
     public void CreateAdvert()
     {
         navManager.NavigateTo("/create-advert");
+    }
+
+    public void ChangeRealtorOnAdvert()
+    {
+        navManager.NavigateTo("/change-assigned-realtor-advert");
     }
 }

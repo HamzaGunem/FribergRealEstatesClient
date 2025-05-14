@@ -10,44 +10,102 @@
 }
 else
 {
-    <div class="container">
-        <MudText Typo="Typo.h3" Class="px-5 m-0 mb-4" Style="text-align:center; background-color:#273845; color: white;">Koppla mäklare till byrå</MudText>
-        <MudList T="string" Class="mx-auto">
-            @foreach (var advert in adverts)
-            {
-                <MudListItem Class="py-1">
-                    <MudPaper Elevation="2" Class="p-4" Style="width: 100%; border-radius: 12px;">
-                        <div style="display: flex; justify-content: center; align-items: center; align-content: center; width: 100%">
-                            <div style="display: grid; grid-template-columns: 60px 180px 160px 150px 250px 40px; align-items: center; gap: 1rem; max-width: 900px; width: 100%;">
-                                <MudAvatar>
-                                    <MudImage Src="@advert.Residence.ImageUrls.FirstOrDefault()" Alt="Residencebild"> </MudImage>
-                                </MudAvatar>
-                                <MudText Typo="Typo.h6">@advert.Residence.Address.Street</MudText>
-                                <MudText Typo="Typo.body2">@advert.Residence.Address.City</MudText>
-                                <MudText Typo="Typo.body2">@advert.CurrentPrice</MudText>
+    <MudContainer>
+        <MudItem xs="12" sm="12" md="8" Class="mx-auto">
+            <MudItem Class="px-5 m-4 p-1" Style="text-align:center; background-color:#273845; color: white; border-radius: 5px;">
+                <MudText Typo="Typo.h4" Class="p-2 d">Ändra mäklare på annons</MudText>
+            </MudItem>
+            <MudList T="string" Class="mx-auto">
+                @foreach (var advert in adverts)
+                {
+                    <MudListItem @key="advert.Id" Class="py-2">
+                        <MudPaper Elevation="2" Class="p-4" Style="border-radius: 12px; width: 100%;">
+                            <div class="advert-container">
 
-                                <MudSelect T="int" @bind-Value="advert.Realtor.Id" Label="Kopplad Mäklare">
-                                    @foreach (var realtor in realtors)
-                                    {
-                                        <MudSelectItem Value="realtor.Id">@realtor.FirstName @realtor.LastName</MudSelectItem>
-                                    }
+                                <div class="image-container">
+                                    <MudImage Src="@advert.Residence.ImageUrls.FirstOrDefault()"
+                                              Width="100" Height="75"
+                                              Alt="residence img"
+                                              Elevation="10"
+                                              Class="rounded-lg" />
+                                </div>
 
-                                </MudSelect>
+                                <div class="info-container">
+                                    <MudText Typo="Typo.subtitle1"><b>@advert.Residence.Address.Street</b></MudText>
+                                    <MudText Typo="Typo.body2">@advert.Residence.Address.City</MudText>
+                                    <MudText Typo="Typo.body2">@advert.CurrentPrice.ToString("N0") kr</MudText>
+                                </div>
 
-                                <MudIconButton Icon="@Icons.Material.Filled.Save"
-                                Color="Color.Primary"
-                                OnClick="@(() => SaveAgencyAsync(advert.Id))"
-                                Disabled="!originalAdvertIds.ContainsKey(advert.Id) || originalAdvertIds[advert.Id] == advert.Realtor.Id"
-                                Size="Size.Small"
-                                aria-label="Spara" />
+                                <div>
+                                    <div>
+                                        <MudText Class=""><b>Mäklare</b></MudText>
+                                        <hr class="mt-0" />
+                                    </div>
+                                    <div class="action-container ">
+                                        <MudSelect T="int" @bind-Value="advert.Realtor.Id" Dense="true" Style="min-width: 160px;">
+                                            @foreach (var realtor in realtors)
+                                            {
+                                                <MudSelectItem Value="realtor.Id">@realtor.FirstName @realtor.LastName</MudSelectItem>
+                                            }
+                                        </MudSelect>
+
+                                        <MudIconButton Icon="@Icons.Material.Filled.Save"
+                                                       Color="Color.Success"
+                                                       Size="Size.Small"
+                                                       Class="ml-2"
+                                                       Disabled="!originalAdvertIds.ContainsKey(advert.Id) || originalAdvertIds[advert.Id] == advert.Realtor.Id"
+                                                       OnClick="@(() => SaveAgencyAsync(advert.Id))" />
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </MudPaper>
-                </MudListItem>
-            }
-        </MudList>
-    </div>
+                        </MudPaper>
+                    </MudListItem>
+
+                }
+            </MudList>
+        </MudItem>
+    </MudContainer>
+
 }
+
+<style>
+    .advert-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1.5rem;
+        flex-wrap: wrap;
+    }
+
+    .image-container {
+        flex: 0 0 auto;
+    }
+
+    .info-container {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+        flex: 1 1 auto;
+    }
+
+    .action-container {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        flex: 0 0 auto;
+    }
+
+    .mud-list-item {
+        cursor: default !important; /* Ta bort hand-cursor */
+        user-select: none;
+    }
+
+        .mud-list-item:hover {
+            background-color: transparent !important; /* Ingen hover-effekt */
+            box-shadow: none;
+        }
+</style>
 
 @code {
     private List<AdvertDto> adverts = new();
@@ -65,7 +123,7 @@ else
         }
     }
 
-    
+
     private async Task SaveAgencyAsync(int advertId)
     {
         var advert = adverts.FirstOrDefault(r => r.Id == advertId);
