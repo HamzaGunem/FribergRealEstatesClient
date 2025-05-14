@@ -8,5 +8,6 @@ namespace FribergRealEstatesClient.Services
         Task<ICollection<AdvertDto>> GetFilteredAsync(AdvertFilterDto filter);
         Task CreateAdvert(AdvertCreateDto dto);
         Task<List<AdvertDto>> AllActiveAdvertsAsync();
+        Task<AdvertUpdateDto> UpdateAdvert(int advert, AdvertUpdateDto advertDto);
     }
 }

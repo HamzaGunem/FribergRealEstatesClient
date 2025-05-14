@@ -44,6 +44,13 @@ namespace FribergRealEstatesClient.Services
             }
         }
 
+        //
+        public async Task<AdvertUpdateDto> UpdateAdvert(int advert, AdvertUpdateDto advertDto)
+        {
+            await GetBearerToken();
+            return await _client.EditAsync(advert, advertDto);
+        }
+
 
         /* public async Task<ICollection<AdvertDto>> GetFilteredAdverts(AdvertFilterDto filterDto)
          {
