@@ -23,7 +23,7 @@
                                 <MudGrid>
                                     <MudItem xs="12" md="6">
                                         <MudNumericField @bind-Value="Price"
-                                                         Label="Price"
+                                                         Label="Pris (kr)"
                                                          HideSpinButtons="true"
                                                          Variant="Variant.Filled"
                                                          Required="true"
@@ -34,7 +34,7 @@
                                     @if (realtors != null && realtors.Any())
                                     {
                                         <MudItem xs="12" md="6">
-                                            <MudSelect T="int" @bind-Value="setRealtorId" Label="Choose Realtor *" Clearable Variant="Variant.Filled">
+                                            <MudSelect T="int" @bind-Value="setRealtorId" Label="Välj mäklare *" Clearable Variant="Variant.Filled">
                                                 @foreach (var realtor in realtors)
                                                 {
                                                     <MudSelectItem Value="@realtor.Id">@realtor.FirstName @realtor.LastName</MudSelectItem>
