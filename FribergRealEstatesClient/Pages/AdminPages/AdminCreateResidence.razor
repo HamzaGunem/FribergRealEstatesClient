@@ -6,7 +6,7 @@
 @inject NavigationManager navManager
 @inject ISnackbar snackbar
 
-<div Class="mt-5 mb-0 pa-3" Style="text-align: center; background-color:#273845; color: white;"><h2>Skapa nytt Försäljningsobjekt</h2></div>
+<div Class="residenceheader mt-5 mb-0 pa-3" Style="text-align: center; background-color:#273845; color: white;"><h2>Skapa nytt Försäljningsobjekt</h2></div>
 <MudPaper Class="pa-4" Elevation="3">
     <EditForm Model="@_residenceModel" OnValidSubmit="HandleValidSubmit">
         <DataAnnotationsValidator/>
@@ -155,7 +155,12 @@
     </EditForm>
 
 </MudPaper>
-
+<style>
+    .residenceheader
+    {
+        border-radius: 5px;
+    }
+</style>
 @code {
     private MudForm form;
     private ResidenceModel _residenceModel = new();
