@@ -1,4 +1,6 @@
-﻿@page "/change-assigned-realtor-advert"
+﻿@* Auth Robert *@
+
+@page "/change-assigned-realtor-advert"
 @inject IAdvertService advertService
 @inject IRealtorService realtorService
 @inject ISnackbar snackbar
@@ -11,7 +13,7 @@
 else
 {
     <MudContainer>
-        <MudItem xs="12" sm="12" md="8" Class="mx-auto">
+        <MudItem xs="12" sm="12" md="8" lg="10" Class="mx-auto">
             <MudItem Class="px-5 m-4 p-1" Style="text-align:center; background-color:#273845; color: white; border-radius: 5px;">
                 <MudText Typo="Typo.h4" Class="p-2 d">Ändra mäklare på annons</MudText>
             </MudItem>
@@ -97,12 +99,12 @@ else
     }
 
     .mud-list-item {
-        cursor: default !important; /* Ta bort hand-cursor */
+        cursor: default !important;
         user-select: none;
     }
 
         .mud-list-item:hover {
-            background-color: transparent !important; /* Ingen hover-effekt */
+            background-color: transparent !important;
             box-shadow: none;
         }
 </style>
