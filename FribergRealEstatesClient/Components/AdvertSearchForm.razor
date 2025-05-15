@@ -1,128 +1,132 @@
 ﻿@* Updated and Styled by Jonathan *@
-<MudPaper Class="p-4" 
+@using FribergRealEstatesClient.Data
+
+<Animation AnimationSelected="@animationSelected">
+    <MudPaper Class="p-4"
     Elevation="3"
-          Style="background-color: #273845; width: 400px; margin-right: 0px; border-radius: 15px; box-shadow: 0 4px 10px #000000">
-    <MudText Typo="Typo.h5" Class="mb-4" Style="color: #ae9d65; font-weight: bold; text-align: center; text-shadow: 0 4px 10px #000000; text: linear-gradient(135deg, #ae9d65, #cfc08a); text-fill-color: transparent; font-family: 'Open Sans', sans-serif;">Sök bostäder</MudText>
+    Style="background-color: #273845; width: 400px; margin-right: 0px; border-radius: 15px; box-shadow: 0 4px 10px #000000">
+        <MudText Typo="Typo.h5" Class="mb-4" Style="color: #ae9d65; font-weight: bold; text-align: center; text-shadow: 0 4px 10px #000000; text: linear-gradient(135deg, #ae9d65, #cfc08a); text-fill-color: transparent; font-family: 'Open Sans', sans-serif;">Sök bostäder</MudText>
 
-    <MudGrid>
-        <MudItem xs="12" Class="mb-4">
-            <MudTextField @bind-Value="Filter.Address"
-                          Placeholder="Skriv område eller adress"
-                          Clearable="true"
-                          Underline="false"
-                          Class="residence-searchfield"
-                          Style="min-height: 50px; width: 100%;; text-transform: none; background-color: white; color: black; border-radius: 15px; padding: 10px;  box-shadow: 0 4px 10px #000000" />
-        </MudItem>
+        <MudGrid>
+            <MudItem xs="12" Class="mb-4">
+                <MudTextField @bind-Value="Filter.Address"
+                Placeholder="Skriv område eller adress"
+                Clearable="true"
+                Underline="false"
+                Class="residence-searchfield"
+                Style="min-height: 50px; width: 100%;; text-transform: none; background-color: white; color: black; border-radius: 15px; padding: 10px;  box-shadow: 0 4px 10px #000000" />
+            </MudItem>
 
-        <MudItem xs="12" Class="mb-4">
-            <MudGrid Class="mb-4" Justify="Justify.Center">
-                @foreach (var type in Enum.GetValues<ResidenceType>())
-                {
-                    <MudItem xs="12" sm="6" Class="d-flex justify-center">
-                        <MudButton Class=@($"filter-button residence-btn {(_selectedTypes.Contains(type) ? "selected" : "")}")
+            <MudItem xs="12" Class="mb-4">
+                <MudGrid Class="mb-4" Justify="Justify.Center">
+                    @foreach (var type in Enum.GetValues<ResidenceType>())
+                    {
+                        <MudItem xs="12" sm="6" Class="d-flex justify-center">
+                            <MudButton Class=@($"filter-button residence-btn {(_selectedTypes.Contains(type) ? "selected" : "")}")
                             Variant="Variant.Filled"
                             OnClick="@(() => ToggleType(type))"
                             Style="min-height: 50px; min-width: 150px; text-transform: none; box-shadow: 0 4px 10px #000000 ">
-                            @_residenceLabels[type]
-                        </MudButton>
-                    </MudItem>
-                }
-            </MudGrid>
-        </MudItem>
-        
-        <MudItem xs="6" Class="mb-4">
-            <MudNumericField @bind-Value="Filter.MinRooms"
-                             Placeholder="Min antal rum"
-                             Variant="Variant.Text"
-                             Min="1"
-                             Class="residence-optionsfield"
-                             Style="background-color: white; color: black; border-radius: 15px; height: 55px; padding: 10px; border-radius: 15px; box-shadow: 0 4px 10px #000000"
-                             Underline= "false"/>
-        </MudItem>
+                                @_residenceLabels[type]
+                            </MudButton>
+                        </MudItem>
+                    }
+                </MudGrid>
+            </MudItem>
 
-        <MudItem xs="6" Class="mb-4">
-            <MudNumericField @bind-Value="Filter.MaxRooms"
-                             Placeholder="Max antal rum"
-                             Variant="Variant.Text"
-                             Min="1"
-                             Class="residence-optionsfield"
-                             Style="background-color: white; color: black; border-radius: 15px; height: 55px; padding: 10px; box-shadow: 0 4px 10px #000000"
-                             Underline="false" />
-        </MudItem>
+            <MudItem xs="6" Class="mb-4">
+                <MudNumericField @bind-Value="Filter.MinRooms"
+                Placeholder="Min antal rum"
+                Variant="Variant.Text"
+                Min="1"
+                Class="residence-optionsfield"
+                Style="background-color: white; color: black; border-radius: 15px; height: 55px; padding: 10px; border-radius: 15px; box-shadow: 0 4px 10px #000000"
+                Underline="false" />
+            </MudItem>
 
-        <MudItem xs="6" Class="mb-4">
-            <MudNumericField @bind-Value="Filter.MinPrice"
-                             Placeholder="Min pris (SEK)"
-                             Variant="Variant.Text"
-                             Min="0"
-                             Class="residence-optionsfield"
-                             Style="background-color: white; color: black; border-radius: 15px; height: 55px; padding: 10px; box-shadow: 0 4px 10px #000000"
-                             Underline="false" />
-        </MudItem>
+            <MudItem xs="6" Class="mb-4">
+                <MudNumericField @bind-Value="Filter.MaxRooms"
+                Placeholder="Max antal rum"
+                Variant="Variant.Text"
+                Min="1"
+                Class="residence-optionsfield"
+                Style="background-color: white; color: black; border-radius: 15px; height: 55px; padding: 10px; box-shadow: 0 4px 10px #000000"
+                Underline="false" />
+            </MudItem>
 
-        <MudItem xs="6" Class="mb-4">
-            <MudNumericField @bind-Value="Filter.MaxPrice"
-                             Placeholder="Max pris (SEK)"
-                             Variant="Variant.Text"
-                             Min="0"
-                             Class="residence-optionsfield"
-                             Style="background-color: white; color: black; border-radius: 15px; height: 55px; padding: 10px; box-shadow: 0 4px 10px #000000"
-                             Underline="false" />
-        </MudItem>
+            <MudItem xs="6" Class="mb-4">
+                <MudNumericField @bind-Value="Filter.MinPrice"
+                Placeholder="Min pris (SEK)"
+                Variant="Variant.Text"
+                Min="0"
+                Class="residence-optionsfield"
+                Style="background-color: white; color: black; border-radius: 15px; height: 55px; padding: 10px; box-shadow: 0 4px 10px #000000"
+                Underline="false" />
+            </MudItem>
 
-        <MudItem xs="6" Class="mb-4">
-            <MudNumericField @bind-Value="Filter.MinArea"
-                             Placeholder="Min area (m²)"
-                             Min="0"
-                             Class="residence-optionsfield"
-                             Style="background-color: white; color: black; border-radius: 15px; height: 55px; padding: 10px; box-shadow: 0 4px 10px #000000"
-                             Underline="false" />
-        </MudItem>
+            <MudItem xs="6" Class="mb-4">
+                <MudNumericField @bind-Value="Filter.MaxPrice"
+                Placeholder="Max pris (SEK)"
+                Variant="Variant.Text"
+                Min="0"
+                Class="residence-optionsfield"
+                Style="background-color: white; color: black; border-radius: 15px; height: 55px; padding: 10px; box-shadow: 0 4px 10px #000000"
+                Underline="false" />
+            </MudItem>
 
-        <MudItem xs="6" Class="mb-4">
-            <MudNumericField @bind-Value="Filter.MaxArea"
-                             Placeholder="Max area (m²)"
-                             Min="0"
-                             Class="residence-optionsfield"
-                             Style="background-color: white; color: black; border-radius: 15px; height: 55px; padding: 10px; box-shadow: 0 4px 10px #000000"
-                             Underline="false" />
-        </MudItem>
-        <MudItem xs="6" Class="mb-4">
-            <MudSelect T="string" @bind-Value="Filter.OrderBy" 
+            <MudItem xs="6" Class="mb-4">
+                <MudNumericField @bind-Value="Filter.MinArea"
+                Placeholder="Min area (m²)"
+                Min="0"
+                Class="residence-optionsfield"
+                Style="background-color: white; color: black; border-radius: 15px; height: 55px; padding: 10px; box-shadow: 0 4px 10px #000000"
+                Underline="false" />
+            </MudItem>
+
+            <MudItem xs="6" Class="mb-4">
+                <MudNumericField @bind-Value="Filter.MaxArea"
+                Placeholder="Max area (m²)"
+                Min="0"
+                Class="residence-optionsfield"
+                Style="background-color: white; color: black; border-radius: 15px; height: 55px; padding: 10px; box-shadow: 0 4px 10px #000000"
+                Underline="false" />
+            </MudItem>
+            <MudItem xs="6" Class="mb-4">
+                <MudSelect T="string" @bind-Value="Filter.OrderBy"
                 Placeholder="Sortera efter"
                 Variant="Variant.Text"
                 Class="residence-optionsfield"
                 Style="background-color: white; color: black; border-radius: 15px; ; padding: 10px; box-shadow: 0 4px 10px #000000"
                 Underline="false">
-                <MudSelectItem T="string" Value="@null">Inget</MudSelectItem>
-                <MudSelectItem T="string" Value="@("price")">Pris</MudSelectItem>
-                <MudSelectItem Value="@("rooms")">Antal rum</MudSelectItem>
-            </MudSelect>
-        </MudItem>
+                    <MudSelectItem T="string" Value="@null">Inget</MudSelectItem>
+                    <MudSelectItem T="string" Value="@("price")">Pris</MudSelectItem>
+                    <MudSelectItem Value="@("rooms")">Antal rum</MudSelectItem>
+                </MudSelect>
+            </MudItem>
 
-        <MudItem xs="6" Class="mb-4">
-            <div style="display: flex; flex-wrap: wrap; align-items: center;">
-                <MudCheckBox T="bool?"
-                             @bind-Value="Filter.OrderDescending"
-                             Disabled="@string.IsNullOrEmpty(Filter.OrderBy)"
-                             Class="order-descending-checkbox" />
-                <div style="color: #ae9d65; margin-left: 8px; max-width: 80px; word-break: break-word;">
-                    Sortera fallande
+            <MudItem xs="6" Class="mb-4">
+                <div style="display: flex; flex-wrap: wrap; align-items: center;">
+                    <MudCheckBox T="bool?"
+                    @bind-Value="Filter.OrderDescending"
+                    Disabled="@string.IsNullOrEmpty(Filter.OrderBy)"
+                    Class="order-descending-checkbox" />
+                    <div style="color: #ae9d65; margin-left: 8px; max-width: 80px; word-break: break-word;">
+                        Sortera fallande
+                    </div>
                 </div>
-            </div>
-        </MudItem>
-    </MudGrid>
+            </MudItem>
+        </MudGrid>
 
-    <div class="mt-4 text-center">
-        <MudButton Variant="Variant.Filled"
-        FullWidth="true"
-        OnClick="@OnApplyFilter"
-        Class="search-button"
-                   Style="background-color: #ae9d65; color: white; min-height: 50px; border-radius: 15px; font-size: 16px;">
-              Sök
-        </MudButton>
-    </div>
-</MudPaper>
+        <div class="mt-4 text-center">
+            <MudButton Variant="Variant.Filled"
+            FullWidth="true"
+            OnClick="@OnApplyFilter"
+            Class="search-button"
+            Style="background-color: #ae9d65; color: white; min-height: 50px; border-radius: 15px; font-size: 16px;">
+                Sök
+            </MudButton>
+        </div>
+    </MudPaper>
+</Animation>
 
 @code {
 
@@ -132,7 +136,12 @@
 
     private HashSet<ResidenceType> _selectedTypes = new();
 
+    public string animationSelected = string.Empty;
 
+    protected override void OnInitialized()
+    {
+        animationSelected = AnimationsToSelect.fadeDown;
+    }
     protected override void OnParametersSet()
     {
         _selectedTypes = Filter.ResidenceTypes?.ToHashSet() ?? new();
@@ -173,10 +182,10 @@
 
     /* Checkbox styling */
     /* .order-descending-checkbox .mud-checkbox {
-        color: #ffde6f !important;
-    }
+            color: #ffde6f !important;
+        }
 
-    .order-descending-checkbox .mud-checkbox-checked {
-        color: #ffde6f !important;
-    } */
+        .order-descending-checkbox .mud-checkbox-checked {
+            color: #ffde6f !important;
+        } */
 </style>
