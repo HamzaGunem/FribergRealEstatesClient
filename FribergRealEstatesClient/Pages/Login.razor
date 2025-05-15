@@ -4,17 +4,19 @@
 @inject IAuthenticationService authenticationService
 @inject ISnackbar snackbar
 @inject NavigationManager navManager
+@using FribergRealEstatesClient.Components
 
+@* Styling: Viktor *@
 <div>
 
     <MudPaper Class="pa-0 mx-auto mt-6" MaxWidth="400px" Elevation="4">
-        <div style="background-color: #273845; color: white; padding: 0px; margin: 0px; border-radius: 4px 4px 0 0; text-align: center">
+        <div style="background-color: var(--mud-palette-primary); color: white; padding: 0px; margin: 0px; border-radius: 4px 4px 0 0; text-align: center">
             <MudText Class="pa-3" Typo="Typo.h5">Login</MudText>
         </div>
         <MudForm Class="pa-3" @ref="form" @bind-IsValid="@success">
-            <MudTextField @bind-Value="loginModel.Email" InputType="InputType.Email" Label="Email" Required="true" For="@(() => loginModel.Email)"></MudTextField>
-            <MudTextField @bind-Value="loginModel.Password" InputType="InputType.Password" Label="Password" Required="true" For="@(() => loginModel.Password)"></MudTextField>
-            <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" OnClick="@HandleLogin" Class="ml-auto mt-3">Login</MudButton>
+            <MudTextField @bind-Value="loginModel.Email" InputType="InputType.Email" Label="Email" Required="true" For="@(() => loginModel.Email)"></MudTextField>          
+            <PasswordField @bind-Value="loginModel.Password" />
+            <MudButton Variant="Variant.Filled" Color="Color.Secondary" Disabled="@(!success)" OnClick="@HandleLogin" Class="ml-auto mt-3">Login</MudButton>
         </MudForm>
     </MudPaper>
 </div>

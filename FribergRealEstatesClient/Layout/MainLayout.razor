@@ -17,7 +17,7 @@
     @* Styling/ Viktor *@
     <MudAppBar Color="Color.Primary" Elevation="4" Dense="true" Class="px-4 d-flex" Style="height: 90px;">
         <MudImage Src="/images/logo.FRE.png" Alt="Friberg Real Estates Logo"
-                  Style="width: 120px; height: 120px; margin-top: 42px; padding: 10px;" />
+                  Style="width: 120px; height: 120px; margin-top: 42px;" />
 
         <div class="d-flex ml-auto" style="gap: 16px; align-items:center; margin-top: 42px;">
             <!-- Changed to ml-auto -->
@@ -50,10 +50,6 @@
                      <MudNavLink Href="/agency/search" Class="no-wrap" ActiveClass="active-link">Sök mäklarbyrå</MudNavLink>
                      <MudNavLink Href="/realtor/search" Class="no-wrap" ActiveClass="active-link">Sök mäklare</MudNavLink>
 
-
-                    <!-- Login and Register buttons -->
-                    @* <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="NavigateToLogin" Class="no-wrap">Login</MudButton>
-                    <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="NavigateToRegister" Class="no-wrap">Register</MudButton> *@
                     <div style="display: flex; gap: 16px; align-items: center;">
                         <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="NavigateToLogin" Style="flex-grow: 0;">
                             Login
