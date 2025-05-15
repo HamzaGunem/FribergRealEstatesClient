@@ -1,0 +1,33 @@
+@* Auth Robert *@
+@inject IAdvertService advertService
+
+<MudMainContent>
+    <MudContainer Class="mt-4" Style="max-width: none;">
+        <MudText Typo="Typo.h4" Align="Align.Center">Topplista</MudText>
+        <MudText Typo="Typo.body2" Align="Align.Center">Dyraste lägenheterna</MudText>
+
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; margin-top: 1rem;">
+            @foreach (var advert in mostExpensive)
+            {                
+                <div style="min-width: 300px; max-width: 350px; flex: 1;">
+                    <AdvertCardCarousel Advert="advert" />
+                </div>
+            }
+        </div>
+    </MudContainer>
+</MudMainContent>
+
+@code{
+    private List<AdvertDto> adverts= new ();
+    private List<AdvertDto> mostExpensive = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        adverts = (await advertService.AllActiveAdvertsAsync()).ToList();       
+    }
+
+    private void SelectMostExpensive()
+    {        
+        mostExpensive = adverts.OrderByDescending(c => c.CurrentPrice).Take(5).ToList();
+    }
+}
