@@ -7,18 +7,19 @@
 
 <PageTitle>Sök Mäklarbyrå</PageTitle>
 
-<div class="mt-4 container-fluid">
-	<MudGrid>
-		<!-- Generic SearchBox -->
-		<MudItem xs="12" sm="4">
-			<GenericSearchBox _searchTerm="@_searchTerm"
-			_searchTitle="@_setSearchBoxTitle"
-			OnSearch="SearchAgencies">
-			</GenericSearchBox>
-		</MudItem>
+<div class="mt-4 container gap-2" style=" min-width:fit-content; display: flex;">
 
-		<MudItem xs="12" sm="8">
-			<div class="advert-list-container">
+	<!-- Generic SearchBox -->
+	<div>
+		<GenericSearchBox _searchTerm="@_searchTerm"
+		_searchTitle="@_setSearchBoxTitle"
+		OnSearch="SearchAgencies">
+		</GenericSearchBox>
+	</div>
+
+	<!-- Agency list container -->
+	<div>
+		<div>
 			@if (_searching)
 			{
 				<MudProgressCircular Indeterminate="true" Color="Color.Primary" />
@@ -35,85 +36,75 @@
 			{
 				@foreach (var agency in _getAgencies)
 				{
-					<MudSimpleTable Class="agency-info-card p-2" Style="display: flex; overflow: auto; border: 2px solid darkgrey; border-radius: 10px;">
-						<tbody>
-							<tr>
-								<td class="Agency-logo">
-									<div @onclick="@(() => NavigateToAgency(agency.Id))"
-									style="cursor: pointer; transition: transform 0.3s ease-in-out;"
-									onmouseover="this.style.transform='scale(1.05)'"
-									onmouseout="this.style.transform='scale(1)'">
+					<!-- Agency Info Card  -->
+					<div class="mud-theme-primary p-2" style="display: flex; flex-direction: column;">
+						@*<div style="border: 2px solid; padding: 2px;">*@
 
-										<GenericImageBox 
-										ImageUrl="@agency.LogoUrl"
-										AltText="bild på mäklarbyrå"
-										SetStyling="object-fit: cover; width: 300px; height: 100%;">
-										</GenericImageBox>
-									</div>
-								</td>
+						<div class="Logo-&-Textbox-container gap-2" style="display: flex;">
+							<!-- Agency Logo  -->
+							<div @onclick="@(() => NavigateToAgency(agency.Id))"
+							style="cursor: pointer; transition: transform 0.3s ease-in-out;"
+							onmouseover="this.style.transform='scale(1.05)'"
+							onmouseout="this.style.transform='scale(1)'">
+								<GenericImageBox ImageUrl="@agency.LogoUrl"
+								AltText="bild på mäklarbyrå"
+								SetStyling="object-fit: cover; width: 300px; height: 100%;">
+								</GenericImageBox>
+							</div>
 
-								<td class="Agency-Name-and-Description">
-									<MudText Typo="Typo.h6">@agency.Name</MudText>
-									<MudText Typo="Typo.caption"><strong>Address:</strong>
-										@agency.Address.Street, 
-										@agency.Address.PostalCode,
-										@agency.Address.City
-									</MudText>
-									<GenericTextBox TextInput=@agency.Description></GenericTextBox>
+							<!-- Agency Information Texbox  -->
+							<div class="p-2" style="color:black; background-color: white; width:100%;">
+								<MudText Typo="Typo.h6">@agency.Name</MudText>
+								<MudText Typo="Typo.caption">
+									<strong>Address:</strong>
+									@agency.Address.Street,
+									@agency.Address.PostalCode,
+									@agency.Address.City
+								</MudText>
+								<GenericTextBox TextInput=@agency.Description></GenericTextBox>
+							</div>
+						</div>
 
-									<div class="Agency-realtor-list" style="display: flex; overflow: auto;">
-										@if (agency.Realtors.Count > 0)
-										{
-											@foreach (var realtor in agency.Realtors)
-											{
-												<div @onclick="@(() => NavigateToRealtor(realtor.Id))"
-												style="cursor: pointer; transition: transform 0.3s ease-in-out;"
-												onmouseover="this.style.transform='scale(1.05)'"
-												onmouseout="this.style.transform='scale(1)'">
-													<GenericImageBox 
-													ImageUrl="@realtor.PictureUrl"
-													AltText="bild på mäklare"
-													SetStyling="width: 100px; height: 100%; object-fit: cover;">
-													</GenericImageBox>
-													<div class="mud-theme-primary" style="width: 100%; color: white; text-align: center; font-weight: bold; padding: 4px 0;">
-														@realtor.FirstName
-													</div>
+						<!-- Agency Realtor Portraits  -->
+						<div class="mb-2 mt-2">
+							@if(agency.Realtors.Any())
+							{
+								<MudGrid Spacing="1">
+									@foreach (var realtor in agency.Realtors)
+									{
+										<MudItem>
+											<div @onclick="@(() => NavigateToRealtor(realtor.Id))"
+											style="cursor: pointer; transition: transform 0.3s ease-in-out;"
+											onmouseover="this.style.transform='scale(1.05)'"
+											onmouseout="this.style.transform='scale(1)'">
+												<GenericImageBox ImageUrl="@realtor.PictureUrl"
+												AltText="bild på mäklare"
+												SetStyling="width: 100px; height: 100%; object-fit: cover;">
+												</GenericImageBox>
+												<div style="width: 100px; color: white; background-color: #ae9d65; text-align: center; font-weight: bold; padding: 4px 0;">
+													@realtor.FirstName
 												</div>
-											}
-										}
-										else
-										{
-											<MudAlert Severity="Severity.Info">@_errorRealtors</MudAlert>
-										}
-									</div>
-								</td>
-							</tr>
-						</tbody>
-					</MudSimpleTable>
+											</div>
+										</MudItem>
+									}
+								</MudGrid>
+							}
+							else
+							{
+								<MudAlert Severity="Severity.Info">@_errorRealtors</MudAlert>
+							}
+						</div>
+					</div>
 				}
 			}
-			</div>
-		</MudItem>
-	</MudGrid>
+		</div>				
+	</div>
 </div>
 
-<style>
-	.agency-info-card{
-		border-radius: 8px !important;
-		background-color: white;
-		transition: all 0.3s ease-in-out;
-		cursor: pointer
-	}
-
-	.agency-info-card:hover {
-		transform: scale(1.02);
-		box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3) !important;
-	}
-</style>
 
 @code {
 	private List<AgencyWithSimpleRealtorsDto>? _getAgencies = new();
-	private List<SimpleRealtorDto> _getRealtors = new();
+	private List<string> _getRealtorPics = new();
 
 	private string _searchTerm = string.Empty;
 	private bool _searching = false;
@@ -122,6 +113,7 @@
 
 	private string _errorAgency = "Hittade inga byråer i";
 	private string _errorRealtors = "Inga registrerade mäklare";
+
 
 	private async Task SearchAgencies(string term)
 	{
@@ -154,5 +146,15 @@
 	private void NavigateToRealtor(int id)
 	{
 		navManager.NavigateTo($"/realtor/{id}");
+	}
+
+	private List<string> GetRealtorsImages(AgencyWithSimpleRealtorsDto agency)
+	{
+		List<string> newList = new();
+		foreach(var realtor in agency.Realtors)
+		{
+			newList.Add(realtor.PictureUrl);
+		}
+		return newList;
 	}
 }
