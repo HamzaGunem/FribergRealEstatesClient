@@ -1,4 +1,5 @@
 ﻿@*Auth Hamza*@
+@inject NavigationManager navigationManager
 
 <MudCard class="responsive-card">
     <MudCardMedia Image="@Advert.Residence.ImageUrls.FirstOrDefault()" Height="200" />
@@ -10,7 +11,7 @@
         <MudText Typo="Typo.body2"><b>@Advert.CurrentPrice.ToString("N0") kr</b></MudText>
     </MudCardContent>
     <MudCardActions>
-        <MudButton Variant="Variant.Filled" Color="Color.Primary">Visa Mer</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="() => NavigateToAdvert(Advert.Id)">Visa Mer</MudButton>
     </MudCardActions>
 </MudCard>
 
@@ -18,4 +19,10 @@
 @code {
     [Parameter]
     public AdvertDto Advert { get; set; }
+
+    // Added navigatetoadvert Robert
+    private void NavigateToAdvert(int advertId)
+    {
+        navigationManager.NavigateTo($"/advert/{advertId}");
+    }
 }
