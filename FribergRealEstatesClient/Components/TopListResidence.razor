@@ -1,5 +1,6 @@
 @* Auth Robert *@
 @inject IAdvertService advertService
+@inject NavigationManager navigationManager
 
 <MudMainContent>
     <MudContainer Class="mt-4" Style="max-width: none;">
@@ -8,7 +9,7 @@
 
         <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; margin-top: 1rem;">
             @foreach (var advert in mostExpensive)
-            {                
+            {
                 <div style="min-width: 300px; max-width: 350px; flex: 1;">
                     <AdvertCardCarousel Advert="advert" />
                 </div>
@@ -23,11 +24,16 @@
 
     protected override async Task OnInitializedAsync()
     {
-        adverts = (await advertService.AllActiveAdvertsAsync()).ToList();       
+        adverts = (await advertService.AllActiveAdvertsAsync()).ToList();
+        if(adverts != null)
+        {
+            SelectMostExpensive();
+        }
     }
 
     private void SelectMostExpensive()
     {        
         mostExpensive = adverts.OrderByDescending(c => c.CurrentPrice).Take(5).ToList();
     }
+    
 }
