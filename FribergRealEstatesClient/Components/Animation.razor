@@ -1,0 +1,26 @@
+﻿@*Auth Hamza*@
+
+<div data-aos="@animationName" data-aos-delay="@delay" data-aos-duration="@duration">
+    @ChildContent
+</div>
+
+@code {
+    private string animationName = "";
+    private string delay = "";
+    private string duration = "";
+
+    [Parameter]
+    public RenderFragment ChildContent{ get; set; }
+
+    [Parameter]
+    public string AnimationSelected { get; set; } = string.Empty;
+    protected override void OnParametersSet()
+    {
+        duration = "4000";
+        delay = "50";
+        if(!string.IsNullOrEmpty(AnimationSelected))
+        {
+            animationName = AnimationSelected;
+        }
+    }
+}
