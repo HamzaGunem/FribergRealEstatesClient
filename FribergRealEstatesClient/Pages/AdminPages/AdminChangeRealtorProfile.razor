@@ -8,7 +8,7 @@
     @if (adminRealtors != null)
     {
         <div class="container">
-            <MudPaper Style="border: 1px solid black; background-color: ghostwhite" MinHeight="100px" Class="p-1">
+            <MudPaper Style="border: 1px solid black; background-color: white" MinHeight="100px" Class="p-1">
                 <MudText Typo="Typo.h4" Class="px-2 " Style="text-align:center; background-color:#273845; color: white;">Ändra mäklare</MudText>
                 <MudItem xs="12" md="6" Class="pa-2">
                     <MudSelect @bind-Value:event="onchange" ValueChanged="@((string val) => OnRealtorChanged(val))" @bind-Value="_selectedRealtor" Label="Välj en mäklare" FullWidth="_fullWidth" FitContent="_fitContent" Variant="Variant.Outlined" Clearable>
@@ -73,6 +73,11 @@
         <p>Loading...</p>
     }
 </div>
+<style>
+    .mud-typography {
+        border-radius: 5px;
+    }
+</style>
 
 @code {
     private bool _fullWidth;

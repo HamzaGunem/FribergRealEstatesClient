@@ -26,6 +26,32 @@ namespace FribergRealEstatesClient.Services
             }
 
         }
+
+        // Robert
+        public async Task<List<AdvertDto>> AllActiveAdvertsAsync()
+        {
+            try
+            {
+                await GetBearerToken();
+                var adverts = await _client.AllActiveAdvertsAsync();
+                return adverts.ToList();
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine("Kunde int hämta adverts" + ex.Message);
+                throw;
+            }
+        }
+
+        //
+        public async Task<AdvertUpdateDto> UpdateAdvert(int advert, AdvertUpdateDto advertDto)
+        {
+            await GetBearerToken();
+            return await _client.EditAsync(advert, advertDto);
+        }
+
+
         /* public async Task<ICollection<AdvertDto>> GetFilteredAdverts(AdvertFilterDto filterDto)
          {
              try
@@ -45,11 +71,12 @@ namespace FribergRealEstatesClient.Services
             var result = await _client.FilterAsync(filter);
             return result.ToList();
         }
+
         public async Task CreateAdvert(AdvertCreateDto dto)
         {
             await GetBearerToken();
             await _client.CreatePOSTAsync(dto);
-        }
+        }        
 
     }
 }

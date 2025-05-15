@@ -1,0 +1,66 @@
+﻿@* Auth: Oscar *@
+@page "/edit-agency"
+
+@inject IAgencyService agencyService
+@inject ICommunService communService
+@inject ISnackbar snackbar
+
+<PageTitle>Redigera mäklarbyrå</PageTitle>
+<div class="container">
+    <MudText Typo="Typo.h4" Class=" p-2 px-5 m-0 mb-4 mt-4" Style="text-align:center; background-color:#273845; color: white;">Redigera mäklarbyrå</MudText>
+    <MudExpansionPanels>
+        @foreach (var agency in agencies)
+        {
+
+            <MudExpansionPanel Text="@agency.Name">
+                <MudAvatar>
+                    <MudImage Src="@agency.LogoUrl" Alt="Logo"></MudImage>
+                </MudAvatar>
+                <EditAgencyForm AgencyDto="@agency"
+                                AddressDto="@agency.Address"
+                                Communes="@communes"
+                                OnUpdate="@(() => UpdateAgency(agency.Id, agency))" />
+            </MudExpansionPanel>
+        }
+    </MudExpansionPanels>
+</div>
+
+@* Style Robert*@
+<style>
+    .mud-typography
+    {
+        border-radius: 5px;
+    }
+</style>
+
+@code {
+    private List<AgencyEditDto> agencies = new();
+    private List<CommunDto> communes = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        communes = await communService.GetAllCommunsAsync();
+        agencies = await agencyService.GetAllForEdit(); 
+    }
+
+    private async Task UpdateAgency(int id, AgencyEditDto updatedAgency)
+    {
+        try
+        {
+            await agencyService.EditAgency(updatedAgency);
+            snackbar.Add($"Byrån '{updatedAgency.Name}' uppdaterad", Severity.Success);
+            agencies = await agencyService.GetAllForEdit();
+        }
+        catch (ApiException ex) when (ex.StatusCode == 200)
+        {
+            snackbar.Add($"Byrån '{updatedAgency.Name}' uppdaterad", Severity.Success);
+            agencies = await agencyService.GetAllForEdit();
+        }
+        catch (Exception ex)
+        {
+            snackbar.Add($"Fel vid uppdatering: {ex.Message}", Severity.Error);
+        }
+    }
+
+
+}

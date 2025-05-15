@@ -7,12 +7,12 @@
 
     @if (realtor != null)
     {
-        //Om
+    //Om
         <h3 style="margin: 1rem auto; text-align:center; justify-content: center">Om</h3>
         <AgencyProfile Id="@realtor.Realtor.AgencyId.Value"></AgencyProfile>
 
         //Status
-        <div style="display: flex; justify-content: center; align-items: center; gap: 20px;">
+        <div style="display: flex; justify-content: center; align-items: center; gap: 20px;" class="mt-2">
             <MudChart ChartType="ChartType.Donut" Width="300px" Height="300px" InputData="@chartData" InputLabels="@chartLabels">
                 <CustomGraphics>
                     <text class="donut-inner-text" x="50%" y="35%" dominant-baseline="middle" text-anchor="middle" fill="black" font-family="Helvetica" font-size="20">Total</text>
@@ -27,6 +27,7 @@
             <RealtorProfileSmall Id="@realtor.Realtor.AgencyId.Value"></RealtorProfileSmall>
         </div>
     }
+
 </div>
 
 @code {
@@ -37,6 +38,7 @@
     private int totalSoldAndActive;
     private int totalSold;
     private int totalActive;
+
     protected override async Task OnInitializedAsync()
     {
         try

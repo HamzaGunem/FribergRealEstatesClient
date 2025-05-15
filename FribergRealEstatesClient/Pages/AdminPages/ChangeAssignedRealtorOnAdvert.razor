@@ -1,0 +1,161 @@
+﻿@* Auth Robert *@
+
+@page "/change-assigned-realtor-advert"
+@inject IAdvertService advertService
+@inject IRealtorService realtorService
+@inject ISnackbar snackbar
+
+<PageTitle>Byta tilldelad mäklare på annons</PageTitle>
+@if (adverts == null && realtors == null)
+{
+    <MudProgressCircular Indeterminate="true" Color="Color.Primary" />
+}
+else
+{
+    <MudContainer>
+        <MudItem xs="12" sm="12" md="8" lg="10" Class="mx-auto">
+            <MudItem Class="px-5 m-4 p-1" Style="text-align:center; background-color:#273845; color: white; border-radius: 5px;">
+                <MudText Typo="Typo.h4" Class="p-2 d">Ändra mäklare på annons</MudText>
+            </MudItem>
+            <MudList T="string" Class="mx-auto">
+                @foreach (var advert in adverts)
+                {
+                    <MudListItem @key="advert.Id" Class="py-2">
+                        <MudPaper Elevation="2" Class="p-4" Style="border-radius: 12px; width: 100%;">
+                            <div class="advert-container">
+
+                                <div class="image-container">
+                                    <MudImage Src="@advert.Residence.ImageUrls.FirstOrDefault()"
+                                              Width="100" Height="75"
+                                              Alt="residence img"
+                                              Elevation="10"
+                                              Class="rounded-lg" />
+                                </div>
+
+                                <div class="info-container">
+                                    <MudText Typo="Typo.subtitle1"><b>@advert.Residence.Address.Street</b></MudText>
+                                    <MudText Typo="Typo.body2">@advert.Residence.Address.City</MudText>
+                                    <MudText Typo="Typo.body2">@advert.CurrentPrice.ToString("N0") kr</MudText>
+                                </div>
+
+                                <div>
+                                    <div>
+                                        <MudText Class=""><b>Mäklare</b></MudText>
+                                        <hr class="mt-0" />
+                                    </div>
+                                    <div class="action-container ">
+                                        <MudSelect T="int" @bind-Value="advert.Realtor.Id" Dense="true" Style="min-width: 160px;">
+                                            @foreach (var realtor in realtors)
+                                            {
+                                                <MudSelectItem Value="realtor.Id">@realtor.FirstName @realtor.LastName</MudSelectItem>
+                                            }
+                                        </MudSelect>
+
+                                        <MudIconButton Icon="@Icons.Material.Filled.Save"
+                                                       Color="Color.Success"
+                                                       Size="Size.Small"
+                                                       Class="ml-2"
+                                                       Disabled="!originalAdvertIds.ContainsKey(advert.Id) || originalAdvertIds[advert.Id] == advert.Realtor.Id"
+                                                       OnClick="@(() => SaveAgencyAsync(advert.Id))" />
+                                    </div>
+                                </div>
+                            </div>
+                        </MudPaper>
+                    </MudListItem>
+
+                }
+            </MudList>
+        </MudItem>
+    </MudContainer>
+
+}
+
+<style>
+    .advert-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1.5rem;
+        flex-wrap: wrap;
+    }
+
+    .image-container {
+        flex: 0 0 auto;
+    }
+
+    .info-container {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+        flex: 1 1 auto;
+    }
+
+    .action-container {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        flex: 0 0 auto;
+    }
+
+    .mud-list-item {
+        cursor: default !important;
+        user-select: none;
+    }
+
+        .mud-list-item:hover {
+            background-color: transparent !important;
+            box-shadow: none;
+        }
+</style>
+
+@code {
+    private List<AdvertDto> adverts = new();
+    private List<AdminRealtorUserDto> realtors = new();
+    private Dictionary<int, int> originalAdvertIds = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        realtors = (await realtorService.GetAllRealtors()).ToList();
+        adverts = await advertService.AllActiveAdvertsAsync();
+
+        foreach (var i in adverts)
+        {
+            originalAdvertIds[i.Id] = i.Realtor.Id;
+        }
+    }
+
+
+    private async Task SaveAgencyAsync(int advertId)
+    {
+        var advert = adverts.FirstOrDefault(r => r.Id == advertId);
+
+        if (advert == null || advert.Realtor.Id is 0)
+        {
+            snackbar.Add("Du måste välja en byrå innan du kan spara.", Severity.Warning);
+            return;
+        }
+        try
+        {
+            var dto = new AdvertUpdateDto
+                {
+                    RealtorId = advert.Realtor.Id,
+                    Sold = advert.Sold,
+                    CurrentPrice = advert.CurrentPrice,
+                    Updated = DateTime.Now
+                };
+
+            await advertService.UpdateAdvert(advertId, dto);
+
+            adverts = await advertService.AllActiveAdvertsAsync();
+
+            originalAdvertIds[advert.Id] = advert.Realtor.Id;
+
+            snackbar.Add("Annonsen uppdaterades med ny mäklare.", Severity.Success);
+        }
+        catch (Exception ex)
+        {
+            snackbar.Add($"Fel vid uppdatering, {ex.Message}", Severity.Error);
+        }
+    }
+}

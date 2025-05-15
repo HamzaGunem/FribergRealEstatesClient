@@ -15,64 +15,96 @@
     </div> *@
 
     @* Styling/ Viktor *@
-    <MudAppBar Color="Color.Primary" Elevation="4" Dense="true" Class="px-4 d-flex" Style="height: 90px;">
-        <MudImage Src="/images/logo.FRE.png" Alt="Friberg Real Estates Logo"
-                  Style="width: 120px; height: 120px; margin-top: 42px;" />
+    <MudLayout>
+        <MudAppBar Color="Color.Primary" Elevation="4" Dense="true" Class="px-4 d-flex" Style="height: 90px;">
+            <MudLink Href="/">
+            <MudImage Src="/images/logo.FRE.png" Alt="Friberg Real Estates Logo"
+                      Style="width: 120px; height: 120px; margin-top: 42px;" />
+            </MudLink>
 
-        <div class="d-flex ml-auto" style="gap: 16px; align-items:center; margin-top: 42px;">
-            <!-- Changed to ml-auto -->
-            @*Dropdown /Hamza*@
+            <div class="d-flex ml-auto" style="gap: 16px; align-items:center; margin-top: 42px;">
+                <!-- Changed to ml-auto -->
 
-            <AuthorizeView>
-                <Authorized>
-                    <MudNavLink Href="/" Match="NavLinkMatch.All" Class="no-wrap">Sök bostad</MudNavLink>
-                    <MudNavLink Href="/agency/search" Class="no-wrap">Sök mäklarebyrå</MudNavLink>
-                    <MudNavLink Href="/realtor/search" Class="no-wrap">Sök mäklare</MudNavLink>
-                    <MudMenu Hover="true" OffsetY="true" Direction="Direction.Start">
-                        <ActivatorContent>
-                            <MudButton Variant="Variant.Text" Color="Color.Inherit" EndIcon="@Icons.Material.Filled.ArrowDropDown" Class="px-2" Style="text-transform:none">
-                                Profil
+                @* Visas för alla / Robert*@
+                <MudNavLink Href="/advert-search" Class="no-wrap custom-navlink" ActiveClass="active-link">Sök bostad</MudNavLink>
+                <MudNavLink Href="/agency/search" Class="no-wrap" ActiveClass="active-link">Sök mäklarbyrå</MudNavLink>
+                <MudNavLink Href="/realtor/search" Class="no-wrap" ActiveClass="active-link">Sök mäklare</MudNavLink>
+
+                @* Admin-dashboard - Superadmin views /Robert *@
+                <AuthorizeView Roles="SuperAdmin">
+                    <Authorized>
+                        <MudNavLink Href="/admindashboard" Class="no-wrap" ActiveClass="active-link">Admin-Dashboard</MudNavLink>
+                        <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="HandleLogout" Style="flex-grow: 0;">
+                            Logout
+                        </MudButton>
+                    </Authorized>
+                </AuthorizeView>
+
+                @*Dropdown /Hamza*@
+                @*Authorizeview changes - Realtors views /Robert*@
+                <AuthorizeView Roles="Realtor">
+                    <Authorized>
+                        <MudMenu Hover="true" OffsetY="true" Direction="Direction.Start">
+                            <ActivatorContent>
+                                <MudButton Variant="Variant.Text" Color="Color.Inherit" EndIcon="@Icons.Material.Filled.ArrowDropDown" Class="px-2" Style="text-transform:none">
+                                    Profil
+                                </MudButton>
+                            </ActivatorContent>
+                            <ChildContent>
+                                <MudMenuItem Href="/profile" Icon="@Icons.Material.Filled.Person">Min Profil</MudMenuItem>
+                                <MudMenuItem Href="/realtordashboard" Icon="@Icons.Material.Filled.Person">Min Dashboard</MudMenuItem>
+                                <MudMenuItem Href="/My-agency" Icon="@Icons.Material.Filled.Business">Mäklarebyrå</MudMenuItem>
+                            </ChildContent>
+                        </MudMenu>
+                        <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="HandleLogout" Style="flex-grow: 0;">
+                            Logout
+                        </MudButton>
+                    </Authorized>
+                </AuthorizeView>
+
+                @* Auth: Robert, Ingen inloggad*@
+                <AuthorizeView>
+                    <NotAuthorized>                       
+                        <div style="display: flex; gap: 16px; align-items: center;">
+                            <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="NavigateToLogin" Style="flex-grow: 0;">
+                                Login
                             </MudButton>
-                        </ActivatorContent>
-                        <ChildContent>
-                            <MudMenuItem Href="/profile" Icon="@Icons.Material.Filled.Person">Min Profil</MudMenuItem>
-                            <MudMenuItem Href="/realtordashboard" Icon="@Icons.Material.Filled.Person">Min Dashboard</MudMenuItem>
-                            <MudMenuItem Href="/My-agency" Icon="@Icons.Material.Filled.Business">Mäklarebyrå</MudMenuItem>
-                            <MudDivider />
-                        </ChildContent>
-                    </MudMenu>
-                    <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="HandleLogout" Style="flex-grow: 0;">
-                        Logout
-                    </MudButton>
-                </Authorized>
-                <NotAuthorized>
-                     <MudNavLink Href="/advert-search" Class="no-wrap custom-navlink" ActiveClass="active-link">Sök bostad</MudNavLink>
-                     <MudNavLink Href="/agency/search" Class="no-wrap" ActiveClass="active-link">Sök mäklarbyrå</MudNavLink>
-                     <MudNavLink Href="/realtor/search" Class="no-wrap" ActiveClass="active-link">Sök mäklare</MudNavLink>
+                            <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="NavigateToRegister" Style="flex-grow: 0;">
+                                Register
+                            </MudButton>
+                        </div>
+                    </NotAuthorized>
+                </AuthorizeView>
 
-                    <div style="display: flex; gap: 16px; align-items: center;">
-                        <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="NavigateToLogin" Style="flex-grow: 0;">
-                            Login
-                        </MudButton>
-                        <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="NavigateToRegister" Style="flex-grow: 0;">
-                            Register
-                        </MudButton>
-                    </div>
-                </NotAuthorized>
-            </AuthorizeView>
-        </div>
-    </MudAppBar>
+                
+            </div>
+        </MudAppBar>
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
-        </div>
-
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
+        <MudMainContent>
+            <main class="mt-7">
+                <article class="content px-4">
+                    @Body
+                </article>
+            </main>
+        </MudMainContent>
+    </MudLayout>
 </div>
+
+<style>
+
+    /*activelink by Jonathan, // Robert removed all text-decoration and added styling radius and border bottom */
+    .active-link {
+        border-bottom: 6px solid #ae9d65;
+        border-radius: 5px 5px 0 0;
+    }
+    
+    /* Added by Robert */
+    .mud-nav-link-text
+    {
+        margin: 0px !important;
+    }
+
+</style>
 
 @code {
     private bool _drawerOpen = false;

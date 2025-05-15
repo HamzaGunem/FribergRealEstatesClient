@@ -10,12 +10,13 @@
 
         foreach (var item in realtorFullProfileDto.ActiveAdverts)
         {
-            <RealtorActiveAdvert Advert="@item"></RealtorActiveAdvert>
+            <div class="mt-2">
+                <RealtorActiveAdvert Advert="@item"></RealtorActiveAdvert>
+            </div>
         }
         foreach (var item in realtorFullProfileDto.SoldAdverts)
         {
-            <div style="color: red">
-                <h2 style="color:red">Sold</h2>
+            <div class="mt-2">
                 <RealtorActiveAdvert Advert="@item"></RealtorActiveAdvert>
             </div>
         }

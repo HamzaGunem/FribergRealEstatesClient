@@ -6,13 +6,21 @@
 @inject ISnackbar snackbar
 
 <PageTitle>Skapa mäklarbyrå</PageTitle>
-<div class="container-large">
-    <MudMainContent class="p-4">
+<div class="container">
+    <MudMainContent Class="p-4 align-content-center mx-auto" Style="max-width: 800px; width: 100%">
+        <MudText Typo="Typo.h4" Class=" p-2 px-5 m-0 mb-4" Style="text-align:center; background-color:#273845; color: white;">Skapa mäklarbyrå</MudText>
         <div style="display: flex; align-items: flex-start;">
             <CreateAgencyForm AgencyDto="agencyDto" AddressDto="addressDto" Communes="communs" OnCreate="Create" />
         </div>
     </MudMainContent>
 </div>
+@* Style Robert*@
+<style>
+    .mud-typography
+    {
+        border-radius: 5px;
+    }
+</style>
 
 @code {
     private AgencyCreateDto agencyDto = new AgencyCreateDto();

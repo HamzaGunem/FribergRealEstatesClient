@@ -44,7 +44,43 @@ a, .btn-link {
 }
 
 
+/*Hamza*/
+.stats-overview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: space-between;
+}
 
+    .stats-overview > * {
+        flex: 1 1 200px;
+        min-width: 200px;
+    }
+
+.stat-card {
+    padding: 1.5rem;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--mud-palette-primary) 0%, var(--mud-palette-primary-darken) 100%);
+    color: white;
+    transition: transform 0.2s ease;
+}
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+    }
+
+.stat-content {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    gap: 1rem;
+}
+
+
+.stat-icon {
+    font-size: 2rem;
+    color: white;
+}
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
     box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
@@ -346,3 +382,29 @@ code {
 .order-descending-checkbox.mud-checked .mud-icon-root {
     color: #cfc08a;
 }
+
+.advert-list-container {
+    flex-grow: 1;
+    background-color: #D7D9DD;
+    padding: 16px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.agency-link:hover {
+    color: #1976d2;
+    text-decoration: underline;
+}
+
+.realtor-card-search {
+    border-radius: 8px !important;
+    background-color: white;
+    transition: all 0.3s ease-in-out;
+}
+
+    .realtor-card-search:hover {
+        transform: scale(1.08);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3) !important;
+    }

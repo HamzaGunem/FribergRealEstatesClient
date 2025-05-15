@@ -1,0 +1,170 @@
+﻿@* composed by Samuel. Original code by Hamza & Robert (modified by Samuel and Oscar)*@
+@page "/admin-createAdvert"
+
+@inject IClient client
+@inject ISnackbar Snackbar
+@inject NavigationManager Navigation
+@inject IRealtorService realtorService
+@inject IAdvertService advertService
+
+<PageTitle>Skapa Annons</PageTitle>
+
+@if (availableResidences != null)
+{
+    <MudContainer MaxWidth="MaxWidth.Medium" Class="mx-auto mt-4">
+
+        <MudText Typo="Typo.h4" Class="p-2 px-5 m-0 mb-4" Style="text-align:center; background-color:#273845; color: white;">Skapa Annons</MudText>
+
+        @foreach (var item in availableResidences)
+        {
+            <EditForm Model="advertCreateDto" OnValidSubmit="@(async () => HandleSubmit(item.Id))">
+                <DataAnnotationsValidator />
+                <MudPaper Elevation="3" Class="pa-4 mb-4">
+                    <MudExpansionPanels>
+                        <MudExpansionPanel Class="no-scroll" Text="@item.Address.Street" Style="text-align:center;" Expanded="false">
+                            <MudList T="string" Class="p-2 text-start" Style="background-color: white;">
+                                <ResidenceCard Residence="@item"></ResidenceCard>
+                                <MudGrid Class="p-2">
+                                    <MudItem xs="12" md="6">
+                                        <MudNumericField @bind-Value="Price"
+                                                         Label="Pris (kr)"
+                                                         HideSpinButtons="true"
+                                                         Variant="Variant.Filled"
+                                                         Required="true"
+                                                         Min="0">
+                                        </MudNumericField>
+                                    </MudItem>
+
+                                    @if (realtors != null && realtors.Any())
+                                    {
+                                        <MudItem xs="12" md="6">
+                                            <MudSelect T="AdminRealtorUserDto"
+                                                       @bind-Value="selectedRealtor"
+                                                       Label="Välj mäklare "
+                                                       Class="text-start"
+                                                       Placeholder="Välj"
+                                                       ToStringFunc="@( r => r?.FirstName + " " + r?.LastName)"
+                                                       Required="true"
+                                                       Variant="Variant.Filled">
+                                                @foreach (var realtor in realtors)
+                                                {
+                                                    <MudSelectItem Value="@realtor">@realtor.FirstName @realtor.LastName</MudSelectItem>
+                                                }
+                                            </MudSelect>
+                                        </MudItem>
+                                    }
+                                    else
+                                    {
+                                        <MudItem xs="12" md="6">
+                                            <MudTextField Label="Hämtar mäklare...">
+                                            </MudTextField>
+                                            <MudProgressCircular Indeterminate="true" Color="Color.Primary" />
+                                        </MudItem>
+                                    }
+                                </MudGrid>
+
+                                <MudListItem Icon="@Icons.Material.Filled.Create"
+                                             IconColor="Color.Success">
+                                    <MudButton Variant="Variant.Filled"
+                                               Color="Color.Primary"
+                                               ButtonType="ButtonType.Submit">
+                                        Skapa annons
+                                    </MudButton>
+                                </MudListItem>
+                                <MudDivider />
+                            </MudList>
+                        </MudExpansionPanel>
+                    </MudExpansionPanels>
+                </MudPaper>
+            </EditForm>
+        }
+    </MudContainer>
+}
+
+@* styling *@
+<style>
+    .mud-expand-panel-header {
+        color: white;
+        background-color: #273845;
+        border-radius: 5px;
+    }
+
+    .mud-expand-panel-content {
+        background-color: whitesmoke;
+    }
+
+    .mud-divider {
+        border-color: black;
+    }
+
+    .mud-link:visited,
+    .mud-link:active {
+        color: black !important;
+    }
+
+    .mud-typography {
+        border-radius: 5px;
+    }
+</style>
+
+@code {
+    private ICollection<ResidenceDto> availableResidences;
+    private AdvertCreateDto advertCreateDto = new();
+    private IEnumerable<AdminRealtorUserDto> realtors;
+    private int setRealtorId;
+    private double Price = 0;
+
+    private AdminRealtorUserDto selectedRealtor
+
+    {
+        get => realtors.FirstOrDefault(r => r.Id == setRealtorId);
+        set => setRealtorId = value?.Id ?? 0;
+            
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            availableResidences = await client.AvailableAsync();
+
+            realtors = await realtorService.GetAllRealtors();
+        }
+        catch (ApiException ex)
+        {
+            Snackbar.Add($"Initialization error: {ex.Message}", Severity.Error);
+        }
+    }
+
+    public async Task HandleSubmit(int residenceId)
+    {
+        try
+        {
+            advertCreateDto = new AdvertCreateDto
+                {
+                    Created = DateTime.UtcNow,
+                    Updated = DateTime.UtcNow,
+                    Sold = false,
+                    CurrentPrice = Price,
+                    RealtorId = setRealtorId,
+                    ResidenceId = residenceId
+                };
+            await advertService.CreateAdvert(advertCreateDto);
+
+
+            var createdResidence = availableResidences.FirstOrDefault(r => r.Id == residenceId);
+            if (createdResidence != null)
+            {
+                availableResidences.Remove(createdResidence);
+                StateHasChanged();
+            }
+            Snackbar.Add("Annons skapad!", Severity.Success);
+            Navigation.NavigateTo("/admindashboard");
+
+        }
+        catch (ApiException ex)
+        {
+            Snackbar.Add($"Error creating advert: {ex.Message}", Severity.Error);
+        }
+    }
+}

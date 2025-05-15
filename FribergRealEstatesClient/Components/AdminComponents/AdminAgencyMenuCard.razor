@@ -1,34 +1,52 @@
 @* Made by Robert *@
+@* Additions by Oscar *@
 @inject NavigationManager navManager
 
 <MudItem xs="12" sm="6" md="6">
     <MudPaper Elevation="3" Class="pa-4">
         <MudExpansionPanels>
-            <MudExpansionPanel Text="Mäklarbyrå" Style="text-align:center;" MaxHeight="300" Expanded="false">
+            <MudExpansionPanel Text="Mäklarbyrå" Style="text-align:center; " MaxHeight="300" Expanded="true">
                 <MudList T="string" Style="background-color: white;">
                     <MudDivider />
                     <MudListItem Icon="@Icons.Material.Filled.Create"
-                    IconColor="Color.Success">
+                                 IconColor="Color.Success">
                         <MudText Color="Color.Default" Class="custom-link" @onclick="CreateNewAgency">
                             Skapa
                         </MudText>
                     </MudListItem>
                     <MudDivider />
-                    <MudListItem Icon="@Icons.Material.Filled.ChangeCircle" IconColor="Color.Primary">Ändra</MudListItem>
+                    <MudListItem Icon="@Icons.Material.Filled.ChangeCircle" IconColor="Color.Primary">
+                        <MudText Color="Color.Default" Class="custom-link" @onclick="EditAgency">
+                            Ändra
+                        </MudText>
+                    </MudListItem>
                     <MudDivider />
-                    <MudListItem Icon="@Icons.Material.Filled.AssignmentInd" IconColor="Color.Warning">Koppla mäklare till byrå</MudListItem>
+                    <MudListItem Icon="@Icons.Material.Filled.AssignmentInd"
+                                 IconColor="Color.Warning">
+                        <MudText Color="Color.Default" Class="custom-link" @onclick="ConnectRealtor">Koppla mäklare till byrå</MudText>
+                    </MudListItem>
                     <MudDivider />
-                    <MudListItem Icon="@Icons.Material.Filled.RemoveCircleOutline" IconColor="Color.Error">Ta bort</MudListItem>
+                    <MudListItem Icon="@Icons.Material.Filled.RemoveCircleOutline" Disabled="true" IconColor="Color.Error">Ta bort</MudListItem>
                 </MudList>
             </MudExpansionPanel>
         </MudExpansionPanels>
     </MudPaper>
 </MudItem>
 
-@code{
+@code {
 
     public void CreateNewAgency()
     {
         navManager.NavigateTo("/create-agency");
+    }
+    //Added by Oscar
+    public void ConnectRealtor()
+    {
+        navManager.NavigateTo("/connect-realtor");
+    }
+
+    public void EditAgency()
+    {
+        navManager.NavigateTo("/edit-agency");
     }
 }

@@ -1,12 +1,14 @@
 ﻿@* Auth Hamza*@
+@inject NavigationManager navigationManager
 
-<div class="realtor-profile-container">
-    <MudPaper Class="realtor-card" Elevation="1" Style="max-width: 350px; margin: auto; border: 1px solid #e0e0e0;">
+<div  @onclick="@(() => NavigateToPerson(realtorDto.Id))">
+    <MudPaper Elevation="1" Style="max-width: 350px; min-width: 200px; margin: auto; border: 1px solid #e0e0e0;">
         <div class="card-content" style="padding: 20px;">
             <!-- Image -->
             <div style="display: flex; justify-content: center; margin-bottom: 16px;">
-                <MudAvatar Size="Size.Large">
-                    <MudImage Src="@realtorDto.PictureUrl" Size="Size.Large" />
+                <MudAvatar Size="Size.Large"
+                           Style="box-shadow: 0 4px 10px #000000">
+                     <MudImage Src="@realtorDto.PictureUrl" Size="Size.Large" Style="border-radius: 50%;" />
                 </MudAvatar>
             </div>
 
@@ -29,26 +31,42 @@
             <MudDivider Style="margin: 12px 0;" />
 
             <!-- Agency Info -->
-            <MudText Typo="Typo.caption" Style="text-align: center; color: #666;">
-                @realtorDto.AgencyName
-            </MudText>
+            @* Added link - Robert *@
+            <div type="button" style="display: flex; justify-content: center;" @onclick="() => NavigateToAgency(realtorDto.AgencyId ?? 0)">
+                    <MudText Typo="Typo.caption" 
+                        Style="color: #666; transition: color 0.2s ease, text-decoration 0.2s ease;"
+                        class="agency-link">
+                        @realtorDto.AgencyName
+                    </MudText>
+            </div>
         </div>
     </MudPaper>
 </div>
 
 <style>
     .realtor-profile-container {
-        display: flex;
-        justify-content: center;
-        padding: 16px;
+    display: flex;
+    justify-content: center;
+    padding: 16px;
+    transition: all 0.3s ease-in-out;
     }
 
     .realtor-card {
-        border-radius: 8px !important;
-        background-color: white;
+    border-radius: 8px !important;
+    background-color: white;
     }
 </style>
 
 @code {
     [Parameter] public RealtorSummaryDto realtorDto { get; set; }
+
+    // Navigate by Robert
+    private void NavigateToAgency(int agencyId)
+    {
+        navigationManager.NavigateTo($"/agency/{agencyId}");
+    }
+    private void NavigateToPerson(int id)
+    {
+        navigationManager.NavigateTo($"/realtor/{id}");
+    }
 }

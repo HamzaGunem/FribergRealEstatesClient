@@ -3,11 +3,16 @@
 @inject NavigationManager navManager
 
 <div class="container">
-    <MudItem>
-        <MudPaper style="background-color: #273845;" MinHeight="150px" Class="pa-6 ma-2">
-            <MudText Typo="Typo.h3" Class="p-4" Style="text-align:center; background-color: white;">ADMIN DASHBOARD</MudText>
+    <div class="stats-overview mt-3">
+        <MudPaper Elevation="8" Class="stat-card">
+            <div class="stat-content" style="display: flex; justify-content: center; align-items: center;">
+                <MudIcon Icon="@Icons.Material.Filled.LocalPolice" Class="stat-icon" />
+                <div>
+                    <MudText Typo="Typo.body2">Admin Dashboard</MudText>
+                </div>
+            </div>
         </MudPaper>
-    </MudItem>
+    </div>
 
     <MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.False">
         <MudGrid>
@@ -26,9 +31,11 @@
 
 @* styling *@
 <style>
+
     .mud-expand-panel-header {
         color: white;
         background-color: #273845;
+        border-radius: 5px !important;
     }
 
     .mud-expand-panel-content {

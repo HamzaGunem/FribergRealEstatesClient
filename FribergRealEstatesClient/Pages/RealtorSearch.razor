@@ -1,47 +1,49 @@
 ﻿@*Made by Samuel*@
+@* Updated and Styled by Jonathan *@
 @page "/realtor/search"
 @inject IRealtorService realtorService
 @inject NavigationManager navManager
 
-
 <PageTitle>Sök Mäklare</PageTitle>
-<div class="m-4 container-large">
+
+<div class="mt-4 container-fluid">
 	<MudGrid>
-		<!-- Generic SearchBox -->
-		<MudItem xs="12" sm="4">
-			<GenericSearchBox 
-			_searchTerm="@_searchTerm"
-			_searchTitle="@_setSearchBoxTitle"
-			OnSearch="SearchRealtors" >
+		<MudItem xs="12" sm="4" md="4">
+			<GenericSearchBox _searchTerm="@_searchTerm"
+							  _searchTitle="@_setSearchBoxTitle"
+							  OnSearch="SearchRealtors">
 			</GenericSearchBox>
 		</MudItem>
-
-		<!-- Realtor Profile Card Grid -->
-		<MudItem xs="12" sm="8" Style="border-radius: 10px" Class="p-2">
-			<MudGrid>
+		<MudItem xs="12" sm="12" md="6">
+			@* Adverts *@
+			<div class="advert-list-container">
 				@if (_searching)
 				{
 					<MudProgressCircular Indeterminate="true" Color="Color.Primary" />
 				}
-				else if (_searchPerformed && !_getRealtors.Any())
+				else if (_getRealtors.Count == 0)
 				{
-					<MudAlert Severity="Severity.Info">@_errorMessage @_searchTerm</MudAlert>
+					<MudText>Ange sökkriterier och klicka på Sök</MudText>
+				}
+				else if (!_getRealtors.Any())
+				{
+					<MudAlert Severity="Severity.Info">Inga mäklare hittades i @_searchTerm</MudAlert>
 				}
 				else
 				{
-					@foreach (var person in _getRealtors)
-					{
-						<MudItem xs="12" sm="6" md="4"
-						@onclick="@(() => NavigateToPerson(person.Id))"
-						style="cursor: pointer;
-								 transition: transform 0.3s ease-in-out;"
-						onmouseover="this.style.transform='scale(1.05)'"
-						onmouseout="this.style.transform='scale(1)'">
-							<RealtorProfileCard RealtorDto="person"></RealtorProfileCard>
-						</MudItem>
-					}
+					<MudGrid GutterSize="3">
+						@foreach (var person in _getRealtors)
+						{
+							<MudItem xs="12" sm="6" md="4" 
+								style="cursor: pointer">
+										<div class="realtor-card-search">
+											<RealtorProfileCard RealtorDto="person" />
+										</div>
+							</MudItem>
+						}
+					</MudGrid>
 				}
-			</MudGrid>
+			</div>
 		</MudItem>
 	</MudGrid>
 </div>
@@ -52,7 +54,7 @@
 	private string _searchTerm = string.Empty;
 
 	private string _errorMessage = "Inga mäklare hittades i ";
-	private string _setSearchBoxTitle = "Sök mäklare i stad/ commun";
+	private string _setSearchBoxTitle = "Sök mäklare i stad/kommun";
 
 	private bool _searching = false;
 	private bool _searchPerformed = false;

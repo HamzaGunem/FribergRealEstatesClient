@@ -1,4 +1,5 @@
 ﻿@*Auth: Oscar*@
+@* Updated and Styled by Jonathan *@
 @page "/advert-search"
 @inject NavigationManager navigationManager
 @inject IAdvertService AdvertService
@@ -33,46 +34,51 @@
         else
         {
             <MudItem xs="12" sm="12" md="1">
-            <div>
-                <MudIconButton style="align-items: flex-start; width: auto; height: auto" Icon="@Icons.Material.Filled.Menu"
-                               Color="Color.Primary"
-                               Size="Size.Large"
-                               OnClick="@ToggleSearchPanel" />
-            </div>
+                <div>
+                    <MudIconButton style="align-items: flex-start; width: auto; height: auto" Icon="@Icons.Material.Filled.Menu"
+                    Color="Color.Primary"
+                    Size="Size.Large"
+                    OnClick="@ToggleSearchPanel" />
+                </div>
             </MudItem>
         }
         <MudItem xs="12" sm="12" md="@(_searchPanelOpen ? 6 : 11)">
-                @* Adverts *@
-                <div class="advert-list-container">
-                    @if (_isLoading)
+            @* Adverts *@
+            <div class="advert-list-container">
+                @if (_isLoading)
+                {
+                    <MudProgressCircular Indeterminate="true" Color="Color.Primary" />
+                }
+                else if (_result == null)
+                {
+                    <MudText>Ange sökkriterier och klicka på Sök</MudText>
+                }
+                else if (!_result.Any())
+                {
+                    <MudAlert Severity="Severity.Info">Inga bostäder hittades med valda sökkriterier</MudAlert>
+                }
+                else
+                {
+                    @foreach (var advert in _result)
                     {
-                        <MudProgressCircular Indeterminate="true" Color="Color.Primary" />
-                    }
-                    else if (_result == null)
-                    {
-                        <MudText>Ange sökkriterier och klicka på Sök</MudText>
-                    }
-                    else if (!_result.Any())
-                    {
-                        <MudAlert Severity="Severity.Info">Inga bostäder hittades med valda sökkriterier</MudAlert>
-                    }
-                    else
-                    {
-                        @foreach (var advert in _result)
+                        // change Robert: added button
+                        //<div type="button" @onclick="() => GoToAdvert(advert.Id)"><AdvertCard Advert="advert" /></div>
+                        if (!advert.Sold)
                         {
-                            // change Robert: added button
-                            //<div type="button" @onclick="() => GoToAdvert(advert.Id)"><AdvertCard Advert="advert" /></div>
-                            <div type="button" @onclick="() => GoToAdvert(advert.Id)"><RealtorActiveAdvert Advert="advert" /></div>
+                            <RealtorActiveAdvert Advert="advert" />
                         }
+                        
                     }
+                }
                 </div>
             </MudItem>
         </MudGrid>
 </MudMainContent>
 
-
+<TopListResidence /> @* added Robert *@
 
 @code {
+
     private AdvertFilterDto _filter = new();
     private ICollection<AdvertDto>? _result;
     private bool _isLoading;
