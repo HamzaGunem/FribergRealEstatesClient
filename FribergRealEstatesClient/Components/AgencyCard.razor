@@ -1,0 +1,146 @@
+﻿@* Auth: Jonathan *@
+
+@inject IAgencyService agencyService
+@inject NavigationManager navManager
+
+
+<div class="agency-info-card p-2"
+     @onclick="@(() => NavigateToAgency(agency.Id))"
+     style="display: flex; border: 2px solid darkgrey; gap: 16px;
+            transition: transform 0.3s ease-in-out;
+            cursor: pointer;
+            user-select: none;"
+     onmouseover="this.style.transform='scale(1.02)'"
+     onmouseout="this.style.transform='scale(1)'">
+
+    <div class="Agency-logo" style="pointer-events: none;">
+        <GenericImageBox ImageUrl="@agency.LogoUrl"
+                         AltText="bild på mäklarbyrå"
+                         SetStyling="object-fit: cover; width: 300px; height: 100%; border-radius: 8px">
+        </GenericImageBox>
+    </div>
+
+    <div class="Agency-Name-and-Description" style="flex: 1; text-align: left;">
+        <MudText Typo="Typo.h6" Style="pointer-events: none;">@agency.Name</MudText>
+        <MudText Typo="Typo.caption" Style="pointer-events: none;">
+            <strong>Address:</strong>
+            @agency.Address.Street,
+            @agency.Address.PostalCode,
+            @agency.Address.City
+        </MudText>
+
+        <div style="pointer-events: none;">
+            <GenericTextBox TextInput="@agency.Description"></GenericTextBox>
+        </div>
+
+        <div class="Agency-realtor-list"
+             style="display: flex; flex-wrap: wrap; gap: 8px; padding-top: 8px;"
+             @onclick:stopPropagation="true">
+            @if (agency.Realtors.Count > 0)
+            {
+                @foreach (var realtor in agency.Realtors)
+                { <div class="small-realtor-card">
+                    <div @onclick="@(() => NavigateToRealtor(realtor.Id))">
+                        <GenericImageBox ImageUrl="@realtor.PictureUrl"
+                                         AltText="bild på mäklare"
+                                         SetStyling="width: 100%; height: auto; object-fit: cover;">
+                        </GenericImageBox>
+                        <div class="mud-theme-secondary"
+                             style="width: 100%;
+                                    color: white;
+                                    text-align: center;
+                                    font-weight: bold;
+                                    padding: 4px 0;">
+                            @realtor.FirstName
+                        </div>
+                    </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <MudAlert Severity="Severity.Info">@_errorRealtors</MudAlert>
+            }
+        </div>
+    </div>
+</div>
+
+
+
+
+<style>
+    .agency-info-card {
+        border: 1.5px solid grey !important;
+        border-radius: 10px !important;
+        background-color: white;
+        transition: all 0.3s ease-in-out;
+        cursor: pointer
+    }
+
+        .agency-info-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3) !important;
+            border-color: #ae9d65 !important;
+        }
+    .small-realtor-card{
+        cursor: pointer;
+        transition: transform 0.3s ease-in-out;
+        border: 1px solid #ae9d65 !important;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 6px 10px rgba(0,0,0,0.2);
+        width: 70px;
+    }
+    .small-realtor-card:hover{
+            transform: scale(1.03);
+            border-color: #273845 !important;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3) !important;
+    }
+</style>
+
+@code {
+    [Parameter] public AgencyWithSimpleRealtorsDto agency { get; set; }
+    private List<AgencyWithSimpleRealtorsDto>? _getAgencies = new();
+    private List<SimpleRealtorDto> _getRealtors = new();
+
+    private string _searchTerm = string.Empty;
+    private bool _searching = false;
+    private bool _searchPerformed = false;
+    private string _setSearchBoxTitle = "Sök mäklarbyrå i stad/kommun";
+
+    private string _errorAgency = "Hittade inga byråer i";
+    private string _errorRealtors = "Inga registrerade mäklare";
+
+    private async Task SearchAgencies(string term)
+    {
+        _searching = true;
+        _searchPerformed = false;
+        StateHasChanged();
+
+        await Task.Delay(500);
+        _searchTerm = term;
+        if (!string.IsNullOrWhiteSpace(_searchTerm))
+        {
+            try
+            {
+                _getAgencies = await agencyService.GetAllAgenciesInCommun(_searchTerm);
+            }
+            finally
+            {
+                _searching = false;
+                _searchPerformed = true;
+                StateHasChanged();
+            }
+        }
+    }
+
+    private void NavigateToAgency(int id)
+    {
+        navManager.NavigateTo($"/agency/{id}");
+    }
+
+    private void NavigateToRealtor(int id)
+    {
+        navManager.NavigateTo($"/realtor/{id}");
+    }
+}

@@ -21,11 +21,11 @@
 				{
 					<MudProgressCircular Indeterminate="true" Color="Color.Primary" />
 				}
-				else if (_getRealtors.Count == 0)
+				else if (_searchPerformed == false)
 				{
 					<MudText>Ange sökkriterier och klicka på Sök</MudText>
 				}
-				else if (!_getRealtors.Any())
+				else if (_searchPerformed && !_getRealtors.Any())
 				{
 					<MudAlert Severity="Severity.Info">Inga mäklare hittades i @_searchTerm</MudAlert>
 				}

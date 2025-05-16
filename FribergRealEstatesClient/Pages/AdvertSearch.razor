@@ -80,6 +80,23 @@
 
 <TopListResidence /> @* added Robert *@
 
+<style>
+    .advert-info-card {
+        border: 1.5px solid grey !important;
+        border-radius: 7px !important;
+        background-color: white;
+        transition: all 0.3s ease-in-out;
+        cursor: pointer;
+        overflow: hidden;
+    }
+
+        .advert-info-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3) !important;
+            border-color: #ae9d65 !important;
+        }
+</style>
+
 @code {
 
     private AdvertFilterDto _filter = new();

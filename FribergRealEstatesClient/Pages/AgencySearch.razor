@@ -8,114 +8,44 @@
 <Animation AnimationSelected="@zoomOutDownAnimationSelected" ExtraDelay="250" ExtraDuration="600">
     <PageTitle>Sök Mäklarbyrå</PageTitle>
 
-    <div class="mt-4 container-fluid gap-2" style=" min-width:fit-content; display: flex;">
-        <!-- Generic SearchBox -->
-        <div>
-            <GenericSearchBox _searchTerm="@_searchTerm"
-            _searchTitle="@_setSearchBoxTitle"
-            OnSearch="SearchAgencies">
-            </GenericSearchBox>
-        </div>
-
-        <!-- Agency list container -->
-        <div>
-            @if (_searching)
-            {
-                <div>
-                    <MudProgressCircular Indeterminate="true" Color="Color.Primary" />
-                </div>
-
-            }
-            else if (_getAgencies.Count == 0)
-            {
-                <div class="advert-list-container">
-                    <MudText>Ange sökkriterier och klicka på Sök</MudText>
-                </div>
-
-            }
-            else if (_searchPerformed && !_getAgencies.Any())
-            {
-                <div class="advert-list-container">
-                    <MudAlert Severity="Severity.Info">@_errorAgency @_searchTerm</MudAlert>
-                </div>
-
-            }
-            else
-            {
-                <div>
-                    @foreach (var agency in _getAgencies)
-                    {
-                        <!-- Agency Info Card  -->
-                        <div class="mud-theme-primary p-2 mb-3" style="display: flex; flex-direction: column; border-radius: 5px;">
-                            @*<div style="border: 2px solid; padding: 2px;">*@
-
-                            <div class="Logo-&-Textbox-container gap-2" style="display: flex;">
-                                <!-- Agency Logo  -->
-                                <div @onclick="@(() => NavigateToAgency(agency.Id))"
-                                style="cursor: pointer; transition: transform 0.3s ease-in-out;"
-                                onmouseover="this.style.transform='scale(1.05)'"
-                                onmouseout="this.style.transform='scale(1)'">
-                                    <GenericImageBox ImageUrl="@agency.LogoUrl"
-                                    AltText="bild på mäklarbyrå"
-                                    SetStyling="object-fit: cover; width: 300px; height: 100%;">
-                                    </GenericImageBox>
-                                </div>
-
-                                <!-- Agency Information Texbox  -->
-                                <div class="p-2" style="color:black; background-color: white; width:100%;">
-                                    <MudText Typo="Typo.h5">@agency.Name</MudText>
-                                    <MudText Typo="Typo.subtitle1">
-                                        <strong>Address:</strong>
-                                        @agency.Address.Street,
-                                        @agency.Address.PostalCode,
-                                        @agency.Address.City
-                                    </MudText>
-                                    <GenericTextBox TextInput=@agency.Description></GenericTextBox>
-                                </div>
-                            </div>
-
-                            <!-- Agency Realtor Portraits  -->
-                            <div class="mb-2 mt-2">
-                                @if (agency.Realtors.Any())
-                                {
-                                    <MudGrid Spacing="1">
-                                        @foreach (var realtor in agency.Realtors)
-                                        {
-                                            <MudItem>
-                                                <div @onclick="@(() => NavigateToRealtor(realtor.Id))"
-                                                style="cursor: pointer; transition: transform 0.3s ease-in-out;"
-                                                onmouseover="this.style.transform='scale(1.05)'"
-                                                onmouseout="this.style.transform='scale(1)'">
-                                                    <GenericImageBox ImageUrl="@realtor.PictureUrl"
-                                                    AltText="bild på mäklare"
-                                                    SetStyling="width: 100px; height: 100%; object-fit: cover;">
-                                                    </GenericImageBox>
-                                                    <div style="width: 100px; color: white; background-color: #ae9d65; text-align: center; font-weight: bold; padding: 4px 0;">
-                                                        @realtor.FirstName
-                                                    </div>
-                                                </div>
-                                            </MudItem>
-                                        }
-                                    </MudGrid>
-                                }
-                                else
-                                {
-                                    <MudAlert Severity="Severity.Info">@_errorRealtors</MudAlert>
-                                }
-                            </div>
-                        </div>
-                    }
-                </div>
-
-            }
-        </div>
-    </div>
+<div class="mt-4 container-fluid">
+	<MudGrid>
+		<MudItem xs="12" sm="4" md="4">
+			<GenericSearchBox _searchTerm="@_searchTerm"
+							  _searchTitle="@_setSearchBoxTitle"
+							  OnSearch="SearchAgencies">
+			</GenericSearchBox>
+		</MudItem>
+		<MudItem xs="12" sm="12" md="6">
+			@* Adverts *@
+			<div class="advert-list-container">
+				@if (_searching)
+				{
+					<MudProgressCircular Indeterminate="true" Color="Color.Primary" />
+				}
+				else if (_searchPerformed == false)
+				{
+					<MudText>Ange sökkriterier och klicka på Sök</MudText>
+				}
+				else if (_searchPerformed && !_getAgencies.Any())
+				{
+					<MudAlert Severity="Severity.Info">Inga mäklarbyråer hittades i @_searchTerm</MudAlert>
+				}
+				else
+				{
+						@foreach (var agency in _getAgencies)
+						{
+							<AgencyCard agency="agency"/>
+						}
+				}
+			</div>
+		</MudItem>
+	</MudGrid>
+</div>
 </Animation>
-
-
 @code {
-    private List<AgencyWithSimpleRealtorsDto>? _getAgencies = new();
-    private List<string> _getRealtorPics = new();
+	private List<AgencyWithSimpleRealtorsDto>? _getAgencies = new();
+	private List<SimpleRealtorDto> _getRealtors = new();
 
     private string _searchTerm = string.Empty;
     private bool _searching = false;
