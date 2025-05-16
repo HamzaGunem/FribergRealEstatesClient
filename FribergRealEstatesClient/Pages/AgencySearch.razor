@@ -9,7 +9,6 @@
 
 <div class="mt-4 container-fluid">
 	<MudGrid>
-		<!-- Generic SearchBox -->
 		<MudItem xs="12" sm="4">
 			<GenericSearchBox _searchTerm="@_searchTerm"
 			_searchTitle="@_setSearchBoxTitle"
@@ -35,81 +34,13 @@
 			{
 				@foreach (var agency in _getAgencies)
 				{
-					<MudSimpleTable Class="agency-info-card p-2" Style="display: flex; overflow: auto; border: 2px solid darkgrey; border-radius: 10px;">
-						<tbody>
-							<tr>
-								<td class="Agency-logo">
-									<div @onclick="@(() => NavigateToAgency(agency.Id))"
-									style="cursor: pointer; transition: transform 0.3s ease-in-out;"
-									onmouseover="this.style.transform='scale(1.05)'"
-									onmouseout="this.style.transform='scale(1)'">
-
-										<GenericImageBox 
-										ImageUrl="@agency.LogoUrl"
-										AltText="bild på mäklarbyrå"
-										SetStyling="object-fit: cover; width: 300px; height: 100%;">
-										</GenericImageBox>
-									</div>
-								</td>
-
-								<td class="Agency-Name-and-Description">
-									<MudText Typo="Typo.h6">@agency.Name</MudText>
-									<MudText Typo="Typo.caption"><strong>Address:</strong>
-										@agency.Address.Street, 
-										@agency.Address.PostalCode,
-										@agency.Address.City
-									</MudText>
-									<GenericTextBox TextInput=@agency.Description></GenericTextBox>
-
-									<div class="Agency-realtor-list" style="display: flex; overflow: auto;">
-										@if (agency.Realtors.Count > 0)
-										{
-											@foreach (var realtor in agency.Realtors)
-											{
-												<div @onclick="@(() => NavigateToRealtor(realtor.Id))"
-												style="cursor: pointer; transition: transform 0.3s ease-in-out;"
-												onmouseover="this.style.transform='scale(1.05)'"
-												onmouseout="this.style.transform='scale(1)'">
-													<GenericImageBox 
-													ImageUrl="@realtor.PictureUrl"
-													AltText="bild på mäklare"
-													SetStyling="width: 100px; height: 100%; object-fit: cover;">
-													</GenericImageBox>
-													<div class="mud-theme-primary" style="width: 100%; color: white; text-align: center; font-weight: bold; padding: 4px 0;">
-														@realtor.FirstName
-													</div>
-												</div>
-											}
-										}
-										else
-										{
-											<MudAlert Severity="Severity.Info">@_errorRealtors</MudAlert>
-										}
-									</div>
-								</td>
-							</tr>
-						</tbody>
-					</MudSimpleTable>
+					<AgencyCard agency="agency"/>
 				}
 			}
 			</div>
 		</MudItem>
 	</MudGrid>
 </div>
-
-<style>
-	.agency-info-card{
-		border-radius: 8px !important;
-		background-color: white;
-		transition: all 0.3s ease-in-out;
-		cursor: pointer
-	}
-
-	.agency-info-card:hover {
-		transform: scale(1.02);
-		box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3) !important;
-	}
-</style>
 
 @code {
 	private List<AgencyWithSimpleRealtorsDto>? _getAgencies = new();
