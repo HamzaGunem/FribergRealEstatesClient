@@ -9,38 +9,82 @@
 
 <div class="mt-4 container-fluid">
 	<MudGrid>
-		<MudItem xs="12" sm="4">
+		<MudItem xs="12" sm="4" md="4">
 			<GenericSearchBox _searchTerm="@_searchTerm"
-			_searchTitle="@_setSearchBoxTitle"
-			OnSearch="SearchAgencies">
+							  _searchTitle="@_setSearchBoxTitle"
+							  OnSearch="SearchAgencies">
 			</GenericSearchBox>
 		</MudItem>
-
-		<MudItem xs="12" sm="8">
+		<MudItem xs="12" sm="12" md="6">
+			@* Adverts *@
 			<div class="advert-list-container">
-			@if (_searching)
-			{
+				@if (_searching)
+				{
+					<MudProgressCircular Indeterminate="true" Color="Color.Primary" />
+				}
+				else if (_searchPerformed == false)
+				{
+					<MudText>Ange sökkriterier och klicka på Sök</MudText>
+				}
+				else if (_searchPerformed && !_getAgencies.Any())
+				{
+					<MudAlert Severity="Severity.Info">Inga mäklarbyråer hittades i @_searchTerm</MudAlert>
+				}
+				else
+				{
+						@foreach (var agency in _getAgencies)
+						{
+							<AgencyCard agency="agency"/>
+						}
+				}
+			</div>
+		</MudItem>
+	</MudGrid>
+</div>
+@* <div class="mt-4 container-fluid gap-2" style=" min-width:fit-content; display: flex;">
+	<!-- Generic SearchBox -->
+	<div>
+		<GenericSearchBox _searchTerm="@_searchTerm"
+		_searchTitle="@_setSearchBoxTitle"
+		OnSearch="SearchAgencies">
+		</GenericSearchBox>
+	</div>
+
+	<!-- Agency list container -->
+	<div>
+		@if (_searching)
+		{
+			<div>
 				<MudProgressCircular Indeterminate="true" Color="Color.Primary" />
-			}
-			else if (_getAgencies.Count == 0)
-			{
+			</div>
+
+		}
+		else if (_getAgencies.Count == 0)
+		{
+			<div class="advert-list-container">
 				<MudText>Ange sökkriterier och klicka på Sök</MudText>
-			}
-			else if (_searchPerformed && !_getAgencies.Any())
-			{
+			</div>
+
+		}
+		else if (_searchPerformed && !_getAgencies.Any())
+		{
+			<div class="advert-list-container">
 				<MudAlert Severity="Severity.Info">@_errorAgency @_searchTerm</MudAlert>
-			}
-			else
-			{
+			</div>
+
+		}
+		else
+		{
+			<div>
 				@foreach (var agency in _getAgencies)
 				{
 					<AgencyCard agency="agency"/>
 				}
 			}
 			</div>
-		</MudItem>
-	</MudGrid>
-</div>
+		}
+	</div>
+</div> *@
 
 @code {
 	private List<AgencyWithSimpleRealtorsDto>? _getAgencies = new();
@@ -85,5 +129,15 @@
 	private void NavigateToRealtor(int id)
 	{
 		navManager.NavigateTo($"/realtor/{id}");
+	}
+
+	private List<string> GetRealtorsImages(AgencyWithSimpleRealtorsDto agency)
+	{
+		List<string> newList = new();
+		foreach(var realtor in agency.Realtors)
+		{
+			newList.Add(realtor.PictureUrl);
+		}
+		return newList;
 	}
 }

@@ -1,4 +1,5 @@
 ﻿@* made by Samuel *@
+@*Updated and Styled by Jonathan *@
 
 <MudPaper Class="p-4"
 		  Elevation="3"
@@ -21,14 +22,7 @@
 							  Adornment="Adornment.End"
 							  AdornmentIcon="@Icons.Material.Filled.Search" />
 			</MudItem>
-			@* <MudTextField @bind-Value="_searchTerm"
-			Style="min-height: 50px; width: 100%;; text-transform: none; background-color: white; color: black; border-radius: 15px; padding: 10px;  box-shadow: 0 4px 10px #000000"
-			Clearable="true"
-			Underline="false"
-			Placeholder="sök..."
-			Adornment="Adornment.End"
-			Class="residence-searchfield"
-			AdornmentIcon="@Icons.Material.Filled.Search" /> *@
+			
 
 			<!-- SearchBox SearchButton -->
 			<div class="mt-4 text-center">
@@ -40,15 +34,6 @@
 					Sök
 				</MudButton>
 			</div>
-			@* <MudButton Variant="Variant.Filled"
-			FullWidth="true"
-			Color="Color.Primary"
-			onclick="SubmitSearch"
-			Disabled="@string.IsNullOrWhiteSpace(_searchTerm)"
-			Class="search-button mt-2 ml-4"
-			Style="background-color: #FFDE6F; color: black; max-height: 50px; max-width: 50px; border-radius: 15px">
-				Sök
-			</MudButton> *@
 		</MudItem>
 	</div>
 </MudPaper>

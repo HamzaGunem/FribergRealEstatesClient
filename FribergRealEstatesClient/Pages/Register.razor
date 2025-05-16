@@ -1,8 +1,9 @@
-﻿@* Samuel, Jonathan, Hamza, Robert*@
+﻿@* Samuel, Jonathan, Hamza, Robert, Viktor*@
 @page "/Register"
 @inject IClient client
 @inject NavigationManager navManager
 @inject ISnackbar snackbar
+@using FribergRealEstatesClient.Components
 
 @if (string.IsNullOrEmpty(message) == false)
 {
@@ -11,7 +12,7 @@
 <div>    
 
     <MudPaper Class="pa-0 mx-auto mt-6" MaxWidth="400px" Elevation="4">
-        <div style="background-color: #594ae2; color: white; padding: 0px; margin: 0px; border-radius: 4px 4px 0 0; text-align: center">
+        <div style="background-color: var(--mud-palette-primary); color: white; padding: 0px; margin: 0px; border-radius: 4px 4px 0 0; text-align: center">
             <MudText Class="pa-3" Typo="Typo.h5">Register</MudText>
         </div>
         <MudForm Class="pa-3" @ref="form" @bind-IsValid="@success">
@@ -20,8 +21,7 @@
             <MudTextField @bind-Value="registerModel.LastName" Label="Lastname" Required="true" For="@(() => registerModel.LastName)"></MudTextField>
             <MudTextField @bind-Value="registerModel.Email" InputType="InputType.Email" Label="Email" Required="true" For="@(() => registerModel.Email)"></MudTextField>
             <MudTextField @bind-Value="registerModel.PhoneNumber" Label="Phonenumber" Required="false" For="@(() => registerModel.PhoneNumber)"></MudTextField>
-            <MudTextField @bind-Value="registerModel.Password" InputType="InputType.Password" Label="Password" Required="true" For="@(() => registerModel.Password)"></MudTextField>
-
+            <PasswordField @bind-Value="registerModel.Password" />
             <br />
 
             @if(agencies == null || !agencies.Any())
@@ -42,7 +42,7 @@
             }
 
 
-            <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" OnClick="@HandleSubmit" Class="ml-auto mt-3">Register</MudButton>
+            <MudButton Variant="Variant.Filled" Color="Color.Secondary" Disabled="@(!success)" OnClick="@HandleSubmit" Class="ml-auto mt-3">Register</MudButton>
         </MudForm>
     </MudPaper>
 </div>
