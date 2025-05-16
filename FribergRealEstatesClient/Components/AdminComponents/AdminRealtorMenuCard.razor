@@ -2,41 +2,48 @@
 @inject NavigationManager navManager
 @inject IRealtorService realtorService
 
+
 <MudItem xs="12" sm="6" md="6">
-    <MudPaper Elevation="3" Class="pa-4">
-        <MudExpansionPanels>
-            <MudExpansionPanel Text="Mäklare" Style="text-align:center;" MaxHeight="300" Expanded="true">
-                <MudList T="string" Style="background-color: white;">
-                    <MudDivider />
-                    <MudListItem>
-                        <div style="display: flex; align-items: center; gap: 8px; padding:">
-                        <MudBadge Content="realtors.Where(e => !e.EmailConfirmed).Count()" Color="Color.Error" Overlap="true" Class="me-2">
-                            <MudIcon Icon="@Icons.Material.Filled.ContactMail" Color="Color.Info" />                            
-                        </MudBadge>
-                        <MudText Color="Color.Default" Class="custom-link" @onclick="ValidateRealtorUsers">
-                            Godkänna konton
-                        </MudText>
-                        </div>
-                    </MudListItem>                    
-                    <MudDivider />
-                    <MudListItem Icon="@Icons.Material.Filled.ChangeCircle" IconColor="Color.Primary">
-                        <MudText Color="Color.Default" Class="custom-link" @onclick="ChangeRealtorUsers">                        
-                            Ändra
-                        </MudText>
-                    </MudListItem>
-                    <MudDivider />
-                    <MudListItem Icon="@Icons.Material.Filled.RemoveCircleOutline" Disabled="true" IconColor="Color.Error">Ta bort</MudListItem>
-                </MudList>
-            </MudExpansionPanel>
-        </MudExpansionPanels>
-    </MudPaper>
+    <Animation AnimationSelected="@flipRAnimationSelected" ExtraDelay="400" ExtraDuration="600">
+        <MudPaper Elevation="3" Class="pa-4">
+            <MudExpansionPanels>
+                <MudExpansionPanel Text="Mäklare" Style="text-align:center;" MaxHeight="300" Expanded="true">
+                    <MudList T="string" Style="background-color: white;">
+                        <MudDivider />
+                        <MudListItem>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <MudBadge Content="realtors.Where(e => !e.EmailConfirmed).Count()" Color="Color.Error" Overlap="true" Class="me-2">
+                                    <MudIcon Icon="@Icons.Material.Filled.ContactMail" Color="Color.Info" />
+                                </MudBadge>
+                                <MudText Color="Color.Default" Class="custom-link" @onclick="ValidateRealtorUsers">
+                                    Godkänna konton
+                                </MudText>
+                            </div>
+                        </MudListItem>
+                        <MudDivider />
+                        <MudListItem Icon="@Icons.Material.Filled.ChangeCircle" IconColor="Color.Primary">
+                            <MudText Color="Color.Default" Class="custom-link" @onclick="ChangeRealtorUsers">
+                                Ändra
+                            </MudText>
+                        </MudListItem>
+                        <MudDivider />
+                        <MudListItem Icon="@Icons.Material.Filled.RemoveCircleOutline" Disabled="true" IconColor="Color.Error">Ta bort</MudListItem>
+                    </MudList>
+                </MudExpansionPanel>
+            </MudExpansionPanels>
+        </MudPaper>
+    </Animation>
+
 </MudItem>
 
-@code{
+@code {
     private List<AdminRealtorUserDto> realtors = new();
+    private string flipRAnimationSelected = "";
 
     protected override async Task OnInitializedAsync()
     {
+        flipRAnimationSelected = AnimationsToSelect.flipRight;
+
         realtors = (await realtorService.GetAllRealtors()).ToList();
     }
 

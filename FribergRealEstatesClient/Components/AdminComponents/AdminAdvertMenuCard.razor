@@ -2,33 +2,43 @@
 @inject NavigationManager navManager
 
 <MudItem xs="12" sm="6" md="6">
-    <MudPaper Elevation="3" Class="pa-4">
-        <MudExpansionPanels>
-            <MudExpansionPanel Text="Annonser" Style="text-align:center;" MaxHeight="300" Expanded="true">
-                <MudList T="string" Style="background-color: white;">
-                    <MudListItem Icon="@Icons.Material.Filled.Create"
-                    IconColor="Color.Success">
-                        <MudText Color="Color.Default" Class="custom-link" @onclick="CreateAdvert">
-                            Skapa
-                        </MudText>
-                    </MudListItem>
-                    <MudDivider />
-                    <MudListItem Icon="@Icons.Material.Filled.ChangeCircle" Disabled="true" IconColor="Color.Primary">Ändra annons</MudListItem>
-                    <MudDivider />
-                    <MudListItem Icon="@Icons.Material.Filled.AssignmentInd" Disabled="false" IconColor="Color.Warning">
-                        <MudText Color="Color.Default" Class="custom-link" @onclick="ChangeRealtorOnAdvert">
-                            Ändra tilldelad Mäklare
-                        </MudText> 
-                    </MudListItem>                    
-                    <MudDivider />
-                    <MudListItem Icon="@Icons.Material.Filled.RemoveCircleOutline" Disabled="true" IconColor="Color.Error">Ta bort</MudListItem>
-                </MudList>
-            </MudExpansionPanel>
-        </MudExpansionPanels>
-    </MudPaper>
+    <Animation AnimationSelected="@fadeAnimationSelected" ExtraDelay="700" ExtraDuration="600">
+
+        <MudPaper Elevation="3" Class="pa-4">
+            <MudExpansionPanels>
+                <MudExpansionPanel Text="Annonser" Style="text-align:center;" MaxHeight="300" Expanded="true">
+                    <MudList T="string" Style="background-color: white;">
+                        <MudListItem Icon="@Icons.Material.Filled.Create"
+                        IconColor="Color.Success">
+                            <MudText Color="Color.Default" Class="custom-link" @onclick="CreateAdvert">
+                                Skapa
+                            </MudText>
+                        </MudListItem>
+                        <MudDivider />
+                        <MudListItem Icon="@Icons.Material.Filled.ChangeCircle" Disabled="true" IconColor="Color.Primary">Ändra annons</MudListItem>
+                        <MudDivider />
+                        <MudListItem Icon="@Icons.Material.Filled.AssignmentInd" Disabled="false" IconColor="Color.Warning">
+                            <MudText Color="Color.Default" Class="custom-link" @onclick="ChangeRealtorOnAdvert">
+                                Ändra tilldelad Mäklare
+                            </MudText>
+                        </MudListItem>
+                        <MudDivider />
+                        <MudListItem Icon="@Icons.Material.Filled.RemoveCircleOutline" Disabled="true" IconColor="Color.Error">Ta bort</MudListItem>
+                    </MudList>
+                </MudExpansionPanel>
+            </MudExpansionPanels>
+        </MudPaper>
+    </Animation>
 </MudItem>
 
 @code {
+    private string fadeAnimationSelected = "";
+
+    protected override void OnInitialized()
+    {
+        fadeAnimationSelected = AnimationsToSelect.fadeDownLeft;
+
+    }
     public void CreateAdvert()
     {
         navManager.NavigateTo("/admin-createAdvert");

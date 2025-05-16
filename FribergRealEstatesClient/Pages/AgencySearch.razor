@@ -5,7 +5,8 @@
 @inject IAgencyService agencyService
 @inject NavigationManager navManager
 
-<PageTitle>Sök Mäklarbyrå</PageTitle>
+<Animation AnimationSelected="@zoomOutDownAnimationSelected" ExtraDelay="250" ExtraDuration="600">
+    <PageTitle>Sök Mäklarbyrå</PageTitle>
 
 <div class="mt-4 container-fluid">
 	<MudGrid>
@@ -41,103 +42,69 @@
 		</MudItem>
 	</MudGrid>
 </div>
-@* <div class="mt-4 container-fluid gap-2" style=" min-width:fit-content; display: flex;">
-	<!-- Generic SearchBox -->
-	<div>
-		<GenericSearchBox _searchTerm="@_searchTerm"
-		_searchTitle="@_setSearchBoxTitle"
-		OnSearch="SearchAgencies">
-		</GenericSearchBox>
-	</div>
-
-	<!-- Agency list container -->
-	<div>
-		@if (_searching)
-		{
-			<div>
-				<MudProgressCircular Indeterminate="true" Color="Color.Primary" />
-			</div>
-
-		}
-		else if (_getAgencies.Count == 0)
-		{
-			<div class="advert-list-container">
-				<MudText>Ange sökkriterier och klicka på Sök</MudText>
-			</div>
-
-		}
-		else if (_searchPerformed && !_getAgencies.Any())
-		{
-			<div class="advert-list-container">
-				<MudAlert Severity="Severity.Info">@_errorAgency @_searchTerm</MudAlert>
-			</div>
-
-		}
-		else
-		{
-			<div>
-				@foreach (var agency in _getAgencies)
-				{
-					<AgencyCard agency="agency"/>
-				}
-			}
-			</div>
-		}
-	</div>
-</div> *@
-
+</Animation>
 @code {
 	private List<AgencyWithSimpleRealtorsDto>? _getAgencies = new();
 	private List<SimpleRealtorDto> _getRealtors = new();
 
-	private string _searchTerm = string.Empty;
-	private bool _searching = false;
-	private bool _searchPerformed = false;
-	private string _setSearchBoxTitle = "Sök mäklarbyrå i stad/kommun";
+    private string _searchTerm = string.Empty;
+    private bool _searching = false;
+    private bool _searchPerformed = false;
+    private string _setSearchBoxTitle = "Sök mäklarbyrå i stad/kommun";
 
-	private string _errorAgency = "Hittade inga byråer i";
-	private string _errorRealtors = "Inga registrerade mäklare";
+    private string _errorAgency = "Hittade inga byråer i";
+    private string _errorRealtors = "Inga registrerade mäklare";
 
-	private async Task SearchAgencies(string term)
-	{
-		_searching = true;
-		_searchPerformed = false;
-		StateHasChanged();
 
-		await Task.Delay(500);
-		_searchTerm = term;
-		if(!string.IsNullOrWhiteSpace(_searchTerm))
-		{
-			try
-			{
-				_getAgencies = await agencyService.GetAllAgenciesInCommun(_searchTerm);
-			}
-			finally
-			{
-				_searching = false;
-				_searchPerformed = true;
-				StateHasChanged();
-			}
-		}
-	}
+    //Animations
+    private string zoomOutDownAnimationSelected = "";
 
-	private void NavigateToAgency(int id)
-	{
-		navManager.NavigateTo($"/agency/{id}");
-	}
 
-	private void NavigateToRealtor(int id)
-	{
-		navManager.NavigateTo($"/realtor/{id}");
-	}
+    protected override void OnInitialized()
+    {
+        zoomOutDownAnimationSelected = AnimationsToSelect.zoomOutDown;
+    }
 
-	private List<string> GetRealtorsImages(AgencyWithSimpleRealtorsDto agency)
-	{
-		List<string> newList = new();
-		foreach(var realtor in agency.Realtors)
-		{
-			newList.Add(realtor.PictureUrl);
-		}
-		return newList;
-	}
+    private async Task SearchAgencies(string term)
+    {
+        _searching = true;
+        _searchPerformed = false;
+        StateHasChanged();
+
+        await Task.Delay(500);
+        _searchTerm = term;
+        if (!string.IsNullOrWhiteSpace(_searchTerm))
+        {
+            try
+            {
+                _getAgencies = await agencyService.GetAllAgenciesInCommun(_searchTerm);
+            }
+            finally
+            {
+                _searching = false;
+                _searchPerformed = true;
+                StateHasChanged();
+            }
+        }
+    }
+
+    private void NavigateToAgency(int id)
+    {
+        navManager.NavigateTo($"/agency/{id}");
+    }
+
+    private void NavigateToRealtor(int id)
+    {
+        navManager.NavigateTo($"/realtor/{id}");
+    }
+
+    private List<string> GetRealtorsImages(AgencyWithSimpleRealtorsDto agency)
+    {
+        List<string> newList = new();
+        foreach (var realtor in agency.Realtors)
+        {
+            newList.Add(realtor.PictureUrl);
+        }
+        return newList;
+    }
 }

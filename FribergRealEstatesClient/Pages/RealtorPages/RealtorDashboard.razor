@@ -12,7 +12,7 @@
                 <MudText Typo="Typo.h4" Class="welcome-text">Välkommen tillbaka</MudText>
                 <MudText Typo="Typo.h3" Class="welcome-name">@realtor.Realtor.FirstName @realtor.Realtor.LastName</MudText>
             </div>
-            <Animation AnimationSelected="@animationSelected" ExtraDuration="@extraDuration">
+            <Animation AnimationSelected="@animationSelected" ExtraDuration="600">
                 <div class="stats-overview">
                     <MudPaper Elevation="8" Class="stat-card">
                         <div class="stat-content">
@@ -37,32 +37,35 @@
         </div>
 
         <!-- Carousel -->
-        <div class="section-container">
-            <div class="section-header">
-                <MudText Typo="Typo.h5" Class="section-title">Aktiva Annonser</MudText>
-                <MudButton Variant="Variant.Text"
-                           Color="Color.Primary"
-                           EndIcon="@Icons.Material.Filled.ArrowForward"
-                           OnClick="@(() => navManager.NavigateTo("/my-active-adverts"))">
-                    Visa Alla
-                </MudButton>
-            </div>
+        <Animation AnimationSelected="@carouselAnimationSelected" ExtraDuration="800">
 
-            <div style="display: flex; justify-content: center; width: 100%;">
-                <MudCarousel Class="carousel-custom" AutoCycle="true" TData="object">
-                    <ChildContent>
-                        @foreach (var advert in realtor.ActiveAdverts)
-                        {
-                            <MudCarouselItem>
-                                <div class="carousel-item-wrapper">
-                                    <AdvertCardCarousel Advert="@advert" />
-                                </div>
-                            </MudCarouselItem>
-                        }
-                    </ChildContent>
-                </MudCarousel>
+            <div class="section-container">
+                <div class="section-header">
+                    <MudText Typo="Typo.h5" Class="section-title">Aktiva Annonser</MudText>
+                    <MudButton Variant="Variant.Text"
+                               Color="Color.Primary"
+                               EndIcon="@Icons.Material.Filled.ArrowForward"
+                               OnClick="@(() => navManager.NavigateTo("/my-active-adverts"))">
+                        Visa Alla
+                    </MudButton>
+                </div>
+
+                <div style="display: flex; justify-content: center; width: 100%;">
+                    <MudCarousel Class="carousel-custom" AutoCycle="true" TData="object">
+                        <ChildContent>
+                            @foreach (var advert in realtor.ActiveAdverts)
+                            {
+                                <MudCarouselItem>
+                                    <div class="carousel-item-wrapper">
+                                        <AdvertCardCarousel Advert="@advert" />
+                                    </div>
+                                </MudCarouselItem>
+                            }
+                        </ChildContent>
+                    </MudCarousel>
+                </div>
             </div>
-        </div>
+        </Animation>
 
         <!-- Actions -->
         <div class="section-container">
@@ -71,22 +74,25 @@
             </div>
 
             <div class="actions">
-                <MudCard Class="action-card" Style="cursor: pointer;" @onclick="NavigateToCreateAdvert" Elevation="8">
-                    <MudCardContent>
-                        <MudIcon Icon="@Icons.Material.Filled.AddHome" Class="action-icon" />
-                        <MudText Typo="Typo.body1">Skapa Ny Annons</MudText>
-                    </MudCardContent>
-                </MudCard>
+                <Animation AnimationSelected="@flipLAnimationSelected" ExtraDelay="1000" ExtraDuration="700">
+                    <MudCard Class="action-card" Style="cursor: pointer;" @onclick="NavigateToCreateAdvert" Elevation="8">
+                        <MudCardContent>
+                            <MudIcon Icon="@Icons.Material.Filled.AddHome" Class="action-icon" />
+                            <MudText Typo="Typo.body1">Skapa Ny Annons</MudText>
+                        </MudCardContent>
+                    </MudCard>
+                </Animation>
 
-                <MudCard Class="action-card" Style="cursor: pointer;" @onclick="NavigateToEdit" Elevation="8">
-                    <MudCardContent>
-                        <MudIcon Icon="@Icons.Material.Filled.ListAlt" Class="action-icon" />
-                        <MudText Typo="Typo.body1">Hantera Annonser</MudText>
-                    </MudCardContent>
-                </MudCard>
+                <Animation AnimationSelected="@flipLAnimationSelected" ExtraDelay="1000" ExtraDuration="700">
+                    <MudCard Class="action-card" Style="cursor: pointer;" @onclick="NavigateToEdit" Elevation="8">
+                        <MudCardContent>
+                            <MudIcon Icon="@Icons.Material.Filled.ListAlt" Class="action-icon" />
+                            <MudText Typo="Typo.body1">Hantera Annonser</MudText>
+                        </MudCardContent>
+                    </MudCard>
+                </Animation>
             </div>
         </div>
-
     </div>
 }
 
@@ -215,11 +221,20 @@
 
 @code {
     private RealtorFullProfileDto realtor;
-    public string animationSelected = string.Empty;
-    public string extraDuration = "3000";
+
+    //Animations
+    private string animationSelected = string.Empty;
+    private string carouselAnimationSelected = string.Empty;
+    private string flipRAnimationSelected = string.Empty;
+    private string flipLAnimationSelected = string.Empty;
+
     protected override async Task OnInitializedAsync()
     {
         animationSelected = AnimationsToSelect.zoomOutRight;
+        carouselAnimationSelected = AnimationsToSelect.zoomOut;
+        flipRAnimationSelected = AnimationsToSelect.flipRight;
+        flipLAnimationSelected = AnimationsToSelect.flipLeft;
+
         try
         {
             realtor = await realtorService.GetMyProfileAsync();

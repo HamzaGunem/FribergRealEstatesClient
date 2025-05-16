@@ -2,28 +2,38 @@
 @inject NavigationManager navManager
 
 <MudItem xs="12" sm="6" md="6">
-    <MudPaper Elevation="3" Class="pa-4">
-        <MudExpansionPanels>
-            <MudExpansionPanel Text="Bostäder" Style="text-align:center;" MaxHeight="300" Expanded="true">
-                <MudList T="string" Style="background-color: white;">
-                    <MudDivider />
-                    <MudListItem Icon="@Icons.Material.Filled.Create"
-                    IconColor="Color.Success">
-                        <MudText Color="Color.Default" Class="custom-link" @onclick="CreateResidence">
-                            Skapa
-                        </MudText>
-                    </MudListItem>
-                    <MudDivider />
-                    <MudListItem Icon="@Icons.Material.Filled.ChangeCircle" Disabled="true" IconColor="Color.Primary">Ändra</MudListItem>
-                    <MudDivider />
-                    <MudListItem Icon="@Icons.Material.Filled.RemoveCircleOutline" Disabled="true" IconColor="Color.Error">Ta bort</MudListItem>
-                </MudList>
-            </MudExpansionPanel>
-        </MudExpansionPanels>
-    </MudPaper>
+    <Animation AnimationSelected="@flipLAnimationSelected" ExtraDelay="600" ExtraDuration="500">
+        <MudPaper Elevation="3" Class="pa-4">
+            <MudExpansionPanels>
+                <MudExpansionPanel Text="Bostäder" Style="text-align:center;" MaxHeight="300" Expanded="true">
+                    <MudList T="string" Style="background-color: white;">
+                        <MudDivider />
+                        <MudListItem Icon="@Icons.Material.Filled.Create"
+                        IconColor="Color.Success">
+                            <MudText Color="Color.Default" Class="custom-link" @onclick="CreateResidence">
+                                Skapa
+                            </MudText>
+                        </MudListItem>
+                        <MudDivider />
+                        <MudListItem Icon="@Icons.Material.Filled.ChangeCircle" Disabled="true" IconColor="Color.Primary">Ändra</MudListItem>
+                        <MudDivider />
+                        <MudListItem Icon="@Icons.Material.Filled.RemoveCircleOutline" Disabled="true" IconColor="Color.Error">Ta bort</MudListItem>
+                    </MudList>
+                </MudExpansionPanel>
+            </MudExpansionPanels>
+        </MudPaper>
+    </Animation>
 </MudItem>
 
 @code{
+
+    private string flipLAnimationSelected = "";
+
+    protected override void OnInitialized()
+    {
+        flipLAnimationSelected = AnimationsToSelect.flipLeft;
+
+    }
     public void CreateResidence()
     {
         navManager.NavigateTo("/admin-createResidence");

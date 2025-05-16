@@ -7,7 +7,7 @@
 @code {
     private string animationName = "";
     private string delay = "500";
-    private string duration = "500000";
+    private string duration = "400";
 
     [Parameter]
     public RenderFragment ChildContent{ get; set; }
@@ -23,11 +23,11 @@
     {
         if (!string.IsNullOrEmpty(ExtraDuration))
         {
-            duration += ExtraDuration;
+            duration = ExtraDuration;
         }
         if (!string.IsNullOrEmpty(ExtraDelay))
         {
-            delay += ExtraDelay;
+            delay = ExtraDelay;
         }
         if(!string.IsNullOrEmpty(AnimationSelected))
         {
