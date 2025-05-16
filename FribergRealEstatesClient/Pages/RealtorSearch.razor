@@ -4,50 +4,52 @@
 @inject IRealtorService realtorService
 @inject NavigationManager navManager
 
-<PageTitle>Sök Mäklare</PageTitle>
+<Animation AnimationSelected="@zoomOutDownAnimationSelected" ExtraDelay="250" ExtraDuration="600">
 
-<div class="mt-4 container-fluid">
-	<MudGrid>
-		<MudItem xs="12" sm="4" md="4">
-			<GenericSearchBox _searchTerm="@_searchTerm"
-							  _searchTitle="@_setSearchBoxTitle"
-							  OnSearch="SearchRealtors">
-			</GenericSearchBox>
-		</MudItem>
-		<MudItem xs="12" sm="12" md="6">
-			@* Adverts *@
-			<div class="advert-list-container">
-				@if (_searching)
-				{
-					<MudProgressCircular Indeterminate="true" Color="Color.Primary" />
-				}
-				else if (_searchPerformed == false)
-				{
-					<MudText>Ange sökkriterier och klicka på Sök</MudText>
-				}
-				else if (_searchPerformed && !_getRealtors.Any())
-				{
-					<MudAlert Severity="Severity.Info">Inga mäklare hittades i @_searchTerm</MudAlert>
-				}
-				else
-				{
-					<MudGrid GutterSize="3">
-						@foreach (var person in _getRealtors)
-						{
-							<MudItem xs="12" sm="6" md="4" 
+	<PageTitle>Sök Mäklare</PageTitle>
+
+	<div class="mt-4 container-fluid">
+		<MudGrid>
+			<MudItem xs="12" sm="4" md="4">
+				<GenericSearchBox _searchTerm="@_searchTerm"
+				_searchTitle="@_setSearchBoxTitle"
+				OnSearch="SearchRealtors">
+				</GenericSearchBox>
+			</MudItem>
+			<MudItem xs="12" sm="12" md="6">
+				@* Adverts *@
+				<div class="advert-list-container">
+					@if (_searching)
+					{
+						<MudProgressCircular Indeterminate="true" Color="Color.Primary" />
+					}
+					else if (_searchPerformed == false)
+					{
+						<MudText>Ange sökkriterier och klicka på Sök</MudText>
+					}
+					else if (_searchPerformed && !_getRealtors.Any())
+					{
+						<MudAlert Severity="Severity.Info">Inga mäklare hittades i @_searchTerm</MudAlert>
+					}
+					else
+					{
+						<MudGrid GutterSize="3">
+							@foreach (var person in _getRealtors)
+							{
+								<MudItem xs="12" sm="6" md="4" 
 								style="cursor: pointer">
-										<div class="realtor-card-search">
-											<RealtorProfileCard RealtorDto="person" />
-										</div>
-							</MudItem>
-						}
-					</MudGrid>
-				}
-			</div>
-		</MudItem>
-	</MudGrid>
-</div>
-
+									<div class="realtor-card-search">
+										<RealtorProfileCard RealtorDto="person" />
+									</div>
+								</MudItem>
+							}
+						</MudGrid>
+					}
+				</div>
+			</MudItem>
+		</MudGrid>
+	</div>
+</Animation>
 @code {
 	private List<RealtorSummaryDto> _getRealtors = new();
 
@@ -59,7 +61,14 @@
 	private bool _searching = false;
 	private bool _searchPerformed = false;
 
+	//Animations
+	private string zoomOutDownAnimationSelected = "";
 
+
+	protected override void OnInitialized()
+	{
+		zoomOutDownAnimationSelected = AnimationsToSelect.zoomOutDown;
+	}
 	private async Task SearchRealtors(string term)
 	{
 		_searching = true;

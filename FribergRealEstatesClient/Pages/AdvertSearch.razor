@@ -5,23 +5,36 @@
 @inject IAdvertService AdvertService
 @using Newtonsoft.Json
 
-<PageTitle>Sök Bostäder</PageTitle>
+<Animation AnimationSelected="@fadeAnimationSelected" ExtraDelay="100">
 
-<MudMainContent Class="p-4" style="display: flex; align-items: flex-start; justify-content: center;">
-    <MudGrid Spacing="6" Style="display: flex; justify-content:center">
-        @if (_searchPanelOpen)
-        {
-            <MudItem xs="12" sm="12" md="4">
-                <MudItem Style="display: flex; justify-content:center;">
-                    @* Searchform *@
+    <PageTitle>Sök Bostäder</PageTitle>
+    <MudMainContent Class="p-4" style="display: flex; align-items: flex-start; justify-content: center;">
+        <MudGrid Spacing="6" Style="display: flex; justify-content:center">
+            @if (_searchPanelOpen)
+            {
+                <MudItem xs="12" sm="12" md="4">
+                    <MudItem Style="display: flex; justify-content:center;">
+                        @* Searchform *@
 
-                    <AdvertSearchForm Filter="_filter"
-                                      OnApplyFilter="OnApplyFilter"
-                                      OnResidenceTypesChanged="OnResidenceTypesChanged" />
+                        <AdvertSearchForm Filter="_filter"
+                                          OnApplyFilter="OnApplyFilter"
+                                          OnResidenceTypesChanged="OnResidenceTypesChanged" />
 
 
 
-                    @* Hamburgermenu *@
+                        @* Hamburgermenu *@
+                        <div>
+                            <MudIconButton style="align-items: flex-start; width: auto; height: auto" Icon="@Icons.Material.Filled.Menu"
+                                           Color="Color.Primary"
+                                           Size="Size.Large"
+                                           OnClick="@ToggleSearchPanel" />
+                        </div>
+                    </MudItem>
+                </MudItem>
+            }
+            else
+            {
+                <MudItem xs="12" sm="12" md="1">
                     <div>
                         <MudIconButton style="align-items: flex-start; width: auto; height: auto" Icon="@Icons.Material.Filled.Menu"
                                        Color="Color.Primary"
@@ -29,54 +42,43 @@
                                        OnClick="@ToggleSearchPanel" />
                     </div>
                 </MudItem>
-            </MudItem>
-        }
-        else
-        {
-            <MudItem xs="12" sm="12" md="1">
-                <div>
-                    <MudIconButton style="align-items: flex-start; width: auto; height: auto" Icon="@Icons.Material.Filled.Menu"
-                                   Color="Color.Primary"
-                                   Size="Size.Large"
-                                   OnClick="@ToggleSearchPanel" />
+            }
+            <MudItem xs="12" sm="12" md="@(_searchPanelOpen ? 6 : 11)">
+                @* Adverts *@
+                <div class="advert-list-container">
+                    @if (_isLoading)
+                    {
+                        <MudProgressCircular Indeterminate="true" Color="Color.Primary" />
+                    }
+                    else if (_result == null)
+                    {
+                        <MudText>Ange sökkriterier och klicka på Sök</MudText>
+                    }
+                    else if (!_result.Any())
+                    {
+                        <MudAlert Severity="Severity.Info">Inga bostäder hittades med valda sökkriterier</MudAlert>
+                    }
+                    else
+                    {
+                        <Animation AnimationSelected="@fadeAnimationSelected" ExtraDelay="250" ExtraDuration="600">
+                            @foreach (var advert in _result)
+                            {
+                                // change Robert: added button
+                                //<div type="button" @onclick="() => GoToAdvert(advert.Id)"><AdvertCard Advert="advert" /></div>
+                                if (!advert.Sold)
+                                {
+                                    <RealtorActiveAdvert Advert="advert" />
+                                }
+
+                            }
+                        </Animation>
+
+                    }
                 </div>
             </MudItem>
-        }
-        <MudItem xs="12" sm="12" md="@(_searchPanelOpen ? 6 : 11)">
-            @* Adverts *@
-            <div class="advert-list-container">
-                @if (_isLoading)
-                {
-                    <MudProgressCircular Indeterminate="true" Color="Color.Primary" />
-                }
-                else if (_result == null)
-                {
-                    <MudText>Ange sökkriterier och klicka på Sök</MudText>
-                }
-                else if (!_result.Any())
-                {
-                    <MudAlert Severity="Severity.Info">Inga bostäder hittades med valda sökkriterier</MudAlert>
-                }
-                else
-                {
-                    <Animation AnimationSelected="@fadeAnimationSelected" ExtraDelay="250" ExtraDuration="600">
-                        @foreach (var advert in _result)
-                        {
-                            // change Robert: added button
-                            //<div type="button" @onclick="() => GoToAdvert(advert.Id)"><AdvertCard Advert="advert" /></div>
-                            if (!advert.Sold)
-                            {
-                                <RealtorActiveAdvert Advert="advert" />
-                            }
-
-                        }
-                    </Animation>
-
-                }
-            </div>
-        </MudItem>
-    </MudGrid>
-</MudMainContent>
+        </MudGrid>
+    </MudMainContent>
+</Animation>
 
 <TopListResidence /> @* added Robert *@
 
@@ -110,7 +112,7 @@
 
     protected override void OnInitialized()
     {
-        fadeAnimationSelected = AnimationsToSelect.fadeDownRight;
+        fadeAnimationSelected = AnimationsToSelect.zoomInDown;
     }
     private void ToggleSearchPanel()
     {

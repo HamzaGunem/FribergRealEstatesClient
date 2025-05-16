@@ -2,7 +2,6 @@
 @inject IAdvertService advertService
 @inject NavigationManager navigationManager
 
-<Animation AnimationSelected="@animationSelected">
 <MudMainContent>
     <MudContainer Class="mt-4" Style="max-width: none;">
         <MudText Typo="Typo.h4" Align="Align.Center">Topplista</MudText>
@@ -18,7 +17,6 @@
         </div>
     </MudContainer>
 </MudMainContent>
-</Animation>
 
 @code{
     private List<AdvertDto> adverts= new ();
