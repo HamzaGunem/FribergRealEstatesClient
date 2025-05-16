@@ -2,66 +2,86 @@
 @page "/profile"
 @inject IRealtorService realtorService
 
+
 <div class="container-large">
     @if (realtor != null)
     {
-        <RealtorProfileCard realtorDto="@realtor.Realtor"></RealtorProfileCard>
+        <Animation AnimationSelected="@zoomOutLeftanimationSelected" ExtraDuration="600">
 
-        <div class="mt-3" style="display: flex; justify-content: center; align-items: center; gap: 20px;">
-            <MudChart ChartType="ChartType.Donut" Width="300px" Height="300px" InputData="@chartData" InputLabels="@chartLabels">
-                <CustomGraphics>
-                    <text class="donut-inner-text" x="50%" y="35%" dominant-baseline="middle" text-anchor="middle" fill="black" font-family="Helvetica" font-size="20">Total</text>
-                    <text class="donut-inner-text" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="black" font-family="Helvetica" font-size="50">@totalSoldAndActive</text>
-                </CustomGraphics>
-            </MudChart>
-        </div>
+            <RealtorProfileCard realtorDto="@realtor.Realtor"></RealtorProfileCard>
+
+            <div class="mt-3" style="display: flex; justify-content: center; align-items: center; gap: 20px;">
+                <MudChart ChartType="ChartType.Donut" Width="300px" Height="300px" InputData="@chartData" InputLabels="@chartLabels">
+                    <CustomGraphics>
+                        <text class="donut-inner-text" x="50%" y="35%" dominant-baseline="middle" text-anchor="middle" fill="black" font-family="Helvetica" font-size="20">Total</text>
+                        <text class="donut-inner-text" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="black" font-family="Helvetica" font-size="50">@totalSoldAndActive</text>
+                    </CustomGraphics>
+                </MudChart>
+            </div>
+        </Animation>
+
 
         <div class="stats-overview">
-            <MudPaper Elevation="8" Class="stat-card" @onclick="ShowActiveAdverts" style="cursor: pointer;">
-                <div class="stat-content">
-                    <MudIcon Icon="@Icons.Material.Filled.HomeWork" Class="stat-icon" />
-                    <div>
-                        <MudText Typo="Typo.body2">Aktiva Annonser</MudText>
-                        <MudText Typo="Typo.h5">@realtor.ActiveAdverts.Count</MudText>
+            <Animation AnimationSelected="@zoomOutLeftanimationSelected" ExtraDelay="800" ExtraDuration="400">
+                <MudPaper Elevation="8" Class="stat-card" @onclick="ShowActiveAdverts" style="cursor: pointer;">
+                    <div class="stat-content">
+                        <MudIcon Icon="@Icons.Material.Filled.HomeWork" Class="stat-icon" />
+                        <div>
+                            <MudText Typo="Typo.body2">Aktiva Annonser</MudText>
+                            <MudText Typo="Typo.h5">@realtor.ActiveAdverts.Count</MudText>
+                        </div>
                     </div>
-                </div>
-            </MudPaper>
-            <MudPaper Elevation="8" Class="stat-card" @onclick="ShowAllAdverts" style="cursor: pointer;">
-                <div class="stat-content">
-                    <MudIcon Icon="@Icons.Material.Filled.HomeWork" Class="stat-icon" />
-                    <div>
-                        <MudText Typo="Typo.body2">Alla Annonser</MudText>
-                        <MudText Typo="Typo.h5">@totalSoldAndActive</MudText>
+                </MudPaper>
+            </Animation>
+
+            <Animation AnimationSelected="@flipRAnimationSelected" ExtraDelay="900" ExtraDuration="800">
+                <MudPaper Elevation="8" Class="stat-card" @onclick="ShowAllAdverts" style="cursor: pointer;">
+                    <div class="stat-content">
+                        <MudIcon Icon="@Icons.Material.Filled.HomeWork" Class="stat-icon" />
+                        <div>
+                            <MudText Typo="Typo.body2">Alla Annonser</MudText>
+                            <MudText Typo="Typo.h5">@totalSoldAndActive</MudText>
+                        </div>
                     </div>
-                </div>
-            </MudPaper>
-            <MudPaper Elevation="8" Class="stat-card" @onclick="ShowSoldAdverts" style="cursor: pointer;">
-                <div class="stat-content">
-                    <MudIcon Icon="@Icons.Material.Filled.HomeWork" Class="stat-icon" />
-                    <div>
-                        <MudText Typo="Typo.body2">Sålda Annonser</MudText>
-                        <MudText Typo="Typo.h5">@realtor.SoldAdverts.Count</MudText>
+                </MudPaper>
+            </Animation>
+
+            <Animation AnimationSelected="@flipLAnimationSelected" ExtraDelay="1000" ExtraDuration="1000">
+                <MudPaper Elevation="8" Class="stat-card" @onclick="ShowSoldAdverts" style="cursor: pointer;">
+                    <div class="stat-content">
+                        <MudIcon Icon="@Icons.Material.Filled.HomeWork" Class="stat-icon" />
+                        <div>
+                            <MudText Typo="Typo.body2">Sålda Annonser</MudText>
+                            <MudText Typo="Typo.h5">@realtor.SoldAdverts.Count</MudText>
+                        </div>
                     </div>
-                </div>
-            </MudPaper>
+                </MudPaper>
+            </Animation>
         </div>
-        if (ShowActive)
+
+        @if (ShowActive)
         {
-            foreach (var item in realtor.ActiveAdverts)
-            {
+            <Animation AnimationSelected="@fadeAnimationSelected" ExtraDelay="@specialDelay.ToString()" ExtraDuration="1000">
+                @foreach (var item in realtor.ActiveAdverts)
+                {
                 <div class="mt-2">
                     <RealtorActiveAdvert Advert="@item"></RealtorActiveAdvert>
                 </div>
-            }
+                }
+            </Animation>
+            DelayAfterFirstRender();
         }
-        if (ShowSold)
+        @if (ShowSold)
         {
-            foreach (var item in realtor.SoldAdverts)
-            {
+            <Animation AnimationSelected="@fadeAnimationSelected" ExtraDelay="@specialDelay.ToString()" ExtraDuration="1000">
+                @foreach (var item in realtor.SoldAdverts)
+                {
                 <div class="mt-2">
                     <RealtorActiveAdvert Advert="@item"></RealtorActiveAdvert>
                 </div>
-            }
+                }
+            </Animation>
+            DelayAfterFirstRender();
         }
 
     }
@@ -75,8 +95,19 @@
     private bool ShowActive = true;
     private bool ShowSold = false;
 
+    //Animations
+    private string zoomOutLeftanimationSelected = "";
+    private string flipRAnimationSelected = "";
+    private string flipLAnimationSelected = "";
+    private string fadeAnimationSelected = "";
+    private int specialDelay = 1000;
+
     protected override async Task OnInitializedAsync()
     {
+        zoomOutLeftanimationSelected = AnimationsToSelect.zoomOutLeft;
+        flipRAnimationSelected = AnimationsToSelect.flipRight;
+        flipLAnimationSelected = AnimationsToSelect.flipLeft;
+        fadeAnimationSelected = AnimationsToSelect.fadeUp;
         try
         {
             realtor = await realtorService.GetMyProfileAsync();
@@ -89,15 +120,15 @@
 
             chartData = new double[]
             {
-                activeAdverts,
-                soldAdverts,
+    activeAdverts,
+    soldAdverts,
             };
 
             // Set chart labels
             chartLabels = new string[]
             {
-                $"Active Adverts: {activeAdverts}",
-                $"Sold Adverts: {soldAdverts}",
+    $"Active Adverts: {activeAdverts}",
+    $"Sold Adverts: {soldAdverts}",
             };
         }
         catch (Exception ex)
@@ -122,4 +153,9 @@
         ShowSold = true;
     }
 
+    private void DelayAfterFirstRender()
+    {
+        specialDelay = 200;
+    }
+ 
 }

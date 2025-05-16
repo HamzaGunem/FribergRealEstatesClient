@@ -16,17 +16,17 @@
                     @* Searchform *@
 
                     <AdvertSearchForm Filter="_filter"
-                    OnApplyFilter="OnApplyFilter"
-                    OnResidenceTypesChanged="OnResidenceTypesChanged" />
+                                      OnApplyFilter="OnApplyFilter"
+                                      OnResidenceTypesChanged="OnResidenceTypesChanged" />
 
 
 
                     @* Hamburgermenu *@
                     <div>
                         <MudIconButton style="align-items: flex-start; width: auto; height: auto" Icon="@Icons.Material.Filled.Menu"
-                        Color="Color.Primary"
-                        Size="Size.Large"
-                        OnClick="@ToggleSearchPanel" />
+                                       Color="Color.Primary"
+                                       Size="Size.Large"
+                                       OnClick="@ToggleSearchPanel" />
                     </div>
                 </MudItem>
             </MudItem>
@@ -36,9 +36,9 @@
             <MudItem xs="12" sm="12" md="1">
                 <div>
                     <MudIconButton style="align-items: flex-start; width: auto; height: auto" Icon="@Icons.Material.Filled.Menu"
-                    Color="Color.Primary"
-                    Size="Size.Large"
-                    OnClick="@ToggleSearchPanel" />
+                                   Color="Color.Primary"
+                                   Size="Size.Large"
+                                   OnClick="@ToggleSearchPanel" />
                 </div>
             </MudItem>
         }
@@ -59,20 +59,23 @@
                 }
                 else
                 {
-                    @foreach (var advert in _result)
-                    {
-                        // change Robert: added button
-                        //<div type="button" @onclick="() => GoToAdvert(advert.Id)"><AdvertCard Advert="advert" /></div>
-                        if (!advert.Sold)
+                    <Animation AnimationSelected="@fadeAnimationSelected" ExtraDelay="250" ExtraDuration="600">
+                        @foreach (var advert in _result)
                         {
-                            <RealtorActiveAdvert Advert="advert" />
+                            // change Robert: added button
+                            //<div type="button" @onclick="() => GoToAdvert(advert.Id)"><AdvertCard Advert="advert" /></div>
+                            if (!advert.Sold)
+                            {
+                                <RealtorActiveAdvert Advert="advert" />
+                            }
+
                         }
-                        
-                    }
+                    </Animation>
+
                 }
-                </div>
-            </MudItem>
-        </MudGrid>
+            </div>
+        </MudItem>
+    </MudGrid>
 </MudMainContent>
 
 <TopListResidence /> @* added Robert *@
@@ -84,6 +87,14 @@
     private bool _isLoading;
     private bool _searchPanelOpen = true;
 
+
+    //Animations
+    private string fadeAnimationSelected = "";
+
+    protected override void OnInitialized()
+    {
+        fadeAnimationSelected = AnimationsToSelect.fadeDownRight;
+    }
     private void ToggleSearchPanel()
     {
         _searchPanelOpen = !_searchPanelOpen;
