@@ -1,6 +1,6 @@
 ﻿@* Auth Hamza*@
 @inject NavigationManager navigationManager
-
+<div class="realtor-info-card">
 <div  @onclick="@(() => NavigateToPerson(realtorDto.Id))">
     <MudPaper Elevation="1" Style="max-width: 350px; min-width: 200px; margin: auto; border: 1px solid #e0e0e0;">
         <div class="card-content" style="padding: 20px;">
@@ -42,6 +42,7 @@
         </div>
     </MudPaper>
 </div>
+</div>
 
 <style>
     .realtor-profile-container {
@@ -55,6 +56,21 @@
     border-radius: 8px !important;
     background-color: white;
     }
+
+    .realtor-info-card {
+        border: 2px solid #273845 !important;
+        border-radius: 7px !important;
+        background-color: white;
+        transition: all 0.3s ease-in-out;
+        cursor: pointer;
+        overflow: hidden;
+    }
+
+        .realtor-info-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3) !important;
+            border-color: #ae9d65 !important;
+        }
 </style>
 
 @code {

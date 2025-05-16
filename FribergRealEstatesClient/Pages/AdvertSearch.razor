@@ -65,7 +65,10 @@
                         //<div type="button" @onclick="() => GoToAdvert(advert.Id)"><AdvertCard Advert="advert" /></div>
                         if (!advert.Sold)
                         {
-                            <RealtorActiveAdvert Advert="advert" />
+                            <div>
+                                <RealtorActiveAdvert Advert="advert" />
+                            </div>
+                            
                         }
                         
                     }
@@ -76,6 +79,23 @@
 </MudMainContent>
 
 <TopListResidence /> @* added Robert *@
+
+<style>
+    .advert-info-card {
+        border: 2px solid #273845 !important;
+        border-radius: 7px !important;
+        background-color: white;
+        transition: all 0.3s ease-in-out;
+        cursor: pointer;
+        overflow: hidden;
+    }
+
+        .advert-info-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3) !important;
+            border-color: #ae9d65 !important;
+        }
+</style>
 
 @code {
 

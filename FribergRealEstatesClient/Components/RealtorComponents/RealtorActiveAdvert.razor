@@ -1,6 +1,7 @@
 ﻿@* Created by Robert*@
 @inject NavigationManager navigationManager
 
+<div class="advert-info-card">
 <!-- Layout för större skärmar -->
 <div class="only-above-1440">
     <MudCard Class="responsive-card" Style="height: 330px; display: flex; flex-direction: row; overflow: hidden; border: 1px solid gray;">
@@ -165,6 +166,7 @@
         </MudCardContent>
     </MudCard>
 </div>
+</div>
 
 <style>
     .description-truncate {
@@ -185,6 +187,21 @@
             color: #007bff;
             transform: scale(1.05);
         }
+
+        .advert-info-card {
+            border: 2px solid #273845 !important;
+            border-radius: 7px !important;
+            background-color: white;
+            transition: all 0.3s ease-in-out;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+            .advert-info-card:hover {
+                transform: scale(1.02);
+                box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3) !important;
+                border-color: #ae9d65 !important;
+            }
 </style>
 
 @code {
